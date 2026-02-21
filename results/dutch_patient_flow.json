@@ -1,0 +1,44 @@
+{
+  "per_1000_chest_pain_patients": {
+    "current_practice": {
+      "referred": 500.0,
+      "unnecessary_referrals": 350.0,
+      "missed_serious_pathology": 18.0,
+      "total_cost_eur": 382890.0
+    },
+    "with_poc_panel": {
+      "referred": 331.4,
+      "unnecessary_referrals": 143.2,
+      "missed_serious_pathology": 20.5,
+      "total_cost_eur": 225156.0,
+      "poc_tests_performed": 350.0
+    }
+  },
+  "impact": {
+    "referrals_avoided_per_1000": 168.6,
+    "unnecessary_referrals_avoided_per_1000": 206.8,
+    "additional_missed_cases_per_1000": 2.5,
+    "cost_saving_per_1000_eur": 157734.0,
+    "cost_per_referral_avoided_eur": 75.0
+  },
+  "per_gp_practice_per_year": {
+    "chest_pain_patients": 35.0,
+    "referrals_avoided": 5.9,
+    "cost_saving_eur": 5560.0
+  },
+  "dutch_context": {
+    "source": "Schols 2019; Harskamp 2018; Van Den Bulk 2023; NZa 2024",
+    "gp_practices_netherlands": 5000,
+    "national_referrals_avoided_per_year": 29712.0,
+    "national_cost_saving_eur_per_year": 27800642.0
+  },
+  "clinical_interpretation": "POC multi-biomarker testing in Dutch primary care, stratified by HEAR score (without Troponin), could substantially reduce unnecessary ED referrals. The greatest impact is in HEAR 3-5 (moderate-risk) patients, who currently face precautionary referral. Cost savings accrue from avoided ED visits, ambulance transports, and overnight observations. HEAR-low patients are safely discharged without testing (honest trade-off: slightly higher miss rate vs large referral reduction). Safety maintained through high panel sensitivity for covered pathologies.",
+  "limitations": [
+    "Model assumes HEAR score and biomarker results are independent (simplified).",
+    "Cost estimates based on 2024 NZa tariffs, actual costs vary by region.",
+    "HEAR-low discharge: honest increase in missed cases vs current practice \u2014 quantified explicitly as HEAR-low disease prevalence (~3%).",
+    "FP rate modelled as suspicion-weighted per-test rate (not independent union).",
+    "Serial testing benefit (SISTER ACT core question) not yet modelled in the cost analysis \u2014 this is a single-timepoint estimate.",
+    "HEAR score NOT validated in Dutch primary care (Van den Bulk 2024). Prospective validation is essential \u2014 a core SISTER ACT objective."
+  ]
+}

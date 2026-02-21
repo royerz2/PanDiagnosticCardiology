@@ -1,0 +1,60 @@
+{
+  "n_samples": 5000,
+  "tau": 0.9,
+  "panel": [
+    "hs-cTnI",
+    "D-dimer",
+    "NT-proBNP",
+    "CRP"
+  ],
+  "sampling_distribution": "Beta (fitted from point estimate + 95% CI)",
+  "coverage": {
+    "mean": 0.7993666666666666,
+    "std": 0.0671369992378768,
+    "ci_2.5": 0.6666666666666666,
+    "ci_97.5": 0.8333333333333334,
+    "p_full_coverage": 0.7962
+  },
+  "expected_detections_covered_per_1000": {
+    "mean": 103.78889296954026,
+    "std": 14.999638917054755,
+    "ci_2.5": 73.65418335088376,
+    "ci_97.5": 112.86121111726561
+  },
+  "expected_detections_all_per_1000": {
+    "mean": 112.14385171610031,
+    "std": 1.159729817738407,
+    "ci_2.5": 109.71641582444744,
+    "ci_97.5": 114.19311927667908
+  },
+  "net_benefit": {
+    "t=0.01": {
+      "decision_threshold": 0.01,
+      "harm_benefit_ratio": 0.0101,
+      "mean": 0.08105010913115641,
+      "std": 0.01258337055766927,
+      "ci_2.5": 0.05569852678522721,
+      "ci_97.5": 0.08889739891710563,
+      "p_positive": 1.0
+    },
+    "t=0.05": {
+      "decision_threshold": 0.05,
+      "harm_benefit_ratio": 0.0526,
+      "mean": -0.014692138609407126,
+      "std": 0.002507883899288881,
+      "ci_2.5": -0.01990423770174782,
+      "ci_97.5": -0.011985806461730539,
+      "p_positive": 0.0
+    },
+    "t=0.1": {
+      "decision_threshold": 0.1,
+      "harm_benefit_ratio": 0.1111,
+      "mean": -0.146337729252682,
+      "std": 0.01168347259773853,
+      "ci_2.5": -0.15371385070854474,
+      "ci_97.5": -0.12280548716574936,
+      "p_positive": 0.0
+    }
+  },
+  "note": "Net benefit computed at clinically relevant decision thresholds (not at tau=0.90 which is the sensitivity selection threshold, not the clinical decision threshold). t=0.01 means willing to accept 99 FPs per missed case. Only covered pathologies (sens >= tau) contribute."
+}

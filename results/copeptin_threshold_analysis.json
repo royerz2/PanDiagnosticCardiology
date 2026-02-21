@@ -1,0 +1,481 @@
+{
+  "tau": 0.9,
+  "scenarios": {
+    "standard_copeptin": [
+      {
+        "troponin_sensitivity": 0.98,
+        "copeptin_acs_sensitivity": 0.85,
+        "optimal_panel": [
+          "CRP",
+          "D-dimer",
+          "NT-proBNP",
+          "hs-cTnI"
+        ],
+        "copeptin_selected": false,
+        "hs_ctni_selected": true,
+        "panel_size": 4,
+        "coverage": 0.8333333333333334,
+        "cost_eur": 36.0,
+        "acs_covered": true,
+        "acs_covered_by": [
+          "hs-cTnI"
+        ]
+      },
+      {
+        "troponin_sensitivity": 0.95,
+        "copeptin_acs_sensitivity": 0.85,
+        "optimal_panel": [
+          "CRP",
+          "D-dimer",
+          "NT-proBNP",
+          "hs-cTnI"
+        ],
+        "copeptin_selected": false,
+        "hs_ctni_selected": true,
+        "panel_size": 4,
+        "coverage": 0.8333333333333334,
+        "cost_eur": 36.0,
+        "acs_covered": true,
+        "acs_covered_by": [
+          "hs-cTnI"
+        ]
+      },
+      {
+        "troponin_sensitivity": 0.92,
+        "copeptin_acs_sensitivity": 0.85,
+        "optimal_panel": [
+          "CRP",
+          "D-dimer",
+          "NT-proBNP",
+          "hs-cTnI"
+        ],
+        "copeptin_selected": false,
+        "hs_ctni_selected": true,
+        "panel_size": 4,
+        "coverage": 0.8333333333333334,
+        "cost_eur": 36.0,
+        "acs_covered": true,
+        "acs_covered_by": [
+          "hs-cTnI"
+        ]
+      },
+      {
+        "troponin_sensitivity": 0.9,
+        "copeptin_acs_sensitivity": 0.85,
+        "optimal_panel": [
+          "CRP",
+          "D-dimer",
+          "NT-proBNP",
+          "hs-cTnI"
+        ],
+        "copeptin_selected": false,
+        "hs_ctni_selected": true,
+        "panel_size": 4,
+        "coverage": 0.8333333333333334,
+        "cost_eur": 36.0,
+        "acs_covered": true,
+        "acs_covered_by": [
+          "hs-cTnI"
+        ]
+      },
+      {
+        "troponin_sensitivity": 0.88,
+        "copeptin_acs_sensitivity": 0.85,
+        "optimal_panel": [
+          "CRP",
+          "D-dimer",
+          "NT-proBNP"
+        ],
+        "copeptin_selected": false,
+        "hs_ctni_selected": false,
+        "panel_size": 3,
+        "coverage": 0.6666666666666666,
+        "cost_eur": 26.0,
+        "acs_covered": false,
+        "acs_covered_by": []
+      },
+      {
+        "troponin_sensitivity": 0.85,
+        "copeptin_acs_sensitivity": 0.85,
+        "optimal_panel": [
+          "CRP",
+          "D-dimer",
+          "NT-proBNP"
+        ],
+        "copeptin_selected": false,
+        "hs_ctni_selected": false,
+        "panel_size": 3,
+        "coverage": 0.6666666666666666,
+        "cost_eur": 26.0,
+        "acs_covered": false,
+        "acs_covered_by": []
+      },
+      {
+        "troponin_sensitivity": 0.82,
+        "copeptin_acs_sensitivity": 0.85,
+        "optimal_panel": [
+          "CRP",
+          "D-dimer",
+          "NT-proBNP"
+        ],
+        "copeptin_selected": false,
+        "hs_ctni_selected": false,
+        "panel_size": 3,
+        "coverage": 0.6666666666666666,
+        "cost_eur": 26.0,
+        "acs_covered": false,
+        "acs_covered_by": []
+      },
+      {
+        "troponin_sensitivity": 0.8,
+        "copeptin_acs_sensitivity": 0.85,
+        "optimal_panel": [
+          "CRP",
+          "D-dimer",
+          "NT-proBNP"
+        ],
+        "copeptin_selected": false,
+        "hs_ctni_selected": false,
+        "panel_size": 3,
+        "coverage": 0.6666666666666666,
+        "cost_eur": 26.0,
+        "acs_covered": false,
+        "acs_covered_by": []
+      },
+      {
+        "troponin_sensitivity": 0.78,
+        "copeptin_acs_sensitivity": 0.85,
+        "optimal_panel": [
+          "CRP",
+          "D-dimer",
+          "NT-proBNP"
+        ],
+        "copeptin_selected": false,
+        "hs_ctni_selected": false,
+        "panel_size": 3,
+        "coverage": 0.6666666666666666,
+        "cost_eur": 26.0,
+        "acs_covered": false,
+        "acs_covered_by": []
+      },
+      {
+        "troponin_sensitivity": 0.75,
+        "copeptin_acs_sensitivity": 0.85,
+        "optimal_panel": [
+          "CRP",
+          "D-dimer",
+          "NT-proBNP"
+        ],
+        "copeptin_selected": false,
+        "hs_ctni_selected": false,
+        "panel_size": 3,
+        "coverage": 0.6666666666666666,
+        "cost_eur": 26.0,
+        "acs_covered": false,
+        "acs_covered_by": []
+      },
+      {
+        "troponin_sensitivity": 0.7,
+        "copeptin_acs_sensitivity": 0.85,
+        "optimal_panel": [
+          "CRP",
+          "D-dimer",
+          "NT-proBNP"
+        ],
+        "copeptin_selected": false,
+        "hs_ctni_selected": false,
+        "panel_size": 3,
+        "coverage": 0.6666666666666666,
+        "cost_eur": 26.0,
+        "acs_covered": false,
+        "acs_covered_by": []
+      },
+      {
+        "troponin_sensitivity": 0.65,
+        "copeptin_acs_sensitivity": 0.85,
+        "optimal_panel": [
+          "CRP",
+          "D-dimer",
+          "NT-proBNP"
+        ],
+        "copeptin_selected": false,
+        "hs_ctni_selected": false,
+        "panel_size": 3,
+        "coverage": 0.6666666666666666,
+        "cost_eur": 26.0,
+        "acs_covered": false,
+        "acs_covered_by": []
+      },
+      {
+        "troponin_sensitivity": 0.6,
+        "copeptin_acs_sensitivity": 0.85,
+        "optimal_panel": [
+          "CRP",
+          "D-dimer",
+          "NT-proBNP"
+        ],
+        "copeptin_selected": false,
+        "hs_ctni_selected": false,
+        "panel_size": 3,
+        "coverage": 0.6666666666666666,
+        "cost_eur": 26.0,
+        "acs_covered": false,
+        "acs_covered_by": []
+      }
+    ],
+    "early_copeptin": [
+      {
+        "troponin_sensitivity": 0.98,
+        "copeptin_acs_sensitivity": 0.9,
+        "optimal_panel": [
+          "CRP",
+          "D-dimer",
+          "NT-proBNP",
+          "hs-cTnI"
+        ],
+        "copeptin_selected": false,
+        "hs_ctni_selected": true,
+        "panel_size": 4,
+        "coverage": 0.8333333333333334,
+        "cost_eur": 36.0,
+        "acs_covered": true,
+        "acs_covered_by": [
+          "hs-cTnI"
+        ]
+      },
+      {
+        "troponin_sensitivity": 0.95,
+        "copeptin_acs_sensitivity": 0.9,
+        "optimal_panel": [
+          "CRP",
+          "D-dimer",
+          "NT-proBNP",
+          "hs-cTnI"
+        ],
+        "copeptin_selected": false,
+        "hs_ctni_selected": true,
+        "panel_size": 4,
+        "coverage": 0.8333333333333334,
+        "cost_eur": 36.0,
+        "acs_covered": true,
+        "acs_covered_by": [
+          "hs-cTnI"
+        ]
+      },
+      {
+        "troponin_sensitivity": 0.92,
+        "copeptin_acs_sensitivity": 0.9,
+        "optimal_panel": [
+          "CRP",
+          "D-dimer",
+          "NT-proBNP",
+          "hs-cTnI"
+        ],
+        "copeptin_selected": false,
+        "hs_ctni_selected": true,
+        "panel_size": 4,
+        "coverage": 0.8333333333333334,
+        "cost_eur": 36.0,
+        "acs_covered": true,
+        "acs_covered_by": [
+          "hs-cTnI"
+        ]
+      },
+      {
+        "troponin_sensitivity": 0.9,
+        "copeptin_acs_sensitivity": 0.9,
+        "optimal_panel": [
+          "CRP",
+          "D-dimer",
+          "NT-proBNP",
+          "hs-cTnI"
+        ],
+        "copeptin_selected": false,
+        "hs_ctni_selected": true,
+        "panel_size": 4,
+        "coverage": 0.8333333333333334,
+        "cost_eur": 36.0,
+        "acs_covered": true,
+        "acs_covered_by": [
+          "hs-cTnI"
+        ]
+      },
+      {
+        "troponin_sensitivity": 0.88,
+        "copeptin_acs_sensitivity": 0.9,
+        "optimal_panel": [
+          "CRP",
+          "Copeptin",
+          "D-dimer",
+          "NT-proBNP"
+        ],
+        "copeptin_selected": true,
+        "hs_ctni_selected": false,
+        "panel_size": 4,
+        "coverage": 0.8333333333333334,
+        "cost_eur": 43.5,
+        "acs_covered": true,
+        "acs_covered_by": [
+          "Copeptin"
+        ]
+      },
+      {
+        "troponin_sensitivity": 0.85,
+        "copeptin_acs_sensitivity": 0.9,
+        "optimal_panel": [
+          "CRP",
+          "Copeptin",
+          "D-dimer",
+          "NT-proBNP"
+        ],
+        "copeptin_selected": true,
+        "hs_ctni_selected": false,
+        "panel_size": 4,
+        "coverage": 0.8333333333333334,
+        "cost_eur": 43.5,
+        "acs_covered": true,
+        "acs_covered_by": [
+          "Copeptin"
+        ]
+      },
+      {
+        "troponin_sensitivity": 0.82,
+        "copeptin_acs_sensitivity": 0.9,
+        "optimal_panel": [
+          "CRP",
+          "Copeptin",
+          "D-dimer",
+          "NT-proBNP"
+        ],
+        "copeptin_selected": true,
+        "hs_ctni_selected": false,
+        "panel_size": 4,
+        "coverage": 0.8333333333333334,
+        "cost_eur": 43.5,
+        "acs_covered": true,
+        "acs_covered_by": [
+          "Copeptin"
+        ]
+      },
+      {
+        "troponin_sensitivity": 0.8,
+        "copeptin_acs_sensitivity": 0.9,
+        "optimal_panel": [
+          "CRP",
+          "Copeptin",
+          "D-dimer",
+          "NT-proBNP"
+        ],
+        "copeptin_selected": true,
+        "hs_ctni_selected": false,
+        "panel_size": 4,
+        "coverage": 0.8333333333333334,
+        "cost_eur": 43.5,
+        "acs_covered": true,
+        "acs_covered_by": [
+          "Copeptin"
+        ]
+      },
+      {
+        "troponin_sensitivity": 0.78,
+        "copeptin_acs_sensitivity": 0.9,
+        "optimal_panel": [
+          "CRP",
+          "Copeptin",
+          "D-dimer",
+          "NT-proBNP"
+        ],
+        "copeptin_selected": true,
+        "hs_ctni_selected": false,
+        "panel_size": 4,
+        "coverage": 0.8333333333333334,
+        "cost_eur": 43.5,
+        "acs_covered": true,
+        "acs_covered_by": [
+          "Copeptin"
+        ]
+      },
+      {
+        "troponin_sensitivity": 0.75,
+        "copeptin_acs_sensitivity": 0.9,
+        "optimal_panel": [
+          "CRP",
+          "Copeptin",
+          "D-dimer",
+          "NT-proBNP"
+        ],
+        "copeptin_selected": true,
+        "hs_ctni_selected": false,
+        "panel_size": 4,
+        "coverage": 0.8333333333333334,
+        "cost_eur": 43.5,
+        "acs_covered": true,
+        "acs_covered_by": [
+          "Copeptin"
+        ]
+      },
+      {
+        "troponin_sensitivity": 0.7,
+        "copeptin_acs_sensitivity": 0.9,
+        "optimal_panel": [
+          "CRP",
+          "Copeptin",
+          "D-dimer",
+          "NT-proBNP"
+        ],
+        "copeptin_selected": true,
+        "hs_ctni_selected": false,
+        "panel_size": 4,
+        "coverage": 0.8333333333333334,
+        "cost_eur": 43.5,
+        "acs_covered": true,
+        "acs_covered_by": [
+          "Copeptin"
+        ]
+      },
+      {
+        "troponin_sensitivity": 0.65,
+        "copeptin_acs_sensitivity": 0.9,
+        "optimal_panel": [
+          "CRP",
+          "Copeptin",
+          "D-dimer",
+          "NT-proBNP"
+        ],
+        "copeptin_selected": true,
+        "hs_ctni_selected": false,
+        "panel_size": 4,
+        "coverage": 0.8333333333333334,
+        "cost_eur": 43.5,
+        "acs_covered": true,
+        "acs_covered_by": [
+          "Copeptin"
+        ]
+      },
+      {
+        "troponin_sensitivity": 0.6,
+        "copeptin_acs_sensitivity": 0.9,
+        "optimal_panel": [
+          "CRP",
+          "Copeptin",
+          "D-dimer",
+          "NT-proBNP"
+        ],
+        "copeptin_selected": true,
+        "hs_ctni_selected": false,
+        "panel_size": 4,
+        "coverage": 0.8333333333333334,
+        "cost_eur": 43.5,
+        "acs_covered": true,
+        "acs_covered_by": [
+          "Copeptin"
+        ]
+      }
+    ]
+  },
+  "copeptin_entry_thresholds": {
+    "standard_copeptin": null,
+    "early_copeptin": 0.88
+  },
+  "clinical_interpretation": "Under standard conditions (copeptin ACS sensitivity 0.85), copeptin never enters the optimal panel\u2014it remains below \u03c4=0.90. However, in early-presenter settings (copeptin ACS sensitivity 0.90), copeptin enters the panel when hs-cTnI sensitivity drops to 0.88. This confirms the Mu et al. 2023 finding: copeptin's value is conditional on both the troponin threshold and the clinical timing. In early presentations where copeptin is at its peak sensitivity and troponin has not yet risen, copeptin provides essential ACS coverage that hs-cTnI cannot."
+}

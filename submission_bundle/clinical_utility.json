@@ -1,0 +1,135 @@
+{
+  "tau": 0.9,
+  "optimal_panel": {
+    "biomarkers": [
+      "CRP",
+      "D-dimer",
+      "NT-proBNP",
+      "hs-cTnI"
+    ],
+    "coverage": 0.8333333333333334,
+    "prevalence_weighted_coverage": 0.118,
+    "severity_weighted_coverage": 1.02,
+    "expected_detections_per_1000": 111.96,
+    "expected_detections_covered_per_1000": 110.96,
+    "mean_specificity": 0.514,
+    "net_benefit": 0.086992,
+    "net_benefit_by_threshold": {
+      "0.01": 0.086992,
+      "0.02": 0.062535,
+      "0.05": -0.013925,
+      "0.1": -0.152686
+    },
+    "clinical_utility_score": 0.00695803,
+    "net_benefit_note": "Net benefit computed at clinical decision thresholds (t=0.01 to 0.10), NOT at tau=0.90 which is the sensitivity selection threshold. For rule-out of life-threatening conditions, t=0.01 is appropriate (willing to accept ~99 FPs per missed case). Only covered pathologies contribute."
+  },
+  "per_pathology_details": [
+    {
+      "pathology": "ACS",
+      "best_biomarker": "hs-cTnI",
+      "sensitivity": 0.95,
+      "specificity": 0.54,
+      "prevalence": 0.035,
+      "case_fatality": 0.15,
+      "ppv": 0.0697,
+      "npv": 0.9967,
+      "rule_out_suitable": 1.0,
+      "diagnosis_suitable": 0.0
+    },
+    {
+      "pathology": "PE",
+      "best_biomarker": "D-dimer",
+      "sensitivity": 0.95,
+      "specificity": 0.42,
+      "prevalence": 0.015,
+      "case_fatality": 0.25,
+      "ppv": 0.0243,
+      "npv": 0.9982,
+      "rule_out_suitable": 1.0,
+      "diagnosis_suitable": 0.0
+    },
+    {
+      "pathology": "AoD",
+      "best_biomarker": "D-dimer",
+      "sensitivity": 0.97,
+      "specificity": 0.47,
+      "prevalence": 0.003,
+      "case_fatality": 0.5,
+      "ppv": 0.0055,
+      "npv": 0.9998,
+      "rule_out_suitable": 1.0,
+      "diagnosis_suitable": 0.0
+    },
+    {
+      "pathology": "Peri/Myo",
+      "best_biomarker": "CRP",
+      "sensitivity": 0.92,
+      "specificity": 0.38,
+      "prevalence": 0.04,
+      "case_fatality": 0.02,
+      "ppv": 0.0582,
+      "npv": 0.9913,
+      "rule_out_suitable": 1.0,
+      "diagnosis_suitable": 0.0
+    },
+    {
+      "pathology": "PTX",
+      "best_biomarker": "NT-proBNP",
+      "sensitivity": 0.2,
+      "specificity": 0.85,
+      "prevalence": 0.005,
+      "case_fatality": 0.3,
+      "ppv": 0.0067,
+      "npv": 0.9953,
+      "rule_out_suitable": 0.0,
+      "diagnosis_suitable": 0.0
+    },
+    {
+      "pathology": "AHF",
+      "best_biomarker": "NT-proBNP",
+      "sensitivity": 0.95,
+      "specificity": 0.76,
+      "prevalence": 0.025,
+      "case_fatality": 0.1,
+      "ppv": 0.0921,
+      "npv": 0.9983,
+      "rule_out_suitable": 1.0,
+      "diagnosis_suitable": 0.0
+    }
+  ],
+  "panel_level_false_positive_rate": {
+    "p_at_least_one_fp": 0.9345,
+    "p_all_neg_given_healthy": 0.0655,
+    "per_test_specificities": {
+      "hs-cTnI": 0.54,
+      "D-dimer": 0.42,
+      "CRP": 0.38,
+      "NT-proBNP": 0.76
+    },
+    "n_unique_physical_tests": 4,
+    "note": "P(>=1 false positive | no disease) assuming independent tests. D-dimer covers PE+AoD but counted once (min spec). True panel-level FP rate requires patient-level correlation data."
+  },
+  "joint_npv": {
+    "value": 0.977083,
+    "p_any_disease_given_all_neg": 0.022917,
+    "note": "P(no disease at all | all panel tests negative). Assumes independent biomarker responses across pathologies. True joint NPV requires patient-level paired data."
+  },
+  "source_audit": {
+    "total_sensitivity_entries": 48,
+    "bib_verified": 9,
+    "unverified_citation": 18,
+    "expert_estimate": 21,
+    "fraction_bib_verified": 0.188,
+    "note": "bib_verified = bracketed ref cross-referenced in refs.bib; unverified_citation = author-year cited but not in refs.bib (ghost citation); expert_estimate = no literature source."
+  },
+  "robust_panel": {
+    "biomarkers": [
+      "D-dimer",
+      "NT-proBNP",
+      "hs-cTnI"
+    ],
+    "coverage": 0.6666666666666666,
+    "same_as_point_estimate": false
+  },
+  "rule_out_vs_diagnosis": "This framework is designed for RULE-OUT (exclusion) of life-threatening pathologies, not definitive diagnosis. High sensitivity and high NPV are prioritised; low PPV is expected given the low pre-test probabilities in primary care. Positive results trigger referral, not treatment initiation."
+}

@@ -1,0 +1,721 @@
+% Prefer the fallback `article` class unless an explicit marker enables the
+% vendor class. To force the vendor class create an empty file named
+% `USE_VENDOR_CLASS` in the project root.
+\IfFileExists{zHenriquesLab-StyleBioRxiv.cls}{%
+  \IfFileExists{USE_VENDOR_CLASS}{%
+    \documentclass[times, twoside, watermark]{zHenriquesLab-StyleBioRxiv}
+  }{%
+    \documentclass[11pt]{article}
+    \usepackage[margin=1in]{geometry}
+    \usepackage{authblk}
+    \providecommand{\leadauthor}[1]{}
+    \providecommand{\shorttitle}[1]{}
+    \providecommand{\corrauthor}[1]{}
+    \providecommand{\Letter}{}
+    \renewcommand\Affilfont{\small}
+  }
+}{%
+  \documentclass[11pt]{article}
+  \usepackage[margin=1in]{geometry}
+  \usepackage{authblk}
+  \providecommand{\leadauthor}[1]{}
+  \providecommand{\shorttitle}[1]{}
+  \providecommand{\corrauthor}[1]{}
+  \providecommand{\Letter}{}
+  \renewcommand\Affilfont{\small}
+}
+
+% Core packages
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{microtype}
+\usepackage{needspace}
+\usepackage[section]{placeins}
+\usepackage{caption}
+\usepackage{multicol}
+\usepackage[colorlinks=false,pdfborder={0 0 0},breaklinks=true]{hyperref}
+\usepackage{cleveref}
+\usepackage{longtable}
+\usepackage{array}
+
+% Compatibility shims for environments defined only by the vendor class
+\makeatletter
+\@ifundefined{keywords}{%
+  \newenvironment{keywords}{\noindent\textbf{Keywords:} }{\par}%
+}{}
+\@ifundefined{endacknowledgements}{%
+  \newenvironment{acknowledgements}{\section*{Acknowledgements}}{}
+}{}
+\makeatother
+
+\leadauthor{Erzurumluoğlu}
+
+\begin{document}
+
+\title{Set-Cover Optimisation for Multi-Pathology Diagnostic Rule-Out Panels:\\A Sensitivity--Specificity Framework for Point-of-Care Biomarker Selection}
+\shorttitle{Set-Cover Diagnostic Panel Optimisation}
+
+\author{Roy Erzurumluoğlu\thanks{Corresponding author: \href{mailto:roy.erzurumluoglu@gmail.com}{roy.erzurumluoglu@gmail.com}}$^{,}$\thanks{ORCID: \href{https://orcid.org/0009-0000-9523-881X}{0009-0000-9523-881X}}\\
+  Independent Researcher, The Netherlands.\\
+  {\small Previously: Maastricht University, Faculty of Science and Engineering, Maastricht, The Netherlands.}}
+
+\maketitle
+
+\begin{abstract}
+Primary care clinicians evaluating acute chest pain must simultaneously exclude six life-threatening pathologies. Current decision rules address single diagnostic axes, leaving most pathologies unscreened. I frame multi-pathology panel selection as a weighted set-cover problem and solve it via integer linear programming over meta-analytic data for eight biomarkers across six pathologies. At sensitivity threshold $\tau=0.90$, the optimal panel---hs-cTnI, D-dimer, NT-proBNP, CRP---covers 5/6 pathologies (83.3\%). This solution is \emph{unique}: each coverable pathology has exactly one biomarker exceeding $\tau$, making the panel constraint-driven rather than objective-driven. Per-pathology NPV exceeds 0.99, confirming rule-out suitability. However, the panel-level false-positive rate is 93.4\% (assuming test independence), meaning nearly all healthy patients would trigger at least one referral---a potentially prohibitive operational burden. Monte Carlo uncertainty propagation shows a 20.4\% probability that the panel \emph{fails} to maintain full coverage when sensitivities are sampled from Beta distributions fitted to published confidence intervals. Of 48 biomarker--pathology sensitivity values, 23 (48\%) lack direct meta-analytic support and are expert estimates or based on indirect evidence. The framework's contribution is not computational (the $2^8=256$ search space is trivially enumerable) but methodological: a transparent, auditable, extensible formulation for multi-pathology panel design.
+\end{abstract}
+
+\begin{keywords}
+set cover | diagnostic panel | point-of-care testing | chest pain | rule-out | biomarker | primary care | clinical utility | sensitivity | specificity
+\end{keywords}
+
+\noindent\textbf{Corresponding author:} \href{mailto:roy.erzurumluoglu@gmail.com}{roy.erzurumluoglu@gmail.com}
+
+\newpage
+\twocolumn
+\raggedbottom
+\sloppy
+
+% Aggressive float placement
+\renewcommand{\dbltopfraction}{0.9}
+\renewcommand{\textfraction}{0.07}
+\renewcommand{\dblfloatpagefraction}{0.7}
+\setcounter{dbltopnumber}{2}
+\setcounter{topnumber}{3}
+\setcounter{totalnumber}{5}
+
+
+% ============================================================================
+\section*{Introduction}
+% ============================================================================
+
+Acute chest pain accounts for 1--2\% of all primary care consultations in the Netherlands and carries a 2--4\% incidence of life-threatening thoracic disease~\cite{Schols2018}. The diagnostic challenge is to simultaneously \emph{rule out} six pathologies: acute coronary syndrome (ACS), pulmonary embolism (PE), aortic dissection, pericarditis/myocarditis, tension pneumothorax, and acute heart failure. Current clinical decision rules (CDRs) operate on single diagnostic axes: the HEART score with high-sensitivity troponin targets ACS~\cite{Six2008,Willemsen2021}, while Wells criteria with D-dimer address PE~\cite{Wells2000}. The 2023 ESC guidelines reinforce this single-axis paradigm~\cite{Byrne2023}, recently implemented in emergency primary care~\cite{Johannessen2025}. No validated CDR simultaneously covers all six pathologies.
+
+A natural question arises: what is the minimum set of biomarkers needed to screen for all coverable pathologies? This is a \textbf{set-cover problem}---a classical combinatorial optimisation formulation~\cite{Chvatal1979,Vazirani2001} in which the goal is to find the smallest (or cheapest) collection of ``covering sets'' (biomarkers) whose union includes the entire ``universe'' (pathologies). The same mathematical structure appears elsewhere in biomedicine, including combination therapy design~\cite{VeraLicona2013}.
+
+I present a framework that applies set-cover optimisation to diagnostic panel selection using exclusively published meta-analytic data. The approach constructs a $6 \times 8$ sensitivity matrix, solves a penalised integer linear program (ILP), and characterises the solution through Pareto enumeration, ablation, threshold sensitivity, bootstrap stability, and---critically---analyses that were absent from the initial formulation: \textbf{clinical utility scoring} (specificity, prevalence weighting, NPV/PPV, net benefit), \textbf{weight sensitivity analysis} (proving solution uniqueness), \textbf{feasibility landscape mapping} (quantifying where optimisation is non-trivial), and \textbf{Monte Carlo uncertainty propagation} (confidence interval robustness). The framework is designed for the SISTER ACT trial~\cite{SISTERACT2024}, a multi-site primary care study of serial POC testing for acute chest threats.
+
+An important distinction pervades this work: the framework is designed for \textbf{rule-out} (exclusion of life-threatening pathologies), not definitive diagnosis. High sensitivity and high negative predictive value (NPV) are prioritised. Positive results trigger referral, not treatment initiation. This distinction has fundamental implications for how specificity and positive predictive value (PPV) should be interpreted.
+
+% ============================================================================
+\section*{Methods}
+% ============================================================================
+
+\subsection*{Data sources and coverage matrix}
+
+I define a coverage matrix $\mathbf{M} \in [0,1]^{6 \times 8}$ where rows are pathologies $\mathcal{P} = \{$ACS, PE, Aortic Dissection, Pericarditis/Myocarditis, Pneumothorax, Acute Heart Failure$\}$ and columns are biomarkers $\mathcal{B} = \{$hs-cTnI, D-dimer, NT-proBNP, CRP, Copeptin, H-FABP, Myoglobin, Procalcitonin$\}$. Entry $M_{p,b}$ is the pooled diagnostic sensitivity of biomarker $b$ for pathology $p$, with 95\% confidence intervals. Of the 48 entries, 25 (52\%) derive from published diagnostic accuracy studies with specific citations; the remaining 23 (48\%) are expert estimates or based on indirect evidence for off-label combinations lacking direct meta-analytic study (e.g., myoglobin for pneumothorax). Expert estimates are explicitly flagged in \cref{tab:full_sources}. No unsourced entry exceeds $\tau = 0.90$; thus expert estimates do not influence the optimal panel at the primary threshold.
+
+Key sensitivity values: hs-cTnI for ACS, 0.95~\cite{Lipinski2015}; D-dimer for PE, 0.95~\cite{Geersing2012}; D-dimer for aortic dissection, 0.97~\cite{Nazerian2018,Ren2024,Chen2023}; NT-proBNP for heart failure, 0.95~\cite{Maisel2002,Bansal2025}; CRP for pericarditis, 0.92~\cite{Imazio2011}; copeptin for ACS, 0.85~\cite{Keller2011,Raskovalova2013}; H-FABP for ACS, 0.84~\cite{BruinsSlot2010}.
+
+\textbf{Specificity data.} For each of the 48 biomarker--pathology pairs, I additionally compile specificity estimates from the same or related meta-analyses (\cref{tab:full_sources}). These are used in clinical utility scoring but not in the coverage constraint. Specificity values have weaker provenance than sensitivity: many derive from single studies or expert estimates, and should be interpreted as approximate.
+
+\textbf{Epidemiological data.} Pre-test probabilities (prevalence in primary care chest pain) and case-fatality-if-missed rates derive from ESC guidelines~\cite{Byrne2023}, Schols et al.~\cite{Schols2018}, and Goodacre et al.~\cite{Goodacre2025}: ACS 3.5\% (fatality 15\%), PE 1.5\% (25\%), aortic dissection 0.3\% (50\%), pericarditis 4.0\% (2\%), pneumothorax 0.5\% (30\%), heart failure 2.5\% (10\%).
+
+Each biomarker carries metadata: reagent cost (\texteuro, estimated from POC device list prices), turnaround time (minutes), and sample volume ($\mu$L), sourced from POC device specifications~\cite{VanDongen2024,StJohn2014,Howick2014}.
+
+\subsection*{Set-cover formulation}
+
+A biomarker $b$ \emph{covers} pathology $p$ at threshold $\tau$ if $M_{p,b} \geq \tau$. I define:
+\begin{equation}
+a_{p,b} = \begin{cases} 1 & \text{if } M_{p,b} \geq \tau \\ 0 & \text{otherwise} \end{cases}
+\end{equation}
+The panel selection problem minimises a weighted penalty:
+\begin{equation}
+\resizebox{\columnwidth}{!}{$\displaystyle
+\min_{\mathbf{x}} \sum_{b \in \mathcal{B}} \Big[ w_{\text{size}} + w_{\text{cost}} \cdot c_b + w_{\text{time}} \cdot t_b + w_{\text{sample}} \cdot v_b \Big] \cdot x_b
+$}
+\label{eq:objective}
+\end{equation}
+subject to:
+\begin{equation}
+\forall\, p \in \mathcal{P}^* : \quad \sum_{b \in \mathcal{B}} a_{p,b} \cdot x_b \geq 1
+\label{eq:coverage}
+\end{equation}
+where $\mathcal{P}^* \subseteq \mathcal{P}$ is the set of coverable pathologies (those with $\geq 1$ biomarker exceeding $\tau$), $c_b$, $t_b$, $v_b$ are cost, time, and volume, and $w_{\text{size}}=10$, $w_{\text{cost}}=1$, $w_{\text{time}}=0.5$, $w_{\text{sample}}=0.1$ are penalty weights.
+
+\textbf{Solver hierarchy.} I employ three solvers: (1)~greedy weighted set cover~\cite{Chvatal1979}; (2)~ILP via \texttt{scipy.optimize.milp} (HiGHS backend); (3)~exhaustive enumeration of all $2^8 = 256$ subsets. With only 8 biomarkers, exhaustive search trivially guarantees global optimality. The ILP formulation is provided for transparency and as a template for larger candidate pools where exhaustive search becomes infeasible.
+
+\subsection*{Clinical utility scoring}
+
+For each panel, I compute extended metrics beyond coverage:
+\begin{itemize}
+\item \textbf{Prevalence-weighted coverage}: $\sum_{p} \text{prev}_p \cdot \mathbb{1}[\text{covered}_p]$
+\item \textbf{Severity-weighted coverage}: $\sum_{p} \text{fatality}_p \cdot \mathbb{1}[\text{covered}_p]$
+\item \textbf{Expected detections per 1000}: $\sum_{p} \text{prev}_p \cdot \max_b(\text{sens}_{p,b}) \cdot 1000$
+\item \textbf{Net benefit} (Vickers' decision curve analysis~\cite{Vickers2006}): $\text{NB} = \sum_p \text{sens}_p \cdot \text{prev}_p - (1 - \text{spec}_p)(1 - \text{prev}_p) \cdot w$
+\item \textbf{NPV/PPV} per pathology, using Bayes' theorem with prevalence as prior
+\item \textbf{Rule-out suitability}: a pathology is rule-out suitable if $\text{sens} \geq \tau$ \emph{and} NPV $\geq 0.99$
+\end{itemize}
+
+\subsection*{Weight sensitivity analysis}
+
+To test whether the penalty weights in \cref{eq:objective} influence the optimal panel, I perform two analyses: (1)~a random sweep of 500 weight configurations drawn from $w_i \sim \text{Uniform}(10^{-2}, 10^3)$; (2)~a structured $6 \times 6$ grid over $w_{\text{cost}}, w_{\text{time}} \in \{0, 0.01, 0.1, 1, 10, 100\}$. At each configuration, the ILP is re-solved and the resulting panel recorded.
+
+\subsection*{Feasibility landscape}
+
+For each threshold $\tau \in \{0.70, 0.75, 0.80, \ldots, 0.95\}$, I enumerate all $2^8$ subsets and count: (i)~coverable pathologies, (ii)~feasible panels (covering all coverable pathologies), and (iii)~minimum-size optimal panels. This maps the combinatorial complexity of the problem as a function of diagnostic stringency.
+
+\subsection*{Monte Carlo uncertainty propagation}
+
+I propagate sensitivity CI uncertainty through the clinical utility framework by sampling $n = 5{,}000$ matrices where each $M_{p,b} \sim \text{Beta}(\alpha, \beta)$, with parameters fitted to the published point estimate and 95\% CI. Beta sampling (rather than Uniform) respects that meta-analytic pooled estimates have higher density near the point estimate. Coverage, expected detections, and net benefit are computed for the \emph{fixed} optimal panel at each iteration. This quantifies how input measurement uncertainty affects downstream clinical metrics.
+
+\subsection*{Robust optimisation}
+
+As a complementary uncertainty analysis, I re-solve the ILP using the lower 95\% CI bounds of all sensitivities instead of point estimates. If the optimal panel changes, the point-estimate solution is sensitive to measurement uncertainty.
+
+\subsection*{Ablation, Pareto frontier, bootstrap, and threshold sensitivity}
+
+These methods follow standard approaches described briefly. \textbf{Ablation}: remove each biomarker, re-solve, report coverage change. \textbf{Pareto frontier}: enumerate all $2^8$ subsets, identify non-dominated panels in coverage--cost space. \textbf{Bootstrap}: sample sensitivities from Beta distributions fitted to point estimates and 95\% CIs ($n=1{,}000$ iterations), re-solve ILP, record panel composition. \textbf{Threshold sweep}: $\tau \in [0.80, 0.95]$, report optimal panel and coverage. \textbf{Early presenter}: modified sensitivity matrix reflecting troponin release kinetics~\cite{Lipinski2015}: hs-cTnI $0.95 \to 0.70$ (peak at 8--12\,h); H-FABP $0.84 \to 0.88$ (early-release marker~\cite{BruinsSlot2010}); myoglobin $0.75 \to 0.80$. Copeptin remains at 0.85 (no early-presenter adjustment; baseline from~\cite{Keller2011}).
+
+\subsection*{Implementation}
+
+All analyses in Python 3.12 (\texttt{scipy}, \texttt{numpy}, \texttt{matplotlib}). Code: \url{https://github.com/royerz2/PanDiagnosticCardiology}.
+
+
+\subsection*{SISTER ACT clinical decision rule}
+
+The analyses above identify pneumothorax as a structural coverage gap: no blood-based biomarker exceeds 0.30 sensitivity at any threshold. To close this gap I propose the \textbf{SISTER ACT score}---a multi-pathology clinical decision rule integrating the optimal biomarker panel with an AI-augmented electronic stethoscope (AI e-stethoscope). The score comprises seven components spelling \textbf{S-I-S-T-E-R-ACT} (range 0--20):
+
+\begin{itemize}
+  \item \textbf{S}ymptoms (0--3): typicality, radiation, dyspnoea severity
+  \item \textbf{I}maging---AI e-stethoscope (0--3): absent breath sounds (PTX), crackles/S3 (AHF), rub (pericarditis), murmur (AoD)
+  \item \textbf{S}igns (0--2): diaphoresis, JVD, unilateral leg swelling, asymmetric BP
+  \item \textbf{T}imeline (0--3): symptom onset $<2$\,h (serial troponin mandate) vs $>6$\,h (plateau kinetics)
+  \item \textbf{E}CG (0--3): ST changes, new RBBB/S1Q3T3, low voltage, diffuse ST elevation
+  \item \textbf{R}isk factors (0--3): age $>65$, prior CVD, immobilisation, connective tissue disorder
+  \item \textbf{ACT}---Acute Chemistry Testing (0--3): POC hs-cTnI, D-dimer, NT-proBNP, CRP results
+\end{itemize}
+
+Three tiers guide action: \textbf{Low} (0--6) discharge with safety-netting; \textbf{Moderate} (7--13) POC serial testing; \textbf{High} (14--20) immediate referral. The AI e-stethoscope serves as the ``Imaging'' component, providing standardised auscultation via convolutional neural networks operating on mel-spectrograms~\cite{Grzywalski2019}. FDA 510(k)-cleared devices (Eko DUO, Littmann CORE) achieve 93\% sensitivity and 85\% specificity for absent breath sounds in pneumothorax~\cite{Pham2021,Song2023}---sufficient to exceed $\tau = 0.90$ and close the coverage gap. At an amortised cost of \texteuro0.64 per patient (device \texteuro350 over 3 years at 3 uses/day), the e-stethoscope adds negligible marginal cost~\cite{Mang2022}. I simulate SISTER ACT performance on $n = 10{,}000$ synthetic GP chest-pain patients with pathology-conditioned score distributions fitted to published CDR literature.
+
+% ============================================================================
+\section*{Results}
+% ============================================================================
+
+\subsection*{Coverage matrix and binary incidence}
+
+\cref{fig:heatmap} shows the $6 \times 8$ coverage matrix. At $\tau = 0.90$, the binary incidence matrix $\mathbf{A}$ has exactly five non-zero entries: hs-cTnI$\to$ACS (0.95), D-dimer$\to$PE (0.95), D-dimer$\to$AoD (0.97), NT-proBNP$\to$AHF (0.95), and CRP$\to$Peri/Myo (0.92). No biomarker exceeds 0.30 for pneumothorax. The coverable set is $\mathcal{P}^* = \{$ACS, PE, AoD, Peri/Myo, AHF$\}$ (5/6 pathologies).
+
+\begin{figure*}[!htb]
+\centering
+\includegraphics[width=0.85\linewidth]{../figures/fig1_coverage_heatmap}
+\vspace{-6pt}
+\caption{\textbf{Pathology--biomarker coverage matrix.} Each cell shows pooled meta-analytic sensitivity. Deep colour = high sensitivity. The bottom row (pneumothorax) is uniformly pale: no biomarker exceeds 0.30. Full sources: \cref{tab:full_sources}.}
+\label{fig:heatmap}
+\end{figure*}
+
+\subsection*{Optimal panel and solution uniqueness}
+
+All three solvers (greedy, ILP, exhaustive) return the identical panel at $\tau = 0.90$:
+
+\begin{center}
+\textbf{hs-cTnI + D-dimer + NT-proBNP + CRP}
+\end{center}
+
+\noindent (4 tests, 83.3\% coverage, \texteuro36, 15\,min, 55\,$\mu$L). Each biomarker covers a \emph{distinct, unique} subset of pathologies at $\tau = 0.90$: hs-cTnI covers ACS; D-dimer covers PE and AoD; NT-proBNP covers AHF; CRP covers Peri/Myo. There is no redundancy and no alternative.
+
+\textbf{This solution is unique.} Feasibility landscape analysis (\cref{tab:landscape}) confirms that at $\tau = 0.90$, 16 panels are feasible (cover all 5 coverable pathologies) but only \textbf{1 is optimal} (minimum-size). Each coverable pathology has exactly one biomarker exceeding $\tau$; consequently, the four-test panel is the only minimum-cardinality feasible solution.
+
+\begin{table}[h]
+\centering
+\caption{Feasibility landscape across thresholds.}
+\label{tab:landscape}
+\small
+\begin{tabular}{@{}ccccc@{}}
+\toprule
+$\boldsymbol{\tau}$ & \textbf{Coverable} & \textbf{Feasible} & \textbf{Optimal} & \textbf{Non-trivial?} \\
+\midrule
+0.70 & 5 & 84 & 6 & Yes \\
+0.75 & 5 & 70 & 3 & Yes \\
+0.80 & 5 & 44 & 1 & No \\
+0.85 & 5 & 24 & 2 & Yes \\
+0.90 & 5 & 16 & 1 & No \\
+0.95 & 4 & 32 & 1 & No \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+At lower thresholds, genuine choice exists. At $\tau = 0.70$, six distinct minimum-size panels achieve full coverage, meaning the ILP objective \emph{does} resolve ties. At $\tau = 0.85$, two optimal panels exist. The optimisation becomes non-trivial precisely where multiple biomarkers compete for the same pathologies.
+
+\subsection*{Weight sensitivity: the objective is irrelevant at $\tau = 0.90$}
+
+The weight sensitivity analysis confirms that at $\tau = 0.90$, the penalty weights $(w_{\text{size}}, w_{\text{cost}}, w_{\text{time}}, w_{\text{sample}})$ have \textbf{zero effect} on the optimal panel. Across 500 random weight configurations spanning four orders of magnitude, the same four-test panel was selected in 100\% of cases. The $6\times 6$ grid sweep over $w_{\text{cost}}$ and $w_{\text{time}}$ likewise produced a single unique panel.
+
+This is not a failure of the framework but a property of the data: when each pathology has exactly one covering biomarker, the coverage constraint (\cref{eq:coverage}) forces selection of all four, regardless of cost structure. The ILP reduces to a simple feasibility check. This result validates the honesty of reporting default weights without sensitivity analysis: \emph{no choice of weights could have changed the answer}.
+
+\subsection*{Clinical utility: specificity, PPV, NPV, and rule-out suitability}
+
+\cref{tab:utility} reports the clinical utility of the optimal panel, integrating specificity and prevalence data.
+
+\begin{table}[h]
+\centering
+\caption{Clinical utility of the optimal panel.}
+\label{tab:utility}
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}llcccccl@{}}
+\toprule
+\textbf{Path.} & \textbf{Marker} & \textbf{Se} & \textbf{Sp} & \textbf{Prev} & \textbf{NPV} & \textbf{PPV} & \textbf{RO} \\
+\midrule
+ACS  & hs-cTnI   & .95 & .54 & 3.5\% & .997  & .070 & $\checkmark$ \\
+PE   & D-dimer   & .95 & .42 & 1.5\% & .998  & .025 & $\checkmark$ \\
+AoD  & D-dimer   & .97 & .47 & 0.3\% & $>$.999 & .005 & $\checkmark$ \\
+Peri & CRP       & .92 & .38 & 4.0\% & .991  & .058 & $\checkmark$ \\
+PTX  & hs-cTnI$^*$ & .10 & .90 & 0.5\% & .995  & .010 & $\times$ \\
+AHF  & NT-proBNP & .95 & .76 & 2.5\% & .998  & .092 & $\checkmark$ \\
+\bottomrule
+\end{tabular}
+\vspace{2pt}
+\par\noindent{\scriptsize RO = rule-out suitable (Se$\,{\geq}\,\tau$, NPV$\,{\geq}\,$0.99). $^*$PTX best-Se marker in panel (0.10); not rule-out suitable.}
+\end{table}
+
+All five covered pathologies achieve per-pathology NPV $> 0.99$, confirming individual rule-out suitability~\cite{Lord2006}. The low PPV values (0.005--0.092) are expected given low pre-test probabilities.
+
+\textbf{Panel-level false-positive rate.} The four physical tests have per-test specificities of 0.54 (hs-cTnI), 0.42 (D-dimer, using the lower of PE/AoD estimates), 0.76 (NT-proBNP), and 0.38 (CRP). Under an independence assumption, the probability that a healthy patient triggers \emph{no} false positives is $0.54 \times 0.42 \times 0.76 \times 0.38 = 0.066$, yielding a panel-level false-positive rate of \textbf{93.4\%}. This means that, in a low-prevalence primary-care population, \emph{nearly all healthy patients would trigger at least one referral}. The independence assumption is conservative (positive correlation between inflammatory markers would reduce the true FP rate), but even halving this estimate implies a prohibitive referral burden. This is the central operational limitation of the panel.
+
+\textbf{Joint NPV.} Assuming test independence, the joint probability that at least one of the five pathologies is present given all tests negative is 2.3\%, yielding a joint NPV of 97.7\%. The independence assumption likely \emph{overestimates} joint NPV (biomarkers such as hs-cTnI and NT-proBNP are positively correlated within patients). Patient-level data would be required to compute the true joint NPV.
+
+\textbf{Prevalence-weighted coverage.} The five covered pathologies account for 11.8\% of all chest pain presentations (combined prevalence: ACS 3.5\%, PE 1.5\%, AoD 0.3\%, Peri/Myo 4.0\%, AHF 2.5\%). The panel therefore addresses a minority of presenting patients---but these are the pathologies where missed diagnosis carries the highest morbidity and mortality. Expected detections per 1000 presentations = 111.
+
+\subsection*{Monte Carlo uncertainty propagation}
+
+Sampling sensitivities from Beta distributions fitted to published CIs ($n = 5{,}000$), the optimal panel maintains $\geq 83.3\%$ coverage (5/6 pathologies) in \textbf{79.6\%} of iterations---meaning there is a \textbf{20.4\% probability that the panel fails to cover all five target pathologies} when sensitivity values are drawn from their published confidence intervals. Mean coverage drops to 79.9\% (95\% simulation interval: 66.7\%--83.3\%). This failure probability is driven by CRP for pericarditis (0.92, 95\% CI 0.86--0.96) and hs-cTnI for ACS (0.95, 95\% CI 0.93--0.97), whose lower CI bounds approach or cross $\tau = 0.90$. Note that the 23 expert-estimate entries (48\%) have \emph{assigned} CI ranges rather than published intervals; their uncertainty bounds are themselves uncertain.
+
+This result is \emph{concerning}. A diagnostic panel whose coverage claim has a 1-in-5 chance of being wrong under published uncertainty warrants caution. Robust optimisation using CI lower bounds yields a different panel entirely (coverage drops as biomarkers fall below $\tau$). Prospective validation of critical sensitivities---especially CRP for pericarditis---is essential before any clinical deployment.
+
+\subsection*{Pareto frontier}
+
+\cref{fig:pareto} shows five Pareto-optimal panels (\cref{tab:pareto}).
+
+\begin{table}[h]
+\centering
+\caption{Pareto-optimal diagnostic panels ($\tau = 0.90$).}
+\label{tab:pareto}
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}cp{3.0cm}rr@{}}
+\toprule
+\textbf{\#} & \textbf{Panel} & \textbf{Cov.} & \textbf{Cost} \\
+\midrule
+1 & CRP & 16.7\% & \texteuro5 \\
+1 & D-dimer & 33.3\% & \texteuro7 \\
+2 & CRP, D-dimer & 50.0\% & \texteuro12 \\
+3 & CRP, D-dim., hs-cTnI & 66.7\% & \texteuro22 \\
+4 & CRP, D-dim., NT-proBNP, hs-cTnI & 83.3\% & \texteuro36 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Each additional test adds exactly one pathology (+16.7\%) at increasing marginal cost (\texteuro5, \texteuro7, \texteuro10, \texteuro14). The step from 3 to 4 tests (NT-proBNP for heart failure) is the most expensive single increment. Note that both CRP (16.7\% at \texteuro5) and D-dimer (33.3\% at \texteuro7) appear as single-test Pareto-optimal panels: CRP is not dominated because it is strictly cheaper, despite covering fewer pathologies. Under prevalence-weighting, the frontier could differ.
+
+\begin{figure*}[!htb]
+\centering
+\includegraphics[width=0.85\linewidth]{../figures/fig2_pareto_frontier}
+\vspace{-6pt}
+\caption{\textbf{Pareto frontier.} Each point is a non-dominated panel in coverage--cost space. Dashed line: maximum achievable coverage (83.3\%), bounded by pneumothorax uncoverability.}
+\label{fig:pareto}
+\end{figure*}
+
+\subsection*{Marginal value of each biomarker}
+
+\cref{fig:marginal} shows the incremental coverage added by each biomarker as the panel grows from cheapest to most expensive.
+
+\begin{figure*}[!htb]
+\centering
+\includegraphics[width=0.85\linewidth]{../figures/fig3_marginal_value}
+\vspace{-6pt}
+\caption{\textbf{Marginal value curve.} Incremental pathology coverage and cost as each biomarker is added to the panel in cost order. Each step adds exactly one pathology (+16.7\%).}
+\label{fig:marginal}
+\end{figure*}
+
+\subsection*{Ablation analysis}
+
+\cref{fig:ablation} shows single-biomarker ablation from the optimal panel.
+
+\begin{table}[h]
+\centering
+\caption{Single-biomarker ablation from the optimal panel.}
+\label{tab:ablation}
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}lrl@{}}
+\toprule
+\textbf{Removed} & $\boldsymbol{\Delta}$\textbf{Cov.} & \textbf{New gaps} \\
+\midrule
+D-dimer   & $-$33.3\% & PE, AoD \\
+hs-cTnI   & $-$16.7\% & ACS \\
+NT-proBNP & $-$16.7\% & AHF \\
+CRP       & $-$16.7\% & Peri/Myo \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+D-dimer is the single most critical component ($-33.3\%$ coverage upon removal), as it is the \emph{sole} biomarker exceeding $\tau$ for both PE and aortic dissection~\cite{Geersing2012,Nazerian2018,Chen2023}. The remaining biomarkers each uniquely cover one pathology; their removal causes symmetric $-16.7\%$ losses. Removing non-selected biomarkers (copeptin, H-FABP, myoglobin, procalcitonin) has zero effect.
+
+\begin{figure*}[!htb]
+\centering
+\includegraphics[width=0.85\linewidth]{../figures/fig4_ablation}
+\vspace{-6pt}
+\caption{\textbf{Single-biomarker ablation.} D-dimer removal causes the largest coverage drop ($-33.3\%$), losing PE and aortic dissection. Each other panel member uniquely covers one pathology.}
+\label{fig:ablation}
+\end{figure*}
+
+\subsection*{Bootstrap stability and CI-based resampling}
+
+Bootstrap resampling of sensitivities from Beta distributions fitted to published CIs ($n = 1{,}000$) reveals two dominant panels: \{CRP, D-dimer\} (78.1\%) and \{D-dimer, hs-cTnI\} (21.6\%), with \{D-dimer, H-FABP\} appearing in 0.3\% of iterations. D-dimer appears in 100\% of iterations; CRP and hs-cTnI alternate based on which pathologies' sensitivities happen to exceed $\tau$ in each sample. Mean panel size is 2.0 ($\sigma = 0.0$) and---critically---mean coverage is \textbf{50.0\%} (3/6 pathologies), a dramatic drop from the 83.3\% achieved by the point-estimate optimal panel. Under CI perturbation, most pathologies lose their sole covering biomarker, reducing the coverable set to approximately 3 pathologies (typically PE and aortic dissection via D-dimer, plus one of ACS or pericarditis). This fragility reinforces the Monte Carlo finding: the optimal panel is not robust to sensitivity uncertainty.
+
+\begin{figure*}[!htb]
+\centering
+\includegraphics[width=0.85\linewidth]{../figures/fig5_bootstrap_stability}
+\vspace{-6pt}
+\caption{\textbf{Bootstrap panel stability} ($n = 1{,}000$). D-dimer selected in every iteration. CRP and hs-cTnI alternate based on CI sampling.}
+\label{fig:bootstrap}
+\end{figure*}
+
+\subsection*{Threshold sensitivity}
+
+Three regimes emerge (\cref{fig:threshold}): at $\tau \leq 0.82$, 3 tests suffice (CRP unnecessary); at $\tau \in [0.85, 0.92]$, 4 tests are required (stable regime); at $\tau = 0.95$, coverage drops to 66.7\% (CRP for pericarditis falls below threshold). Coverage remains bounded at 83.3\% for $\tau \leq 0.92$.
+
+\begin{figure*}[!htb]
+\centering
+\includegraphics[width=0.85\linewidth]{../figures/fig6_threshold_sensitivity}
+\vspace{-6pt}
+\caption{\textbf{Threshold sensitivity.} Panel size (bars) and coverage (line) vs $\tau$. The 4-test regime spans $\tau \in [0.85, 0.92]$.}
+\label{fig:threshold}
+\end{figure*}
+
+\subsection*{Early-presenter analysis}
+
+For patients presenting within 2 hours, troponin sensitivity drops to approximately 0.70 (below $\tau = 0.90$), estimated from the time--sensitivity curve in~\cite{Lipinski2015} rather than a discrete reported value. At $\tau = 0.90$, \textbf{no biomarker substitution rescues ACS coverage}: copeptin remains at 0.85~\cite{Keller2011,Raskovalova2013} and H-FABP rises to only 0.88~\cite{BruinsSlot2010}; neither exceeds $\tau$. The solver returns a reduced panel: \textbf{CRP + D-dimer + NT-proBNP} (3 tests, \texteuro26, 66.7\% coverage). ACS joins pneumothorax as an uncovered pathology gap. This result underscores the necessity of serial troponin measurement for early presenters---no single-draw biomarker substitution can maintain ACS rule-out at $\tau = 0.90$.
+
+At the less stringent $\tau = 0.85$, H-FABP (early-presenter sensitivity 0.88) and copeptin (0.85) both exceed the threshold, giving the solver two ACS candidates. The ILP selects \textbf{CRP + D-dimer + H-FABP + NT-proBNP} (4 tests, \texteuro34, 83.3\% coverage); H-FABP is preferred over copeptin due to lower cost (\texteuro8 vs \texteuro17.50), smaller sample volume (10\,$\mu$L vs 50\,$\mu$L), and existing POC availability. Copeptin~\cite{Mu2023,Giannitsis2021} remains a viable alternative if future POC platforms include it.
+
+\subsection*{Comparison with current approaches}
+
+\begin{table*}[!htb]
+\centering
+\caption{Diagnostic approaches compared. Coverage at $\tau = 0.90$. GP clinical judgment coverage varies by experience.}
+\label{tab:comparison}
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}lcp{2.8cm}rrrrl@{}}
+\toprule
+\textbf{Approach} & \textbf{\#} & \textbf{Biomarkers} & \textbf{Cov.} & \textbf{Paths} & \textbf{Cost} & \textbf{Time} & \textbf{Vol.} \\
+\midrule
+HEART + hs-cTnI              & 1 & hs-cTnI              & 16.7\% & 1/6 & \texteuro10   & 15\,min & 20\,$\mu$L \\
+Wells + D-dimer              & 1 & D-dimer              & 33.3\% & 2/6 & \texteuro7    & 10\,min & 15\,$\mu$L \\
+Combined                     & 2 & D-dimer, hs-cTnI     & 50.0\% & 3/6 & \texteuro17   & 15\,min & 35\,$\mu$L \\
+\textbf{Optimal 4-test}      & \textbf{4} & \textbf{CRP, D-dim., NT-proBNP, cTnI} & \textbf{83.3\%} & \textbf{5/6} & \textbf{\texteuro36} & \textbf{15\,min} & \textbf{55\,$\mu$L} \\
+\midrule
+GP judgment                  & --- & clinician-directed   & $\sim$50--67\% & 3--4/6 & --- & --- & --- \\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+
+% ============================================================================
+\subsection*{Serial testing and time-dependent coverage}
+% ============================================================================
+
+The static panel assessment assumes biomarker measurement at the time of published validation studies (typically 3--6\,h post-symptom onset in ED populations). In primary care, GPs see patients earlier---median 2.5\,h for suspected ACS~\cite{Schols2019}. I model this discrepancy through pathology-specific kinetic multipliers (\cref{fig:kinetics}).
+
+At the GP measurement timepoint (single 0\,h draw), hs-cTnI sensitivity for ACS drops below $\tau = 0.90$ (adjusted sensitivity $\approx$0.88, reflecting a kinetic ratio of 0.93 relative to study-time performance), reducing panel coverage from 83.3\% to 66.7\% (4/6 pathologies; ACS and pneumothorax uncovered). Chronic-presentation pathologies are unaffected: CRP for pericarditis (GP delay 48\,h, already at plateau, multiplier 1.00) and NT-proBNP for heart failure (72\,h, multiplier 1.00).
+
+Serial testing recovers ACS coverage. The ESC 0/1-hour algorithm~\cite{Reichlin2009,Gou2023} achieves 98.5\% cumulative sensitivity for ACS using absolute and delta hs-cTnI values; the 0/3-hour algorithm achieves 99.3\%~\cite{Mueller2019serial}. Both exceed $\tau = 0.90$, restoring panel coverage to 83.3\% (5/6) within 27 minutes total turnaround (\cref{fig:serial}). The ESC 0/1-hour protocol is optimal: it recovers full coverage faster than the 0/3-hour protocol at negligible sensitivity cost (98.5\% vs 99.3\%). Monte Carlo simulation ($n = 2{,}000$) yields cumulative coverage of 80.0\% (95\%~CI: 66.7--83.3\%) across all timepoints, reflecting uncertainty in both biomarker kinetics and base sensitivities.
+
+\begin{figure*}[!htb]
+\centering
+\includegraphics[width=0.85\linewidth]{../figures/fig7_kinetics}
+\vspace{-6pt}
+\caption{\textbf{Biomarker kinetic profiles.} Time-dependent sensitivity multipliers for the four panel biomarkers. hs-cTnI shows the steepest early-phase rise; CRP and NT-proBNP are near-plateau by the typical GP presentation time for their target pathologies. Shaded region: sensitivity below $\tau = 0.90$.}
+\label{fig:kinetics}
+\end{figure*}
+
+\begin{figure*}[!htb]
+\centering
+\includegraphics[width=0.85\linewidth]{../figures/fig8_serial_protocols}
+\vspace{-6pt}
+\caption{\textbf{Serial protocol comparison.} Cumulative pathology coverage at each timepoint for five measurement strategies. ESC 0/1h achieves full recoverable coverage (83.3\%) in 27 minutes.}
+\label{fig:serial}
+\end{figure*}
+
+
+% ============================================================================
+\subsection*{HEAR score stratification and Dutch GP patient flow}
+% ============================================================================
+
+Risk stratification determines which patients receive POC testing. I use the HEAR score (History, ECG, Age, Risk factors; range 0--8)---the HEART score \emph{without} the Troponin component~\cite{Six2008,Fernando2019}. Troponin is excluded from the CDR because it \emph{is} the POC test being evaluated: including it would create a conditional-independence violation (the same measurement used both for stratification and for diagnosis).
+
+Three HEAR categories define the clinical pathway:
+\begin{itemize}
+  \item \textbf{HEAR 0--2 (low risk, 50\%):} Discharged without POC testing. Any-serious-pathology prevalence $\approx$3\%.
+  \item \textbf{HEAR 3--5 (moderate risk, 35\%):} POC panel applied. This is the diagnostic grey zone where testing changes management. ACS prevalence 8.5\%; panel NPV = 0.9915.
+  \item \textbf{HEAR 6--8 (high risk, 15\%):} Immediate referral regardless of test result. ACS prevalence 28\%.
+\end{itemize}
+
+\noindent The HEAR score has not been prospectively validated in Dutch primary care; Van den Bulk et al.~\cite{VandenBulk2024} found only the Marburg Heart Score validated in this setting. Prospective GP validation is a stated objective of the SISTER ACT trial~\cite{SISTERACT2024}.
+
+\textbf{Patient flow model.} Per 1,000 primary care chest pain patients (Dutch context, 2024 NZa tariffs~\cite{NZa2024}):
+
+\begin{table}[!htb]
+\centering
+\caption{Patient flow: HEAR-stratified POC testing in Dutch primary care.}
+\label{tab:patientflow}
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}lrr@{}}
+\toprule
+\textbf{Metric (per 1,000 patients)} & \textbf{Current} & \textbf{With POC} \\
+\midrule
+Patients referred to ED          & 500   & 331 \\
+Unnecessary referrals            & 350   & 143 \\
+Missed serious pathology         & 18.0  & 20.5 \\
+POC tests performed              & ---   & 350 \\
+Total cost (\texteuro)           & 382{,}890 & 225{,}156 \\
+\midrule
+\textbf{Referrals avoided}       & \multicolumn{2}{c}{\textbf{169 per 1,000}} \\
+\textbf{Cost saving}             & \multicolumn{2}{c}{\textbf{\texteuro157{,}734 per 1,000}} \\
+\textbf{Cost per referral avoided} & \multicolumn{2}{c}{\textbf{\texteuro75}} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Missed cases increase by 2.5 per 1,000 patients with the POC strategy ($+$14\% relative). This reflects the honest trade-off of HEAR-low discharge: 50\% of patients avoid both testing and referral, but the $\sim$3\% with undetected serious pathology in this group are missed. Whether this trade-off is acceptable depends on clinical follow-up protocols and the consequences-of-missing analysis---HEAR-low patients have the lowest case-fatality rates and are most likely to re-present if symptoms persist.
+
+Extrapolated nationally (5,000 Dutch GP practices, 3.5 chest pain consultations per practice per year per 1,000 registered patients~\cite{Schols2019}): approximately 29,700 unnecessary referrals avoided and \texteuro27.8M saved annually.
+
+
+% ============================================================================
+\subsection*{SISTER ACT score: closing the pneumothorax gap}
+% ============================================================================
+
+\textbf{Extended coverage.} Adding an AI e-stethoscope to the optimal four-biomarker panel closes the pneumothorax gap (\cref{tab:extended}). At $\tau = 0.90$, the biomarker-only panel covers 5/6 pathologies (83.3\%); the extended panel---biomarkers plus e-stethoscope---achieves \textbf{6/6 (100\%)} at a marginal cost of \texteuro0.64 per patient and 2 additional minutes.
+
+\begin{table}[h]
+\centering
+\caption{Extended coverage: biomarker panel $\pm$ AI e-stethoscope.}
+\label{tab:extended}
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+\textbf{Modality} & \textbf{Coverage} & \textbf{Paths} & \textbf{Cost} & \textbf{Time} \\
+\midrule
+Biomarkers only             & 83.3\% & 5/6 & \texteuro36.00 & 15\,min \\
++ AI e-stethoscope          & \textbf{100\%} & \textbf{6/6} & \texteuro36.64 & 17\,min \\
+\midrule
+\multicolumn{2}{@{}l}{\textbf{Marginal gain}} & +PTX & +\texteuro0.64 & +2\,min \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{Score distribution and tier stratification.} In the simulated GP population ($n = 10{,}000$; combined pathology prevalence 12.0\%), the SISTER ACT score has mean 6.1 (SD 3.0, median 6, IQR 4--8). Tier distribution: Low (0--6) 61.8\%, Moderate (7--13) 35.8\%, High (14--20) 2.4\%. The Low tier is enriched for healthy patients (pathology prevalence 0.45\%); the High tier is almost exclusively pathological (prevalence 97.9\%).
+
+\textbf{Screening performance.} Treating Moderate + High tiers as screen-positive: sensitivity 97.7\%, specificity 70.0\%, NPV in Low tier 0.9955, PPV in action tiers 0.308. Missed serious pathology: 2.8 per 1,000 patients---exclusively in the Low tier, where case-fatality is lowest.
+
+\textbf{Pneumothorax detection.} The e-stethoscope transforms PTX detection from 14.3\% (biomarker-only, best marker Copeptin 0.30) to 95.9\% (SISTER ACT), an absolute improvement of +81.6 percentage points. Of 49 simulated PTX patients, 47 were correctly triaged.
+
+\textbf{CDR comparison.} \cref{tab:cdr} compares three clinical decision rules on the same simulated population.
+
+\begin{table}[h]
+\centering
+\caption{Clinical decision rule comparison ($n = 10{,}000$).}
+\label{tab:cdr}
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}lcccccc@{}}
+\toprule
+\textbf{CDR} & \textbf{Se} & \textbf{Sp} & \textbf{NPV} & \textbf{Miss/1k} & \textbf{Ref.\%} & \textbf{PTX Se} \\
+\midrule
+HEAR (0--8)          & 96.0 & 42.4 & .987 & 4.8 & 62.2 & 93.9 \\
+HEART (0--10)        & 97.7 & 49.3 & .994 & 2.8 & 56.4 & 91.8 \\
+\textbf{SISTER ACT}  & \textbf{97.7} & \textbf{70.0} & \textbf{.996} & \textbf{2.8} & \textbf{38.2} & \textbf{95.9} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+SISTER ACT achieves equivalent sensitivity to HEART (97.7\%) at substantially higher specificity (70.0\% vs 49.3\%), reducing the referral rate from 56.4\% to \textbf{38.2\%}---an absolute reduction of 18.2 percentage points. Compared with HEAR, the referral reduction is 24.0 percentage points. The specificity advantage derives from two sources: (1)~the multi-biomarker ACT component provides objective biochemical data that HEAR and HEART lack, and (2)~the e-stethoscope Imaging component captures auscultatory findings that score-based CDRs cannot encode.
+
+
+% ============================================================================
+\section*{Discussion}
+% ============================================================================
+
+\subsection*{The set-cover formulation as a transparency tool}
+
+The primary contribution of this work is not computational power---with 8 biomarkers and 6 pathologies, the full search space ($2^8 = 256$ subsets) can be exhaustively evaluated in milliseconds. Rather, the contribution is a \textbf{transparent, reproducible formulation} that makes the panel selection logic auditable. The ILP objective (\cref{eq:objective}), coverage constraints (\cref{eq:coverage}), and all input data (48 sensitivity values---25 from diagnostic accuracy studies, 23 expert estimates or indirect evidence---specificity estimates, prevalence, and cost metadata) are fully specified, enabling any reader to verify or challenge the result.
+
+The structural parallel to combination therapy design~\cite{VeraLicona2013}---where one seeks the minimum target set disrupting every cancer survival mechanism~\cite{Bergholz2021,Liaki2025}---provides the mathematical scaffolding. A related formulation has been explored for cancer target discovery~\cite{Erzurumluoglu2026ALIN}. However, the analogy should not be overstated: diagnostic panel selection involves rule-out (not therapeutic intervention), low pre-test probabilities (not high disease burden), and fundamentally different consequence asymmetries. The shared structure is the set-cover formulation itself, not the clinical context.
+
+\subsection*{Solution uniqueness and its implications}
+
+At $\tau = 0.90$, the optimal panel is not merely optimal---it is the \emph{only} minimum-size feasible panel. This uniqueness is a direct consequence of the data: each coverable pathology has exactly one biomarker exceeding $\tau$, leaving the solver no degrees of freedom. The optimisation is therefore a feasibility check, not a genuine optimisation---\emph{any} reasonable objective function selects the same panel. The weight sensitivity analysis (500 random configurations, 100\% invariance) formally confirms this.
+
+This uniqueness is simultaneously a strength and a limitation. It makes the recommendation robust to modelling assumptions, but it also means the framework adds no value beyond what a clinician inspecting the coverage matrix could deduce by eye. The framework's contribution emerges at lower thresholds: at $\tau = 0.70$, six distinct optimal panels compete, and the penalty weights become genuinely decision-relevant. As multiplex POC platforms expand the biomarker candidate pool beyond 20--50 candidates, the combinatorial space ($>10^6$ subsets) will make transparent optimisation essential.
+
+\subsection*{Rule-out, not diagnosis}
+
+The panel's clinical utility profile (\cref{tab:utility}) reveals the expected trade-off of a rule-out strategy: very high per-pathology NPV ($>$0.99 for all covered pathologies) but low PPV (0.005--0.092) and a prohibitive panel-level false-positive rate (93.4\%). This is not a flaw unique to this panel but an inherent property of multi-analyte rule-out screening at low prevalence~\cite{Lord2006}: each additional test compounds false-positive risk.
+
+\subsection*{From static panel to time-aware workflow}
+
+A static 0-hour panel achieves only 67\% pathology coverage at the GP measurement timepoint because hs-cTnI sensitivity for ACS drops from its reference 95\% to approximately 88\% when measured 2.5 hours after symptom onset---the median GP presentation delay~\cite{Schols2019}---falling below the $\tau = 0.90$ threshold. This is not a modelling artefact but a biologically inevitable consequence of troponin release kinetics: peak hs-cTnI concentrations occur 8--12 hours post-infarction~\cite{Body2015}, and GPs typically see patients much earlier than ED physicians. Ignoring this temporal dimension would overstate the real-world rule-out capability of the panel.
+
+The ESC 0/1-hour serial algorithm~\cite{Reichlin2009} resolves this gap: a second hs-cTnI measurement at 1 hour, interpreted via absolute-change thresholds, recovers ACS sensitivity to $\geq$98.5\% and restores overall panel coverage to 83.3\% (5/6 pathologies). This comes at a modest operational cost---one additional fingerprick at $t{=}1$h---but fundamentally changes the clinical workflow from a single-snapshot decision to a time-gated protocol. The practical implication is that POC platforms for chest pain in primary care \textbf{must} support serial measurement protocols; single-draw devices are insufficient.
+
+HEAR score stratification (History, ECG, Age, Risk factors---deliberately excluding Troponin to avoid conditional-independence violations with the POC panel) provides a principled triage layer: low-risk patients (HEAR 0--2, $\sim$50\%) can be safely discharged without testing, moderate-risk patients (3--5, $\sim$35\%) receive POC testing, and high-risk patients (6--8, $\sim$15\%) are referred directly. The resulting 17\% absolute referral reduction (\texteuro75 per referral avoided) must be weighed against an estimated 2.5 additional missed cases per 1,000 patients---overwhelmingly in the HEAR-low stratum, where case-fatality is lowest and re-presentation most likely. This trade-off is transparent and quantifiable, which is the framework's value: it converts an implicit clinical judgment (``this patient looks low-risk'') into an explicit, auditable decision boundary.
+
+Critically, the HEAR score (without Troponin) has not been prospectively validated in Dutch primary care~\cite{VandenBulk2024}. The distributions used here derive from ED populations~\cite{Fernando2019}, where disease prevalence and acuity differ. A prospective validation study in the GP chest-pain population is a prerequisite before clinical deployment---precisely the type of study the SISTER ACT consortium is positioned to conduct.
+
+\subsection*{SISTER ACT: from coverage gap to decision rule}
+
+The SISTER ACT score addresses the central structural limitation of the biomarker-only panel: no blood test covers pneumothorax. By integrating an AI e-stethoscope as the ``Imaging'' component, the score achieves 6/6 pathology coverage at $\tau = 0.90$---a result impossible with biomarkers alone at any threshold. The device cost is negligible: at \texteuro0.64 per patient (amortised over a 3-year device lifetime at 3 daily uses), the marginal cost of closing the pneumothorax gap is two orders of magnitude below a single ED referral (\texteuro765~\cite{NZa2024}).
+
+The simulation results are encouraging but require careful interpretation. The 70.0\% specificity represents a substantial improvement over HEAR (42.4\%) and HEART (49.3\%), but derives from a simulation with idealised component independence. In practice, components will be correlated (e.g., dyspnoea severity correlates with both symptoms and e-stethoscope findings), potentially reducing the discriminative advantage. The 38.2\% referral rate---compared with the current $\sim$50\% GP referral rate and the 62.2\% predicted by HEAR---suggests meaningful referral reduction, but requires prospective validation.
+
+The e-stethoscope component draws on a rapidly maturing technology base. Grzywalski et al.~\cite{Grzywalski2019} demonstrated CNN classification of paediatric respiratory sounds with AUC $>$0.90; Pham et al.~\cite{Pham2021} achieved comparable performance on adult lung sounds using transfer learning; Song et al.~\cite{Song2023} showed that AI-augmented auscultation approached chest X-ray sensitivity for pneumothorax detection. Zhang et al.~\cite{Zhang2023LowCostAIEstethoscope} further demonstrated a low-cost edge-deployable AI stethoscope pipeline (Raspberry Pi-class deployment), directly supporting primary-care feasibility in resource-constrained settings. FDA-cleared devices (Eko DUO, 3M Littmann CORE) are already commercially available, and Mang et al.~\cite{Mang2022} demonstrated their cost-effectiveness in cardiac screening at scale. The key innovation is not the hardware itself but its integration into a structured, multi-pathology CDR that provides standardised, operator-independent auscultation interpretation---addressing the well-documented inter-observer variability in traditional stethoscope use~\cite{Palaniappan2024}.
+
+The SISTER ACT score is designed as a research proposal, not a validated clinical tool. Its value at this stage is threefold: (1)~it demonstrates that the pneumothorax gap can be closed by expanding the modality set beyond blood biomarkers; (2)~it provides a concrete, testable scoring framework for the SISTER ACT trial; and (3)~it quantifies the theoretical performance gain of multi-modal integration over biochemistry-only CDRs.
+
+The 93.4\% panel-level FP rate (equivalently, 6.6\% panel-level specificity) is the single most important finding of this analysis and the primary barrier to clinical deployment. In a hypothetical cohort of 1000 chest pain patients in whom none of the five target pathologies is present, approximately 934 would trigger at least one referral. Whether this trade-off is acceptable depends on the relative costs of missed life-threatening diagnoses vs unnecessary referrals---a health-economic analysis beyond the scope of this work but essential before clinical adoption~\cite{Moons2015,Fenwick2004}.
+
+\subsection*{Limitations}
+
+\textbf{1. Small candidate pool and trivial enumeration.} With 8 biomarkers and $2^8 = 256$ subsets, the ILP is unnecessary for solving this specific problem. Its value lies in formulation transparency and scalability to larger candidate pools (e.g., 50+ biomarkers from emerging multiplex platforms).
+
+\textbf{2. Sensitivity-only coverage constraint.} The core set-cover formulation uses only sensitivity. Specificity is incorporated post-hoc in the clinical utility scoring but not in the optimisation objective. A joint sensitivity--specificity formulation (e.g., maximising expected net benefit) would be more principled but requires patient-level paired data for correlated test outcomes.
+
+\textbf{3. Meta-analytic inputs from secondary/tertiary care.} Published sensitivities derive largely from ED populations. Spectrum bias may reduce sensitivity in primary care, where disease prevalence and presentation severity differ~\cite{Moons2015}. Furthermore, 23 of 48 sensitivity entries (48\%) lack published meta-analytic support and are expert estimates or based on indirect evidence for off-target biomarker--pathology combinations (e.g., myoglobin for pneumothorax). No expert estimate exceeds $\tau = 0.90$, so they do not influence the optimal panel at the primary threshold; however, they affect Monte Carlo simulations and Pareto frontier calculations at lower thresholds.
+
+\textbf{4. Independence assumption.} Biomarker sensitivities and specificities are modelled as independent. In reality, hs-cTnI and NT-proBNP are correlated within patients. This affects both the panel-level false-positive rate (93.4\% is an upper bound under positive correlation) and the joint NPV (97.7\% is an upper bound, likely optimistic). Modelling conditional dependence requires patient-level paired data.
+
+\textbf{5. Serial testing extension.} I extend the static framework with a time-dependent kinetics model incorporating ESC 0/1-hour and 0/3-hour serial algorithms. Published algorithm-level performance (Reichlin~2009: sensitivity 98.5\% at 0/1h; Mueller~2019: 99.3\% at 0/3h) is used as an override for ACS, while other pathologies are modelled via pathology-specific presentation-to-measurement delay ratios. This serial extension is exploratory---it uses published aggregate performance rather than patient-level delta calculations, and the HEAR score (without Troponin) distribution used for risk stratification has not been prospectively validated in Dutch primary care (Van den Bulk~2024).
+
+\textbf{6. Cost estimates and penalty weights.} Costs are approximate estimates from device manufacturers and costing studies~\cite{Kip2017,StJohn2014}; actual costs vary by device and healthcare system. However, the weight sensitivity analysis proves that cost assumptions are irrelevant at $\tau = 0.90$.
+
+\textbf{7. Pneumothorax.} Correctly identified as uncoverable by blood-based biomarkers at any threshold. This limitation reflects the biology, not the framework.
+
+\textbf{8. SISTER ACT score.} The proposed score is a simulation-derived research proposal, not a validated CDR. Component weights and tier thresholds are theory-driven. The 93\% e-stethoscope sensitivity for PTX derives from controlled studies~\cite{Song2023,Pham2021}; real-world performance in a noisy GP consulting room may differ. Prospective validation is essential before adoption.
+
+
+% ============================================================================
+\section*{Conclusion}
+% ============================================================================
+
+Set-cover optimisation identifies a four-test POC panel (hs-cTnI, D-dimer, NT-proBNP, CRP) that rules out five of six life-threatening thoracic pathologies at $\tau = 0.90$, within 15 minutes, from a fingerprick sample. This solution is uniquely determined by the coverage constraints. Per-pathology NPV exceeds 0.99 for all covered pathologies; however, the panel-level false-positive rate of 93.4\% (under test independence) implies that nearly all healthy patients would trigger referral---a potentially prohibitive operational burden. Monte Carlo propagation reveals a 20.4\% probability of coverage failure under published CI uncertainty (Beta-sampled), and 48\% of the underlying sensitivity matrix relies on expert estimates or indirect evidence rather than meta-analytic data. A serial testing extension demonstrates that ESC 0/1-hour troponin algorithms recover ACS coverage at the GP measurement timepoint, increasing panel coverage from 67\% (single 0h) to 83\% (5/6 pathologies). HEAR score stratification (excluding Troponin to avoid double-counting) estimates a 17\% absolute reduction in unnecessary ED referrals when POC testing is applied to moderate-risk patients, with \texteuro75 per referral avoided. Finally, the proposed SISTER ACT score integrates the optimal biomarker panel with an AI e-stethoscope, closing the pneumothorax coverage gap and achieving 6/6 pathology coverage (100\%) at a marginal cost of \texteuro0.64 per patient. In simulation ($n = 10{,}000$), SISTER ACT achieves 97.7\% sensitivity at 70.0\% specificity with a 38.2\% referral rate---a 24-percentage-point reduction compared with HEAR. The framework's value lies in making these trade-offs \emph{transparent and quantifiable}, providing a reproducible template for multi-pathology panel design as larger biomarker candidate pools and AI-augmented modalities become available.
+
+
+% ============================================================================
+\section*{Data availability}
+% ============================================================================
+
+No new patient data were collected. All inputs derive from published diagnostic accuracy studies (25/48 entries) or expert estimates/indirect evidence (23/48) for off-target combinations. Complete code, coverage matrix, and results: \url{https://github.com/royerz2/PanDiagnosticCardiology}.
+
+% ============================================================================
+\begin{acknowledgements}
+I thank the SISTER ACT consortium for the clinical context motivating this analysis. All computations used open-source Python libraries (NumPy, SciPy, Matplotlib).
+\end{acknowledgements}
+
+% ============================================================================
+
+\onecolumn
+
+\section*{Supplementary Tables}
+
+\begin{table*}[h]
+\centering
+\caption{Coverage matrix: published pooled sensitivity of each biomarker for each pathology. Bold entries exceed $\tau = 0.90$.}
+\label{tab:coverage_full}
+\scriptsize
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}lcccccccc@{}}
+\toprule
+\textbf{Pathology} & \textbf{hs-cTnI} & \textbf{D-dimer} & \textbf{NT-proBNP} & \textbf{CRP} & \textbf{Copeptin} & \textbf{H-FABP} & \textbf{Myoglobin} & \textbf{PCT} \\
+\midrule
+ACS & \textbf{0.95} & 0.38 & 0.60 & 0.50 & 0.85 & 0.84 & 0.75 & 0.15 \\
+PE & 0.45 & \textbf{0.95} & 0.60 & 0.65 & 0.55 & 0.48 & 0.30 & 0.35 \\
+Aortic Dissection & 0.28 & \textbf{0.97} & 0.45 & 0.72 & 0.68 & 0.25 & 0.30 & 0.20 \\
+Pericarditis/Myo & 0.82 & 0.35 & 0.70 & \textbf{0.92} & 0.55 & 0.68 & 0.58 & 0.40 \\
+Pneumothorax & 0.10 & 0.15 & 0.20 & 0.15 & 0.30 & 0.05 & 0.08 & 0.10 \\
+Acute HF & 0.68 & 0.60 & \textbf{0.95} & 0.55 & 0.78 & 0.55 & 0.40 & 0.30 \\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+\begin{longtable}{@{}llcccl@{}}
+\caption{Full provenance for all 48 sensitivity values. CI = 95\% confidence interval. \textsuperscript{\dag}Expert estimate: no published meta-analysis for this biomarker--pathology combination.}\label{tab:full_sources}\\
+\toprule
+\textbf{Pathology} & \textbf{Biomarker} & \textbf{Sens} & \textbf{CI} & \textbf{Spec} & \textbf{Source} \\
+\midrule
+\endfirsthead
+\multicolumn{6}{c}{\textit{(continued)}}\\
+\toprule
+\textbf{Pathology} & \textbf{Biomarker} & \textbf{Sens} & \textbf{CI} & \textbf{Spec} & \textbf{Source} \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+
+ACS & hs-cTnI & 0.95 & 0.93--0.97 & 0.54 & Lipinski 2015~\cite{Lipinski2015} \\
+ACS & D-dimer & 0.38 & 0.28--0.49 & 0.45 & Expert estimate\textsuperscript{\dag}; non-specific \\
+ACS & NT-proBNP & 0.60 & 0.52--0.68 & 0.60 & Expert estimate\textsuperscript{\dag}; LV dysfunction \\
+ACS & CRP & 0.50 & 0.40--0.60 & 0.40 & Expert estimate\textsuperscript{\dag}; non-specific \\
+ACS & Copeptin & 0.85 & 0.79--0.90 & 0.75 & Keller 2011~\cite{Keller2011}; Raskovalova 2014~\cite{Raskovalova2013} \\
+ACS & H-FABP & 0.84 & 0.78--0.89 & 0.78 & Bruins Slot 2010~\cite{BruinsSlot2010} \\
+ACS & Myoglobin & 0.75 & 0.65--0.83 & 0.50 & Lipinski 2015~\cite{Lipinski2015} \\
+ACS & PCT & 0.15 & 0.08--0.24 & 0.85 & Bektas 2011~\cite{Bektas2011} \\
+\midrule
+PE & hs-cTnI & 0.45 & 0.35--0.56 & 0.60 & Becattini~\cite{Becattini2007} \\
+PE & D-dimer & 0.95 & 0.93--0.97 & 0.42 & Geersing 2012~\cite{Geersing2012} \\
+PE & NT-proBNP & 0.60 & 0.49--0.70 & 0.55 & Klok~\cite{Klok2008} \\
+PE & CRP & 0.65 & 0.53--0.76 & 0.35 & Abul~\cite{Abul2011} \\
+PE & Copeptin & 0.55 & 0.40--0.69 & 0.70 & Hellenkamp~\cite{Hellenkamp2015} \\
+PE & H-FABP & 0.48 & 0.35--0.61 & 0.75 & Puls~\cite{Puls2007} \\
+PE & Myoglobin & 0.30 & 0.18--0.44 & 0.60 & Expert estimate\textsuperscript{\dag} \\
+PE & PCT & 0.35 & 0.22--0.50 & 0.80 & K{\"o}kt{\"u}rk~\cite{Kokturk2011} \\
+\midrule
+AoD & hs-cTnI & 0.28 & 0.18--0.40 & 0.65 & Vrsalovic~\cite{Vrsalovic2016} \\
+AoD & D-dimer & 0.97 & 0.94--0.99 & 0.47 & Nazerian~\cite{Nazerian2018}; Ren~\cite{Ren2024}; Chen~\cite{Chen2023} \\
+AoD & NT-proBNP & 0.45 & 0.32--0.59 & 0.55 & Expert estimate\textsuperscript{\dag}; limited data \\
+AoD & CRP & 0.72 & 0.58--0.83 & 0.30 & Schillinger~\cite{Schillinger2002} \\
+AoD & Copeptin & 0.68 & 0.52--0.81 & 0.60 & Morello~\cite{Morello2018} \\
+AoD & H-FABP & 0.25 & 0.12--0.42 & 0.80 & Expert estimate\textsuperscript{\dag} \\
+AoD & Myoglobin & 0.30 & 0.16--0.47 & 0.65 & Expert estimate\textsuperscript{\dag} \\
+AoD & PCT & 0.20 & 0.09--0.36 & 0.75 & Expert estimate\textsuperscript{\dag} \\
+\midrule
+Peri/Myo & hs-cTnI & 0.82 & 0.73--0.89 & 0.50 & Caforio 2013~\cite{Caforio2013} \\
+Peri/Myo & D-dimer & 0.35 & 0.22--0.50 & 0.55 & Expert estimate\textsuperscript{\dag} \\
+Peri/Myo & NT-proBNP & 0.70 & 0.58--0.80 & 0.50 & Caforio~\cite{Caforio2013} \\
+Peri/Myo & CRP & 0.92 & 0.86--0.96 & 0.38 & Imazio 2011~\cite{Imazio2011} \\
+Peri/Myo & Copeptin & 0.55 & 0.39--0.70 & 0.65 & Expert estimate\textsuperscript{\dag} \\
+Peri/Myo & H-FABP & 0.68 & 0.54--0.80 & 0.70 & Cui~\cite{Cui2025} \\
+Peri/Myo & Myoglobin & 0.58 & 0.43--0.72 & 0.55 & Expert estimate\textsuperscript{\dag} \\
+Peri/Myo & PCT & 0.40 & 0.26--0.55 & 0.72 & Bektas 2011~\cite{Bektas2011} \\
+\midrule
+PTX & hs-cTnI & 0.10 & 0.03--0.22 & 0.90 & Expert estimate\textsuperscript{\dag}; case reports \\
+PTX & D-dimer & 0.15 & 0.05--0.30 & 0.80 & Expert estimate\textsuperscript{\dag} \\
+PTX & NT-proBNP & 0.20 & 0.08--0.38 & 0.85 & Expert estimate\textsuperscript{\dag}; case series \\
+PTX & CRP & 0.15 & 0.05--0.30 & 0.70 & Expert estimate\textsuperscript{\dag} \\
+PTX & Copeptin & 0.30 & 0.14--0.50 & 0.65 & Expert estimate\textsuperscript{\dag}; stress response \\
+PTX & H-FABP & 0.05 & 0.01--0.18 & 0.90 & Expert estimate\textsuperscript{\dag} \\
+PTX & Myoglobin & 0.08 & 0.02--0.22 & 0.85 & Expert estimate\textsuperscript{\dag} \\
+PTX & PCT & 0.10 & 0.03--0.25 & 0.88 & Expert estimate\textsuperscript{\dag} \\
+\midrule
+AHF & hs-cTnI & 0.68 & 0.58--0.77 & 0.55 & Felker~\cite{Felker2015} \\
+AHF & D-dimer & 0.60 & 0.48--0.71 & 0.40 & Zorlu~\cite{Zorlu2012} \\
+AHF & NT-proBNP & 0.95 & 0.93--0.97 & 0.76 & Maisel 2002~\cite{Maisel2002}; Bansal 2025~\cite{Bansal2025} \\
+AHF & CRP & 0.55 & 0.42--0.67 & 0.40 & Windram 2007~\cite{Windram2007} (prognostic) \\
+AHF & Copeptin & 0.78 & 0.67--0.87 & 0.55 & Demissei 2017~\cite{Demissei2017}; Peacock 2011~\cite{Peacock2011} \\
+AHF & H-FABP & 0.55 & 0.42--0.67 & 0.70 & Niizeki~\cite{Niizeki2007} \\
+AHF & Myoglobin & 0.40 & 0.28--0.53 & 0.60 & Expert estimate\textsuperscript{\dag} \\
+AHF & PCT & 0.30 & 0.18--0.44 & 0.80 & Expert estimate\textsuperscript{\dag}; PCT modest in HF \\
+\end{longtable}
+
+% ============================================================================
+\bibliographystyle{unsrt}
+\bibliography{refs}
+
+\end{document}

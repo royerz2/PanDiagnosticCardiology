@@ -1,0 +1,68 @@
+{
+  "panel": [
+    "CRP",
+    "D-dimer",
+    "NT-proBNP",
+    "hs-cTnI"
+  ],
+  "acs_biomarker": "hs-cTnI",
+  "acs_sensitivity": 0.95,
+  "acs_specificity": 0.54,
+  "cdr_model": "HEAR (without Troponin) \u2014 T excluded to avoid double-counting",
+  "hear_score_distribution": "Estimated from Fernando 2019; Harskamp 2021; adapted for Dutch GP WITHOUT troponin.  Requires prospective validation.",
+  "per_category": {
+    "low_risk": {
+      "hear_range": "0-2",
+      "fraction_of_population": 0.5,
+      "acs_prevalence": 0.015,
+      "clinical_action_without_test": "Consider discharge (no POC)",
+      "decision_threshold": 0.005,
+      "poc_tested": false,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "post_test_prob_if_negative": null,
+      "net_benefit": null,
+      "poc_adds_clinical_value": false
+    },
+    "moderate_risk": {
+      "hear_range": "3-5",
+      "fraction_of_population": 0.35,
+      "acs_prevalence": 0.085,
+      "clinical_action_without_test": "Observe / serial troponin",
+      "decision_threshold": 0.02,
+      "poc_tested": true,
+      "sensitivity": 0.95,
+      "specificity": 0.54,
+      "ppv": 0.161,
+      "npv": 0.991472,
+      "post_test_prob_if_negative": 0.008528,
+      "net_benefit": 0.07216,
+      "poc_adds_clinical_value": true
+    },
+    "high_risk": {
+      "hear_range": "6-8",
+      "fraction_of_population": 0.15,
+      "acs_prevalence": 0.28,
+      "clinical_action_without_test": "Immediate referral",
+      "decision_threshold": 0.05,
+      "poc_tested": false,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "post_test_prob_if_negative": null,
+      "net_benefit": null,
+      "poc_adds_clinical_value": false
+    }
+  },
+  "overall": {
+    "referral_rate_without_poc": 0.5,
+    "referral_rate_with_poc": 0.3256,
+    "referral_reduction_absolute": 0.1744,
+    "referral_reduction_relative": 0.3488
+  },
+  "clinical_interpretation": "HEAR-stratified (without T) multi-biomarker POC testing could reduce referrals by 17% (absolute) in primary care. The POC troponin contributes BOTH to completing the HEART score (adding the T component) AND to the multi-test panel coverage. For HEAR 3-5 (moderate risk): a negative panel yields NPV 0.9915 for ACS. HEAR 0-2 patients are discharged without testing (low pre-test probability). HEAR 6-8 patients are referred immediately.",
+  "limitation": "This model assumes biomarker sensitivity is independent of HEAR score category. In reality, higher HEAR scores correlate with larger infarcts and higher troponin, so sensitivity may be slightly higher in high-risk patients. The HEAR score distribution is estimated from ED data \u2014 prospective GP validation is essential (a core SISTER ACT objective). Van den Bulk 2024: only Marburg Heart Score has been prospectively validated in Dutch primary care."
+}

@@ -1,0 +1,239 @@
+[
+  {
+    "threshold": 0.7,
+    "n_coverable": 5,
+    "n_feasible_panels": 84,
+    "min_panel_size": 3,
+    "n_optimal_panels": 6,
+    "choice_nontrivial": true,
+    "optimal_panels": [
+      [
+        "D-dimer",
+        "NT-proBNP",
+        "hs-cTnI"
+      ],
+      [
+        "Copeptin",
+        "D-dimer",
+        "hs-cTnI"
+      ],
+      [
+        "Copeptin",
+        "D-dimer",
+        "NT-proBNP"
+      ],
+      [
+        "D-dimer",
+        "H-FABP",
+        "NT-proBNP"
+      ],
+      [
+        "D-dimer",
+        "Myoglobin",
+        "NT-proBNP"
+      ]
+    ],
+    "biomarker_choices_per_pathology": {
+      "ACS": 4,
+      "Peri/Myo": 3,
+      "AoD": 2,
+      "AHF": 2,
+      "PE": 1
+    }
+  },
+  {
+    "threshold": 0.75,
+    "n_coverable": 5,
+    "n_feasible_panels": 70,
+    "min_panel_size": 3,
+    "n_optimal_panels": 3,
+    "choice_nontrivial": true,
+    "optimal_panels": [
+      [
+        "D-dimer",
+        "NT-proBNP",
+        "hs-cTnI"
+      ],
+      [
+        "Copeptin",
+        "D-dimer",
+        "hs-cTnI"
+      ],
+      [
+        "CRP",
+        "Copeptin",
+        "D-dimer"
+      ]
+    ],
+    "biomarker_choices_per_pathology": {
+      "ACS": 4,
+      "Peri/Myo": 2,
+      "AoD": 1,
+      "AHF": 2,
+      "PE": 1
+    }
+  },
+  {
+    "threshold": 0.8,
+    "n_coverable": 5,
+    "n_feasible_panels": 44,
+    "min_panel_size": 3,
+    "n_optimal_panels": 1,
+    "choice_nontrivial": false,
+    "optimal_panels": [
+      [
+        "D-dimer",
+        "NT-proBNP",
+        "hs-cTnI"
+      ]
+    ],
+    "biomarker_choices_per_pathology": {
+      "ACS": 3,
+      "Peri/Myo": 2,
+      "AoD": 1,
+      "AHF": 1,
+      "PE": 1
+    }
+  },
+  {
+    "threshold": 0.82,
+    "n_coverable": 5,
+    "n_feasible_panels": 44,
+    "min_panel_size": 3,
+    "n_optimal_panels": 1,
+    "choice_nontrivial": false,
+    "optimal_panels": [
+      [
+        "D-dimer",
+        "NT-proBNP",
+        "hs-cTnI"
+      ]
+    ],
+    "biomarker_choices_per_pathology": {
+      "ACS": 3,
+      "Peri/Myo": 2,
+      "AoD": 1,
+      "AHF": 1,
+      "PE": 1
+    }
+  },
+  {
+    "threshold": 0.85,
+    "n_coverable": 5,
+    "n_feasible_panels": 24,
+    "min_panel_size": 4,
+    "n_optimal_panels": 2,
+    "choice_nontrivial": true,
+    "optimal_panels": [
+      [
+        "CRP",
+        "D-dimer",
+        "NT-proBNP",
+        "hs-cTnI"
+      ],
+      [
+        "CRP",
+        "Copeptin",
+        "D-dimer",
+        "NT-proBNP"
+      ]
+    ],
+    "biomarker_choices_per_pathology": {
+      "ACS": 2,
+      "Peri/Myo": 1,
+      "AoD": 1,
+      "AHF": 1,
+      "PE": 1
+    }
+  },
+  {
+    "threshold": 0.87,
+    "n_coverable": 5,
+    "n_feasible_panels": 16,
+    "min_panel_size": 4,
+    "n_optimal_panels": 1,
+    "choice_nontrivial": false,
+    "optimal_panels": [
+      [
+        "CRP",
+        "D-dimer",
+        "NT-proBNP",
+        "hs-cTnI"
+      ]
+    ],
+    "biomarker_choices_per_pathology": {
+      "ACS": 1,
+      "Peri/Myo": 1,
+      "AoD": 1,
+      "AHF": 1,
+      "PE": 1
+    }
+  },
+  {
+    "threshold": 0.9,
+    "n_coverable": 5,
+    "n_feasible_panels": 16,
+    "min_panel_size": 4,
+    "n_optimal_panels": 1,
+    "choice_nontrivial": false,
+    "optimal_panels": [
+      [
+        "CRP",
+        "D-dimer",
+        "NT-proBNP",
+        "hs-cTnI"
+      ]
+    ],
+    "biomarker_choices_per_pathology": {
+      "ACS": 1,
+      "Peri/Myo": 1,
+      "AoD": 1,
+      "AHF": 1,
+      "PE": 1
+    }
+  },
+  {
+    "threshold": 0.92,
+    "n_coverable": 5,
+    "n_feasible_panels": 16,
+    "min_panel_size": 4,
+    "n_optimal_panels": 1,
+    "choice_nontrivial": false,
+    "optimal_panels": [
+      [
+        "CRP",
+        "D-dimer",
+        "NT-proBNP",
+        "hs-cTnI"
+      ]
+    ],
+    "biomarker_choices_per_pathology": {
+      "ACS": 1,
+      "Peri/Myo": 1,
+      "AoD": 1,
+      "AHF": 1,
+      "PE": 1
+    }
+  },
+  {
+    "threshold": 0.95,
+    "n_coverable": 4,
+    "n_feasible_panels": 32,
+    "min_panel_size": 3,
+    "n_optimal_panels": 1,
+    "choice_nontrivial": false,
+    "optimal_panels": [
+      [
+        "D-dimer",
+        "NT-proBNP",
+        "hs-cTnI"
+      ]
+    ],
+    "biomarker_choices_per_pathology": {
+      "ACS": 1,
+      "AoD": 1,
+      "AHF": 1,
+      "PE": 1
+    }
+  }
+]

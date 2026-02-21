@@ -1,0 +1,7 @@
+,hs-cTnI,D-dimer,NT-proBNP,CRP,Copeptin,H-FABP,Myoglobin,Procalcitonin
+ACS (STEMI/NSTEMI/UA),0.95,0.38,0.6,0.5,0.85,0.84,0.75,0.15
+Pulmonary Embolism,0.45,0.95,0.6,0.65,0.55,0.48,0.3,0.35
+Aortic Dissection,0.28,0.97,0.45,0.72,0.68,0.25,0.3,0.2
+Pericarditis / Myocarditis,0.82,0.35,0.7,0.92,0.55,0.68,0.58,0.4
+Pneumothorax (tension),0.1,0.15,0.2,0.15,0.3,0.05,0.08,0.1
+Acute Heart Failure,0.68,0.6,0.95,0.55,0.78,0.55,0.4,0.3

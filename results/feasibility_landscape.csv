@@ -1,0 +1,10 @@
+threshold,n_coverable,n_feasible_panels,min_panel_size,n_optimal_panels,choice_nontrivial
+0.7,5,84,3,6,True
+0.75,5,70,3,3,True
+0.8,5,44,3,1,False
+0.82,5,44,3,1,False
+0.85,5,24,4,2,True
+0.87,5,16,4,1,False
+0.9,5,16,4,1,False
+0.92,5,16,4,1,False
+0.95,4,32,3,1,False

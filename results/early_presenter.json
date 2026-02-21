@@ -1,0 +1,31 @@
+{
+  "tau": 0.9,
+  "standard": {
+    "panel": [
+      "CRP",
+      "D-dimer",
+      "NT-proBNP",
+      "hs-cTnI"
+    ],
+    "size": 4,
+    "coverage": 0.8333333333333334,
+    "cost_eur": 36.0,
+    "worst_case_sensitivity": 0.2
+  },
+  "early_presenter": {
+    "panel": [
+      "CRP",
+      "D-dimer",
+      "NT-proBNP"
+    ],
+    "size": 3,
+    "coverage": 0.6666666666666666,
+    "cost_eur": 26.0,
+    "worst_case_sensitivity": 0.2
+  },
+  "panel_changed": true,
+  "new_markers_needed": [],
+  "markers_removed": [
+    "hs-cTnI"
+  ]
+}

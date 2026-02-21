@@ -1,0 +1,267 @@
+{
+  "tau": 0.9,
+  "n_random_samples": 500,
+  "random_panel_frequency": [
+    {
+      "panel": [
+        "CRP",
+        "D-dimer",
+        "NT-proBNP",
+        "hs-cTnI"
+      ],
+      "count": 500,
+      "frequency": 1.0
+    }
+  ],
+  "dominant_panel": [
+    "CRP",
+    "D-dimer",
+    "NT-proBNP",
+    "hs-cTnI"
+  ],
+  "dominant_fraction": 1.0,
+  "weights_irrelevant": true,
+  "grid_sweep": [
+    {
+      "w_cost": 0.0,
+      "w_time": 0.0,
+      "panel": [
+        "CRP",
+        "D-dimer",
+        "NT-proBNP",
+        "hs-cTnI"
+      ],
+      "size": 4,
+      "cost_eur": 36.0
+    },
+    {
+      "w_cost": 0.0,
+      "w_time": 0.01,
+      "panel": [
+        "CRP",
+        "D-dimer",
+        "NT-proBNP",
+        "hs-cTnI"
+      ],
+      "size": 4,
+      "cost_eur": 36.0
+    },
+    {
+      "w_cost": 0.0,
+      "w_time": 0.1,
+      "panel": [
+        "CRP",
+        "D-dimer",
+        "NT-proBNP",
+        "hs-cTnI"
+      ],
+      "size": 4,
+      "cost_eur": 36.0
+    },
+    {
+      "w_cost": 0.0,
+      "w_time": 1.0,
+      "panel": [
+        "CRP",
+        "D-dimer",
+        "NT-proBNP",
+        "hs-cTnI"
+      ],
+      "size": 4,
+      "cost_eur": 36.0
+    },
+    {
+      "w_cost": 0.0,
+      "w_time": 10.0,
+      "panel": [
+        "CRP",
+        "D-dimer",
+        "NT-proBNP",
+        "hs-cTnI"
+      ],
+      "size": 4,
+      "cost_eur": 36.0
+    },
+    {
+      "w_cost": 0.0,
+      "w_time": 100.0,
+      "panel": [
+        "CRP",
+        "D-dimer",
+        "NT-proBNP",
+        "hs-cTnI"
+      ],
+      "size": 4,
+      "cost_eur": 36.0
+    },
+    {
+      "w_cost": 0.01,
+      "w_time": 0.0,
+      "panel": [
+        "CRP",
+        "D-dimer",
+        "NT-proBNP",
+        "hs-cTnI"
+      ],
+      "size": 4,
+      "cost_eur": 36.0
+    },
+    {
+      "w_cost": 0.01,
+      "w_time": 0.01,
+      "panel": [
+        "CRP",
+        "D-dimer",
+        "NT-proBNP",
+        "hs-cTnI"
+      ],
+      "size": 4,
+      "cost_eur": 36.0
+    },
+    {
+      "w_cost": 0.01,
+      "w_time": 0.1,
+      "panel": [
+        "CRP",
+        "D-dimer",
+        "NT-proBNP",
+        "hs-cTnI"
+      ],
+      "size": 4,
+      "cost_eur": 36.0
+    },
+    {
+      "w_cost": 0.01,
+      "w_time": 1.0,
+      "panel": [
+        "CRP",
+        "D-dimer",
+        "NT-proBNP",
+        "hs-cTnI"
+      ],
+      "size": 4,
+      "cost_eur": 36.0
+    },
+    {
+      "w_cost": 0.01,
+      "w_time": 10.0,
+      "panel": [
+        "CRP",
+        "D-dimer",
+        "NT-proBNP",
+        "hs-cTnI"
+      ],
+      "size": 4,
+      "cost_eur": 36.0
+    },
+    {
+      "w_cost": 0.01,
+      "w_time": 100.0,
+      "panel": [
+        "CRP",
+        "D-dimer",
+        "NT-proBNP",
+        "hs-cTnI"
+      ],
+      "size": 4,
+      "cost_eur": 36.0
+    },
+    {
+      "w_cost": 0.1,
+      "w_time": 0.0,
+      "panel": [
+        "CRP",
+        "D-dimer",
+        "NT-proBNP",
+        "hs-cTnI"
+      ],
+      "size": 4,
+      "cost_eur": 36.0
+    },
+    {
+      "w_cost": 0.1,
+      "w_time": 0.01,
+      "panel": [
+        "CRP",
+        "D-dimer",
+        "NT-proBNP",
+        "hs-cTnI"
+      ],
+      "size": 4,
+      "cost_eur": 36.0
+    },
+    {
+      "w_cost": 0.1,
+      "w_time": 0.1,
+      "panel": [
+        "CRP",
+        "D-dimer",
+        "NT-proBNP",
+        "hs-cTnI"
+      ],
+      "size": 4,
+      "cost_eur": 36.0
+    },
+    {
+      "w_cost": 0.1,
+      "w_time": 1.0,
+      "panel": [
+        "CRP",
+        "D-dimer",
+        "NT-proBNP",
+        "hs-cTnI"
+      ],
+      "size": 4,
+      "cost_eur": 36.0
+    },
+    {
+      "w_cost": 0.1,
+      "w_time": 10.0,
+      "panel": [
+        "CRP",
+        "D-dimer",
+        "NT-proBNP",
+        "hs-cTnI"
+      ],
+      "size": 4,
+      "cost_eur": 36.0
+    },
+    {
+      "w_cost": 0.1,
+      "w_time": 100.0,
+      "panel": [
+        "CRP",
+        "D-dimer",
+        "NT-proBNP",
+        "hs-cTnI"
+      ],
+      "size": 4,
+      "cost_eur": 36.0
+    },
+    {
+      "w_cost": 1.0,
+      "w_time": 0.0,
+      "panel": [
+        "CRP",
+        "D-dimer",
+        "NT-proBNP",
+        "hs-cTnI"
+      ],
+      "size": 4,
+      "cost_eur": 36.0
+    },
+    {
+      "w_cost": 1.0,
+      "w_time": 0.01,
+      "panel": [
+        "CRP",
+        "D-dimer",
+        "NT-proBNP",
+        "hs-cTnI"
+      ],
+      "size": 4,
+      "cost_eur": 36.0
+    }
+  ],
+  "n_unique_grid_panels": 1
+}

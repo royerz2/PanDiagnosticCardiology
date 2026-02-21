@@ -1,0 +1,9 @@
+panel_size,best_panel,coverage,marginal_coverage_gain,cost_eur,pathologies_covered
+1,D-dimer,0.3333333333333333,0.3333333333333333,7.0,2
+2,"CRP, D-dimer",0.5,0.16666666666666669,12.0,3
+3,"CRP, D-dimer, hs-cTnI",0.6666666666666666,0.16666666666666663,22.0,4
+4,"CRP, D-dimer, NT-proBNP, hs-cTnI",0.8333333333333334,0.16666666666666674,36.0,5
+5,"CRP, D-dimer, Myoglobin, NT-proBNP, hs-cTnI",0.8333333333333334,0.0,42.5,5
+6,"CRP, D-dimer, H-FABP, Myoglobin, NT-proBNP, hs-cTnI",0.8333333333333334,0.0,50.5,5
+7,"CRP, Copeptin, D-dimer, H-FABP, Myoglobin, NT-proBNP, hs-cTnI",0.8333333333333334,0.0,68.0,5
+8,"CRP, Copeptin, D-dimer, H-FABP, Myoglobin, NT-proBNP, Procalcitonin, hs-cTnI",0.8333333333333334,0.0,89.0,5

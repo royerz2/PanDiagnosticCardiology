@@ -1,0 +1,49 @@
+{
+  "n_bootstrap": 1000,
+  "tau": 0.9,
+  "panel_frequency": [
+    {
+      "panel": [
+        "CRP",
+        "D-dimer"
+      ],
+      "count": 781,
+      "frequency": 0.781
+    },
+    {
+      "panel": [
+        "D-dimer",
+        "hs-cTnI"
+      ],
+      "count": 216,
+      "frequency": 0.216
+    },
+    {
+      "panel": [
+        "D-dimer",
+        "H-FABP"
+      ],
+      "count": 3,
+      "frequency": 0.003
+    }
+  ],
+  "biomarker_inclusion_rate": {
+    "hs-cTnI": 0.216,
+    "D-dimer": 1.0,
+    "NT-proBNP": 0.0,
+    "CRP": 0.781,
+    "Copeptin": 0.0,
+    "H-FABP": 0.003,
+    "Myoglobin": 0.0,
+    "Procalcitonin": 0.0
+  },
+  "panel_size_mean": 2.0,
+  "panel_size_std": 0.0,
+  "coverage_mean": 0.5,
+  "coverage_std": 0.0,
+  "most_stable_panel": [
+    "CRP",
+    "D-dimer"
+  ],
+  "stability_score": 0.781
+}

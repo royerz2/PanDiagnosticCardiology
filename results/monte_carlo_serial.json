@@ -1,0 +1,59 @@
+{
+  "n_samples": 2000,
+  "panel": [
+    "CRP",
+    "D-dimer",
+    "NT-proBNP",
+    "hs-cTnI"
+  ],
+  "tau": 0.9,
+  "protocol_time_points": [
+    0.0,
+    1.0,
+    3.0
+  ],
+  "cumulative_coverage": {
+    "mean": 0.8001666666666667,
+    "std": 0.06654134053353601,
+    "ci_2.5": 0.6666666666666666,
+    "ci_97.5": 0.8333333333333334
+  },
+  "per_timepoint": {
+    "0.0h": {
+      "cumulative_coverage_mean": 0.63925,
+      "cumulative_coverage_ci": [
+        0.5,
+        0.8333333333333334
+      ],
+      "fraction_needing_serial_mean": 0.36075,
+      "fraction_needing_serial_ci": [
+        0.16666666666666663,
+        0.5
+      ]
+    },
+    "1.0h": {
+      "cumulative_coverage_mean": 0.7980000000000002,
+      "cumulative_coverage_ci": [
+        0.6666666666666666,
+        0.8333333333333334
+      ],
+      "fraction_needing_serial_mean": 0.20199999999999993,
+      "fraction_needing_serial_ci": [
+        0.16666666666666663,
+        0.33333333333333337
+      ]
+    },
+    "3.0h": {
+      "cumulative_coverage_mean": 0.8001666666666667,
+      "cumulative_coverage_ci": [
+        0.6666666666666666,
+        0.8333333333333334
+      ],
+      "fraction_needing_serial_mean": 0.19983333333333328,
+      "fraction_needing_serial_ci": [
+        0.16666666666666663,
+        0.33333333333333337
+      ]
+    }
+  }
+}

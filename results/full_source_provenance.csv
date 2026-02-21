@@ -1,0 +1,49 @@
+pathology,biomarker,sensitivity,sens_ci_lower,sens_ci_upper,sens_source,sens_reference_quality,sens_setting,specificity,spec_ci_lower,spec_ci_upper,spec_source,spec_reference_quality
+ACS,hs-cTnI,0.95,0.93,0.97,Lipinski 2015 [4]; pooled hs-cTn for AMI,bib_verified,ED,0.54,0.47,0.61,Lipinski 2015; hs-cTn pooled,unverified_citation
+ACS,D-dimer,0.38,0.28,0.49,Expert estimate; non-specific D-dimer elevation in ACS,expert_estimate,ED,0.45,0.38,0.52,Non-specific; elevated in many conditions,unverified_citation
+ACS,NT-proBNP,0.6,0.52,0.68,Expert estimate; NT-proBNP elevated in ACS with LV dysfunction,expert_estimate,ED,0.6,0.52,0.68,Cross-reactivity with HF/PE,unverified_citation
+ACS,CRP,0.5,0.4,0.6,Expert estimate; non-specific inflammatory marker in ACS,expert_estimate,ED,0.4,0.32,0.48,Non-specific inflammatory marker,unverified_citation
+ACS,Copeptin,0.85,0.79,0.9,Keller 2011 [6]; Raskovalova 2013 [8]; pooled for AMI,bib_verified,ED,0.75,0.7,0.8,Keller 2011; Raskovalova 2013,unverified_citation
+ACS,H-FABP,0.84,0.78,0.89,"Bruins Slot 2010, Heart 96(24):1957; pooled for AMI <6h",unverified_citation,ED,0.78,0.72,0.84,Body 2015; pooled,unverified_citation
+ACS,Myoglobin,0.75,0.65,0.83,Lipinski 2015 [4]; pooled for AMI,bib_verified,ED,0.5,0.42,0.58,Low specificity; muscle damage,unverified_citation
+ACS,Procalcitonin,0.15,0.08,0.24,Crawford 2019 [10]; minimal elevation in ACS,bib_verified,ED,0.85,0.78,0.92,"Low sensitivity, high specificity for ACS",unverified_citation
+PE,hs-cTnI,0.45,0.35,0.56,"Becattini 2007, Circulation 116(4):427; troponin in PE",unverified_citation,ED,0.6,0.52,0.68,Moderately elevated in PE,unverified_citation
+PE,D-dimer,0.95,0.93,0.97,Geersing 2012 [5]; pooled for PE,bib_verified,ED,0.42,0.38,0.46,Geersing 2012; low specificity,unverified_citation
+PE,NT-proBNP,0.6,0.49,0.7,"Klok 2008, Am J Respir Crit Care Med 178(4):425; RV strain marker",unverified_citation,ED,0.55,0.48,0.62,Elevated in RV strain,unverified_citation
+PE,CRP,0.65,0.53,0.76,"Abul 2011, J Invest Med 59(8):1268; CRP in PE",unverified_citation,ED,0.35,0.28,0.42,Non-specific for PE,unverified_citation
+PE,Copeptin,0.55,0.4,0.69,"Hellenkamp 2015, Eur J Heart Fail 17(2):119",unverified_citation,ED,0.7,0.62,0.78,Limited data for PE,unverified_citation
+PE,H-FABP,0.48,0.35,0.61,"Puls 2007, Eur Heart J 28(2):224",unverified_citation,ED,0.75,0.68,0.82,Some cross-reactivity,unverified_citation
+PE,Myoglobin,0.3,0.18,0.44,Expert estimate; no PE-specific myoglobin meta-analysis,expert_estimate,ED,0.6,0.52,0.68,Limited data,unverified_citation
+PE,Procalcitonin,0.35,0.22,0.5,"Kokturk 2011, Clin Appl Thromb Hemost 17(5):E1; modest elevation in PE",unverified_citation,ED,0.8,0.72,0.88,Limited data for PE,unverified_citation
+AoD,hs-cTnI,0.28,0.18,0.4,"Vrsalovic 2016, Int J Cardiol 215:261; troponin meta-analysis in AoD",unverified_citation,ED,0.65,0.56,0.74,May be elevated in type A,unverified_citation
+AoD,D-dimer,0.97,0.94,0.99,Nazerian 2018 [Circulation]; Sodeck 2007; pooled,bib_verified,ED,0.47,0.4,0.54,Chen 2023; pooled specificity,unverified_citation
+AoD,NT-proBNP,0.45,0.32,0.59,Expert estimate; limited data on NT-proBNP in aortic dissection,expert_estimate,ED,0.55,0.46,0.64,Non-specific for AoD,unverified_citation
+AoD,CRP,0.72,0.58,0.83,"Schillinger 2002, Intensive Care Med 28(9):1305; vascular inflammation",unverified_citation,ED,0.3,0.22,0.38,Non-specific inflammation,unverified_citation
+AoD,Copeptin,0.68,0.52,0.81,"Morello 2018, Sci Rep 8:5137; copeptin stress response in AoD",unverified_citation,ED,0.6,0.5,0.7,Limited data,unverified_citation
+AoD,H-FABP,0.25,0.12,0.42,Expert estimate; no dissection-specific H-FABP study,expert_estimate,ED,0.8,0.72,0.88,Limited data,unverified_citation
+AoD,Myoglobin,0.3,0.16,0.47,Expert estimate; no dissection-specific myoglobin study,expert_estimate,ED,0.65,0.55,0.75,Limited data,unverified_citation
+AoD,Procalcitonin,0.2,0.09,0.36,Expert estimate; no dissection-specific PCT study,expert_estimate,ED,0.75,0.65,0.85,Limited data,unverified_citation
+Peri/Myo,hs-cTnI,0.82,0.73,0.89,"Caforio 2013, Eur Heart J 34(33):2636; ESC myocarditis guidelines",unverified_citation,ED,0.5,0.42,0.58,Elevated in myocarditis,unverified_citation
+Peri/Myo,D-dimer,0.35,0.22,0.5,Expert estimate; no pericarditis-specific D-dimer study,expert_estimate,ED,0.55,0.47,0.63,Mildly elevated,unverified_citation
+Peri/Myo,NT-proBNP,0.7,0.58,0.8,"Caforio 2013, Eur Heart J 34(33):2636; myocardial wall stress",unverified_citation,ED,0.5,0.42,0.58,Elevated with effusion,unverified_citation
+Peri/Myo,CRP,0.92,0.86,0.96,Imazio 2011 [Circulation]; CRP in acute pericarditis,bib_verified,ED,0.38,0.3,0.46,Imazio 2011; CRP non-specific,unverified_citation
+Peri/Myo,Copeptin,0.55,0.39,0.7,"Expert estimate; stress-mediated release, no pericarditis copeptin meta-analysis",expert_estimate,ED,0.65,0.55,0.75,Limited data,unverified_citation
+Peri/Myo,H-FABP,0.68,0.54,0.8,"Cui 2025, Int Heart J 66(1):88; H-FABP in myocarditis",unverified_citation,ED,0.7,0.62,0.78,Some elevation,unverified_citation
+Peri/Myo,Myoglobin,0.58,0.43,0.72,"Expert estimate; early myocardial release, no pericarditis myoglobin meta-analysis",expert_estimate,ED,0.55,0.45,0.65,Muscle damage marker,unverified_citation
+Peri/Myo,Procalcitonin,0.4,0.26,0.55,Crawford 2019 [10]; elevated if bacterial etiology,bib_verified,ED,0.72,0.64,0.8,Bacterial vs viral,unverified_citation
+PTX,hs-cTnI,0.1,0.03,0.22,Expert estimate from case reports; hemodynamic compromise may cause rise,expert_estimate,ED,0.9,0.85,0.95,Not elevated in PTX,unverified_citation
+PTX,D-dimer,0.15,0.05,0.3,Expert estimate; no pneumothorax-specific D-dimer study,expert_estimate,ED,0.8,0.72,0.88,May be mildly elevated,unverified_citation
+PTX,NT-proBNP,0.2,0.08,0.38,Expert estimate from case series; secondary RV strain possible,expert_estimate,ED,0.85,0.78,0.92,Not typically elevated,unverified_citation
+PTX,CRP,0.15,0.05,0.3,Expert estimate; CRP not elevated acutely in pneumothorax,expert_estimate,ED,0.7,0.62,0.78,Mild inflammatory response,unverified_citation
+PTX,Copeptin,0.3,0.14,0.5,"Expert estimate; stress-response biomarker, no PTX copeptin study",expert_estimate,ED,0.65,0.55,0.75,Stress response,unverified_citation
+PTX,H-FABP,0.05,0.01,0.18,Expert estimate; no myocardial injury expected in PTX,expert_estimate,ED,0.9,0.85,0.95,Not elevated,unverified_citation
+PTX,Myoglobin,0.08,0.02,0.22,Expert estimate; no myocardial injury expected in PTX,expert_estimate,ED,0.85,0.78,0.92,Not elevated,unverified_citation
+PTX,Procalcitonin,0.1,0.03,0.25,Expert estimate; PCT not relevant for pneumothorax,expert_estimate,ED,0.88,0.82,0.94,Not elevated,unverified_citation
+AHF,hs-cTnI,0.68,0.58,0.77,"Felker 2015, Eur J Heart Fail 17(9):949; chronic myocyte damage",unverified_citation,ED,0.55,0.47,0.63,Elevated in cardiomyopathy,unverified_citation
+AHF,D-dimer,0.6,0.48,0.71,"Zorlu 2012, J Thromb Thrombolysis 33(2):159; stasis",unverified_citation,ED,0.4,0.32,0.48,Elevated in HF,unverified_citation
+AHF,NT-proBNP,0.95,0.93,0.97,Maisel 2002 [NEJM]; BNP Breathing Not Properly Study,bib_verified,ED,0.76,0.72,0.8,Maisel 2002; BNP study,unverified_citation
+AHF,CRP,0.55,0.42,0.67,"Windram 2007, Am Heart J 153(2):196; CRP in HF (prognostic, not diagnostic)",unverified_citation,ED,0.4,0.32,0.48,Non-specific,unverified_citation
+AHF,Copeptin,0.78,0.67,0.87,Demissei 2017; Peacock 2011; stress & fluid overload,unverified_citation,ED,0.55,0.45,0.65,Stress-related elevation,unverified_citation
+AHF,H-FABP,0.55,0.42,0.67,"Niizeki 2007, J Card Fail 13(7):549; H-FABP in HF",unverified_citation,ED,0.7,0.62,0.78,Some myocardial leakage,unverified_citation
+AHF,Myoglobin,0.4,0.28,0.53,Expert estimate; no heart-failure-specific myoglobin study,expert_estimate,ED,0.6,0.5,0.7,Non-specific,unverified_citation
+AHF,Procalcitonin,0.3,0.18,0.44,Expert estimate; PCT modestly elevated in HF via endotoxin translocation,expert_estimate,ED,0.8,0.72,0.88,Not elevated in HF,unverified_citation
