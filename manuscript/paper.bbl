@@ -262,6 +262,42 @@ Alan Maisel, Christian Mueller, Richard~M. Nowak, W.~Frank Peacock, Piotr
 \newblock Kosteneffectiviteit in de praktijk, 2024.
 \newblock Accessed 2024-12-01.
 
+\bibitem{GreenSwets1966}
+D.~M. Green and J.~A. Swets.
+\newblock {\em Signal Detection Theory and Psychophysics}.
+\newblock Wiley, 1966.
+
+\bibitem{Zhou2011}
+X.-H. Zhou, N.~A. Obuchowski, and D.~K. McClish.
+\newblock {\em Statistical Methods in Diagnostic Medicine}.
+\newblock Wiley, 2 edition, 2011.
+
+\bibitem{Jaeschke1994}
+R.~Jaeschke, G.~H. Guyatt, and D.~L. Sackett.
+\newblock Users' guides to the medical literature. {III}. {How} to use an
+  article about a diagnostic test. {B}. {What} are the results and will they
+  help me in caring for my patients?
+\newblock {\em JAMA}, 271(9):703--707, 1994.
+
+\bibitem{Deeks2004}
+J.~J. Deeks and D.~G. Altman.
+\newblock Diagnostic tests 4: likelihood ratios.
+\newblock {\em BMJ}, 329(7458):168--169, 2004.
+
+\bibitem{Adler2015}
+Y.~Adler, P.~Charron, M.~Imazio, L.~Badano, G.~Baro{\'n}-Esquivias, J.~Bogaert,
+  A.~Brucato, H.~Bueno, R.~Carmena, et~al.
+\newblock 2015 {ESC} guidelines for the diagnosis and management of pericardial
+  diseases.
+\newblock {\em European Heart Journal}, 36(42):2921--2964, 2015.
+
+\bibitem{McDonagh2021}
+T.~A. McDonagh, M.~Metra, M.~Adamo, R.~S. Gardner, A.~Baumbach, M.~B{\"o}hm,
+  H.~Burri, J.~Butler, J.~\v{C}elutkien{\.e}, et~al.
+\newblock 2021 {ESC} guidelines for the diagnosis and treatment of acute and
+  chronic heart failure.
+\newblock {\em European Heart Journal}, 42(36):3599--3726, 2021.
+
 \bibitem{Grzywalski2019}
 Tomasz Grzywalski, Mateusz Piecuch, Maciej Szajek, Anna Bryk, Honorata
   Kociolek, Anna Czajkowska, Marta Jedrychowska, and Robert Sander.
@@ -369,42 +405,6 @@ R.~Erzurumluoğlu.
 \newblock {ALIN} framework: Computational hypothesis generation for tri-axial
   combination therapy across cancer types.
 \newblock Preprint, 2026.
-
-\bibitem{Jaeschke1994}
-R.~Jaeschke, G.~H. Guyatt, and D.~L. Sackett.
-\newblock Users' guides to the medical literature. {III}. {How} to use an
-  article about a diagnostic test. {B}. {What} are the results and will they
-  help me in caring for my patients?
-\newblock {\em JAMA}, 271(9):703--707, 1994.
-
-\bibitem{Deeks2004}
-J.~J. Deeks and D.~G. Altman.
-\newblock Diagnostic tests 4: likelihood ratios.
-\newblock {\em BMJ}, 329(7458):168--169, 2004.
-
-\bibitem{GreenSwets1966}
-D.~M. Green and J.~A. Swets.
-\newblock {\em Signal Detection Theory and Psychophysics}.
-\newblock Wiley, 1966.
-
-\bibitem{Zhou2011}
-X.-H. Zhou, N.~A. Obuchowski, and D.~K. McClish.
-\newblock {\em Statistical Methods in Diagnostic Medicine}.
-\newblock Wiley, 2 edition, 2011.
-
-\bibitem{Adler2015}
-Y.~Adler, P.~Charron, M.~Imazio, L.~Badano, G.~Baro{\'n}-Esquivias, J.~Bogaert,
-  A.~Brucato, H.~Bueno, R.~Carmena, et~al.
-\newblock 2015 {ESC} guidelines for the diagnosis and management of pericardial
-  diseases.
-\newblock {\em European Heart Journal}, 36(42):2921--2964, 2015.
-
-\bibitem{McDonagh2021}
-T.~A. McDonagh, M.~Metra, M.~Adamo, R.~S. Gardner, A.~Baumbach, M.~B{\"o}hm,
-  H.~Burri, J.~Butler, J.~\v{C}elutkien{\.e}, et~al.
-\newblock 2021 {ESC} guidelines for the diagnosis and treatment of acute and
-  chronic heart failure.
-\newblock {\em European Heart Journal}, 42(36):3599--3726, 2021.
 
 \bibitem{Body2015}
 R.~Body, G.~Burrows, S.~Carley, L.~Cullen, M.~Than, A.~S. Jaffe, and J.~French.

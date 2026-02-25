@@ -1,7 +1,7 @@
 # Reproducibility Note (PanDiagnosticCardiology)
 
 ## Scope
-This bundle contains the frozen manuscript PDFs and core result artifacts after integrating Step 18 (SISTER ACT score + AI e-stethoscope) into the full pipeline.
+This bundle contains the frozen manuscript PDFs and core result artifacts after integrating all 22 pipeline steps, including the quantitative likelihood-ratio interpretation and pathology-directed management analysis.
 
 ## Environment
 - OS: macOS
@@ -24,30 +24,50 @@ pdflatex -interaction=nonstopmode paper.tex
 pdflatex -interaction=nonstopmode paper.tex
 ```
 
-3. Cheatsheet PDF render
+3. Full test suite
 ```bash
 cd /Users/royerzurumloglu/PanDiagnosticCardiology
-pdflatex -interaction=nonstopmode CHEATSHEET.tex
+python -m pytest test_pipeline.py -v
 ```
 
-## Key refreshed outputs in this bundle
-- `paper.pdf`
-- `CHEATSHEET.pdf`
-- `sister_act_score.json`
-- `serial_testing_protocols.json`
-- `monte_carlo_ci.json`
-- `clinical_utility.json`
-- `approach_comparison.csv`
-- `dutch_patient_flow.json`
+## Pipeline steps (22 total)
+1. Coverage matrix construction
+2. Set-cover optimisation (ILP)
+3. Marginal value analysis
+4. Current approach comparison
+5. Pareto frontier
+6. Ablation analysis
+7. Threshold sensitivity
+8. Bootstrap robustness (n=1000)
+9. Early presenter subgroup
+10. Weight sensitivity
+11. Feasibility landscape
+12. Clinical utility scoring
+13. Full source provenance
+14. Monte Carlo CI propagation (n=5000)
+15. Copeptin threshold analysis
+16. Serial testing & HEAR score
+17. Publication figures (11 panels)
+18. SISTER ACT score & AI e-stethoscope
+19. Biomarker correlation & copula dependence
+20. Extended biomarker pool (12 biomarkers)
+21. Health-economic analysis (ICER, PSA, CEAC)
+22. Quantitative LR interpretation & pathology-directed management
 
-## Key Step 18 headline metrics (from `sister_act_score.json`)
-- Extended coverage: 5/6 (83%) -> 6/6 (100%) with AI e-stethoscope
-- SISTER ACT sensitivity: 97.7%
-- SISTER ACT specificity: 70.0%
-- Low-tier NPV: 0.9955
-- Referral rate: 38.2%
-- Missed serious pathology: 2.8 per 1,000
-- PTX sensitivity: 14.3% (biomarker-only) -> 95.9% (SISTER ACT)
+## Key result files
+- `paper_snapshot.tex` — Frozen manuscript (31 pages)
+- `refs_snapshot.bib` — Frozen bibliography
+- `sister_act_score.json` — SISTER ACT CDR simulation
+- `serial_testing_protocols.json` — Sequential testing results
+- `monte_carlo_ci.json` — Monte Carlo CIs
+- `clinical_utility.json` — Clinical utility metrics
+- `approach_comparison.csv` — Strategy comparison table
+- `dutch_patient_flow.json` — Dutch GP patient flow model
+- `quantitative_interpretation.json` — Quantitative LR analysis
+
+## Test suite
+- 93 automated tests covering all modules
+- Run with: `pytest test_pipeline.py -v`
 
 ## Notes
 - The integration in `run_pipeline.py` now runs Step 18 successfully in the full pipeline.

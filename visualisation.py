@@ -8,7 +8,11 @@ Generates all figures for the manuscript:
   Fig 4: Ablation impact
   Fig 5: Bootstrap stability
   Fig 6: Threshold sensitivity
-  (Fig 7 removed — triaxial was an ALIN artefact, not part of the MHS formulation)
+  Fig 7: Biomarker kinetics (serial testing)
+  Fig 8: Serial protocol comparison
+  Fig 9: Sensitivity–FP trade-off (quantitative LR)
+  Fig 10: Cost-effectiveness plane & CEAC
+  Fig 11: Copula correlation & FP decomposition
 """
 
 import os
@@ -470,6 +474,214 @@ def fig8_serial_protocol_comparison():
     print(f"  Saved fig8_serial_protocols.pdf/png")
 
 
+def fig9_sensitivity_fp_tradeoff():
+    """Figure 9: Sensitivity vs FP trade-off curve for quantitative LR interpretation."""
+    results_path = os.path.join(os.path.dirname(__file__), "results", "quantitative_interpretation.json")
+    if not os.path.exists(results_path):
+        from quantitative_panel_interpretation import run_full_analysis
+        results = run_full_analysis(n_healthy=200_000, n_disease=50_000)
+        os.makedirs(os.path.dirname(results_path), exist_ok=True)
+        import json
+        with open(results_path, 'w') as f:
+            json.dump(results, f, indent=2, default=lambda o: float(o) if hasattr(o, 'item') else str(o))
+    else:
+        import json
+        with open(results_path) as f:
+            results = json.load(f)
+
+    sweep = results['sensitivity_fp_tradeoff']
+    sens_vals = [s['target_sensitivity'] for s in sweep]
+    fp_any_cop = [s['any_pathology_fp_copula'] for s in sweep]
+    fp_ed_cop = [s['ed_only_fp_copula'] for s in sweep]
+    fp_any_ind = [s['any_pathology_fp_indep'] for s in sweep]
+
+    fig, ax = plt.subplots(figsize=(8, 5))
+
+    ax.plot(
+        [s * 100 for s in sens_vals], [f * 100 for f in fp_any_ind],
+        'o--', color=COLORS['reference'], linewidth=1.5, markersize=6,
+        label='Any pathology (independent)', alpha=0.6,
+    )
+    ax.plot(
+        [s * 100 for s in sens_vals], [f * 100 for f in fp_any_cop],
+        's-', color=COLORS['primary'], linewidth=2, markersize=7,
+        label='Any pathology (copula)',
+    )
+    ax.plot(
+        [s * 100 for s in sens_vals], [f * 100 for f in fp_ed_cop],
+        'D-', color=COLORS['secondary'], linewidth=2, markersize=7,
+        label='ED-only (copula)',
+    )
+
+    # Reference line: binary OR
+    binary_fp = results['binary_or_rule']['panel_fp_rate'] * 100
+    ax.axhline(binary_fp, color='gray', linestyle=':', linewidth=1, alpha=0.7)
+    ax.text(81, binary_fp + 1.5, f'Binary OR: {binary_fp:.1f}%',
+            fontsize=9, color='gray', style='italic')
+
+    # Working points
+    ax.axvline(95, color=COLORS['tertiary'], linestyle='--', linewidth=1, alpha=0.5)
+    ax.text(95.3, 25, '95% target', fontsize=9, color=COLORS['tertiary'], rotation=90)
+
+    ax.set_xlabel('Per-pathology sensitivity target (%)', fontsize=12)
+    ax.set_ylabel('Panel-level false-positive rate (%)', fontsize=12)
+    ax.set_title('Sensitivity–FP Trade-off: Quantitative LR Interpretation', fontsize=13, fontweight='bold')
+    ax.legend(loc='upper left', framealpha=0.9)
+    ax.set_xlim(78, 100)
+    ax.set_ylim(20, 100)
+    ax.grid(True, alpha=0.3)
+
+    plt.tight_layout()
+    for ext in ['pdf', 'png']:
+        fig.savefig(os.path.join(FIGURE_DIR, f"fig9_sensitivity_fp_tradeoff.{ext}"), dpi=300)
+    plt.close(fig)
+    print(f"  Saved fig9_sensitivity_fp_tradeoff.pdf/png")
+
+
+def fig10_cost_effectiveness_plane():
+    """Figure 10: Cost-effectiveness plane + CEAC from health-economic PSA."""
+    results_path = os.path.join(os.path.dirname(__file__), "results", "health_economics.json")
+    if not os.path.exists(results_path):
+        print("  [SKIP] health_economics.json not found — run pipeline first")
+        return
+
+    import json
+    with open(results_path) as f:
+        he = json.load(f)
+
+    psa = he.get('psa', {})
+    ceac = psa.get('ceac', {})
+    scatter = psa.get('scatter_data', {})
+
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 5))
+
+    # Panel A: CE Plane
+    if scatter:
+        for strategy_key, label, color in [
+            ('panel_vs_current', 'Optimal Panel vs Current', COLORS['primary']),
+            ('sister_act_vs_current', 'SISTER ACT vs Current', COLORS['secondary']),
+        ]:
+            if strategy_key in scatter:
+                d_cost = scatter[strategy_key].get('delta_costs', [])
+                d_qaly = scatter[strategy_key].get('delta_qalys', [])
+                if d_cost and d_qaly:
+                    ax1.scatter(d_qaly, d_cost, alpha=0.15, s=8, color=color, label=label)
+
+        ax1.axhline(0, color='black', linewidth=0.5)
+        ax1.axvline(0, color='black', linewidth=0.5)
+        ax1.set_xlabel(r'$\Delta$ QALYs (per cohort)', fontsize=11)
+        ax1.set_ylabel(r'$\Delta$ Cost (\texteuro{} per cohort)', fontsize=11)
+        ax1.set_title('A. Cost-Effectiveness Plane', fontsize=12, fontweight='bold')
+        ax1.legend(fontsize=9)
+        ax1.grid(True, alpha=0.3)
+
+        # Quadrant labels
+        ax1.text(0.95, 0.95, 'More costly,\nmore effective', transform=ax1.transAxes,
+                 ha='right', va='top', fontsize=8, color='gray', alpha=0.6)
+        ax1.text(0.05, 0.05, 'Less costly,\nless effective', transform=ax1.transAxes,
+                 ha='left', va='bottom', fontsize=8, color='gray', alpha=0.6)
+        ax1.text(0.05, 0.95, 'More costly,\nless effective', transform=ax1.transAxes,
+                 ha='left', va='top', fontsize=8, color='gray', alpha=0.6)
+        ax1.text(0.95, 0.05, 'DOMINANT\n(cheaper + better)', transform=ax1.transAxes,
+                 ha='right', va='bottom', fontsize=9, color=COLORS['tertiary'],
+                 fontweight='bold', alpha=0.8)
+    else:
+        ax1.text(0.5, 0.5, 'Scatter data not available', transform=ax1.transAxes,
+                 ha='center', va='center')
+
+    # Panel B: CEAC
+    if ceac:
+        strategy_colors = {
+            'Current care (HEART + cTnI)': COLORS['reference'],
+            'Optimal 4-test panel': COLORS['primary'],
+            'SISTER ACT': COLORS['secondary'],
+        }
+        for strategy_name, wtp_dict in ceac.items():
+            wtps = sorted([int(w) for w in wtp_dict.keys()])
+            probs = [wtp_dict[str(w)] for w in wtps]
+            color = strategy_colors.get(strategy_name, 'gray')
+            ax2.plot(
+                [w / 1000 for w in wtps], probs,
+                '-', linewidth=2, color=color, label=strategy_name,
+            )
+
+        ax2.set_xlabel(r'Willingness-to-pay (k\texteuro{}/QALY)', fontsize=11)
+        ax2.set_ylabel('Probability cost-effective', fontsize=11)
+        ax2.set_title('B. Cost-Effectiveness Acceptability Curve', fontsize=12, fontweight='bold')
+        ax2.legend(fontsize=9, loc='center right')
+        ax2.set_ylim(-0.05, 1.05)
+        ax2.grid(True, alpha=0.3)
+    else:
+        ax2.text(0.5, 0.5, 'CEAC data not available', transform=ax2.transAxes,
+                 ha='center', va='center')
+
+    plt.tight_layout()
+    for ext in ['pdf', 'png']:
+        fig.savefig(os.path.join(FIGURE_DIR, f"fig10_cost_effectiveness.{ext}"), dpi=300)
+    plt.close(fig)
+    print(f"  Saved fig10_cost_effectiveness.pdf/png")
+
+
+def fig11_copula_correlation():
+    """Figure 11: Biomarker correlation heatmap (copula model) with FP decomposition."""
+    from correlation_dependence_model import PAIRWISE_CORRELATIONS
+
+    biomarkers = ["hs-cTnI", "D-dimer", "NT-proBNP", "CRP"]
+    n = len(biomarkers)
+    corr_matrix = np.eye(n)
+
+    for entry in PAIRWISE_CORRELATIONS:
+        b1, b2, r = entry.biomarker_a, entry.biomarker_b, entry.correlation
+        if b1 in biomarkers and b2 in biomarkers:
+            i, j = biomarkers.index(b1), biomarkers.index(b2)
+            corr_matrix[i, j] = r
+            corr_matrix[j, i] = r
+
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(13, 5), gridspec_kw={'width_ratios': [1, 1.3]})
+
+    # Panel A: Correlation heatmap
+    mask = np.triu(np.ones_like(corr_matrix, dtype=bool), k=1)
+    cmap = sns.diverging_palette(230, 20, as_cmap=True)
+    short_labels = ['hs-cTnI', 'D-dimer', 'NT-proBNP', 'CRP']
+    sns.heatmap(
+        corr_matrix, mask=mask, annot=True, fmt='.2f', cmap=cmap,
+        vmin=-0.3, vmax=0.8, center=0, square=True,
+        xticklabels=short_labels, yticklabels=short_labels,
+        ax=ax1, cbar_kws={'shrink': 0.8, 'label': 'Pearson r'},
+    )
+    ax1.set_title('A. Panel Biomarker Correlations', fontsize=12, fontweight='bold')
+
+    # Panel B: FP rate decomposition bar chart
+    fp_data = {
+        'Binary (indep.)': 93.4,
+        'Binary (copula)': 86.5,
+        'Quant. LR (copula)': 66.5,
+        'ED-only (copula)': 63.0,
+        'HEAR + Quant.\n(per 1000)': 37.1,
+    }
+    labels = list(fp_data.keys())
+    values = list(fp_data.values())
+    colors_bar = [COLORS['reference'], COLORS['quaternary'], COLORS['primary'],
+                  COLORS['secondary'], COLORS['tertiary']]
+
+    bars = ax2.barh(labels, values, color=colors_bar, edgecolor='white', height=0.65)
+    for bar, val in zip(bars, values):
+        ax2.text(bar.get_width() + 1, bar.get_y() + bar.get_height() / 2,
+                 f'{val:.1f}%', va='center', fontsize=10, fontweight='bold')
+
+    ax2.set_xlabel('False-positive / unnecessary referral rate (%)', fontsize=11)
+    ax2.set_title('B. Layered FP Reduction', fontsize=12, fontweight='bold')
+    ax2.set_xlim(0, 110)
+    ax2.invert_yaxis()
+    ax2.grid(True, axis='x', alpha=0.3)
+
+    plt.tight_layout()
+    for ext in ['pdf', 'png']:
+        fig.savefig(os.path.join(FIGURE_DIR, f"fig11_copula_fp_decomposition.{ext}"), dpi=300)
+    plt.close(fig)
+    print(f"  Saved fig11_copula_fp_decomposition.pdf/png")
+
+
 def generate_all_figures():
     """Generate all publication figures."""
     print("=" * 70)
@@ -497,8 +709,17 @@ def generate_all_figures():
     print("\n[7/8] Biomarker kinetics (serial testing)...")
     fig7_biomarker_kinetics()
 
-    print("\n[8/8] Serial protocol comparison...")
+    print("\n[8/11] Serial protocol comparison...")
     fig8_serial_protocol_comparison()
+
+    print("\n[9/11] Sensitivity–FP trade-off (quantitative LR)...")
+    fig9_sensitivity_fp_tradeoff()
+
+    print("\n[10/11] Cost-effectiveness plane & CEAC...")
+    fig10_cost_effectiveness_plane()
+
+    print("\n[11/11] Copula correlation & FP decomposition...")
+    fig11_copula_correlation()
 
     print(f"\nAll figures saved to {FIGURE_DIR}/")
 

@@ -25,6 +25,7 @@ Runs the complete analysis pipeline:
  19. Biomarker correlation & conditional dependence modelling
  20. Extended biomarker pool optimisation (12 biomarkers)
  21. Health-economic analysis (ICER, PSA, CEAC, Dutch GP impact)
+ 22. Quantitative LR interpretation & pathology-directed management
 """
 
 import os
@@ -53,6 +54,7 @@ from sister_act_score import run_sister_act_analysis
 from visualisation import generate_all_figures
 from correlation_dependence_model import run_dependence_analysis
 from health_economics import run_health_economics_analysis
+from quantitative_panel_interpretation import run_full_analysis as run_quantitative_analysis
 
 logging.basicConfig(
     level=logging.INFO,
@@ -285,6 +287,23 @@ def main():
               f"sens={outcome['sensitivity']:.1%}, missed={outcome['missed_cases']}")
     for key, icer in he_results['icers'].items():
         print(f"  ICER ({key}): {icer['icer_eur_per_qaly']}")
+
+    # ── Step 22: Quantitative LR Interpretation ──
+    print(f"\n[STEP 22] Quantitative LR interpretation & pathology-directed management...")
+    quant_results = run_quantitative_analysis(
+        n_healthy=200_000, n_disease=50_000, target_sensitivity=0.95, seed=42,
+    )
+    fp_bin = quant_results['binary_or_rule']['panel_fp_rate']
+    fp_qlr = quant_results['quantitative_lr']['any_pathology_fp']['copula']
+    ed_rate = quant_results['pathology_directed_management']['copula']['ed_referral_rate']
+    hear_ed = quant_results['hear_stratified_workflow']['per_1000_patients']['total_ed_referrals']
+    print(f"  Binary OR FP rate:        {fp_bin:.1%}")
+    print(f"  Quantitative LR FP rate:  {fp_qlr:.1%} (copula)")
+    print(f"  Pathology-directed ED:    {ed_rate:.1%}")
+    print(f"  HEAR + quant ED/1000:     {hear_ed:.1f}")
+    with open(os.path.join(output_dir, 'quantitative_interpretation.json'), 'w') as f:
+        json.dump(quant_results, f, indent=2,
+                  default=lambda o: float(o) if hasattr(o, 'item') else str(o))
 
     # ── Summary ──
     print(f"\n{'=' * 90}")

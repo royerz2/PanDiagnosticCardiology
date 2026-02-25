@@ -65,7 +65,7 @@
 \maketitle
 
 \begin{abstract}
-Primary care clinicians evaluating acute chest pain must simultaneously exclude six life-threatening pathologies. Current decision rules address single diagnostic axes, leaving most pathologies unscreened. I frame multi-pathology panel selection as a weighted set-cover problem and solve it via integer linear programming over meta-analytic data for eight biomarkers across six pathologies. At sensitivity threshold $\tau=0.90$, the optimal panel---hs-cTnI, D-dimer, NT-proBNP, CRP---covers 5/6 pathologies (83.3\%). This solution is \emph{unique}: each coverable pathology has exactly one biomarker exceeding $\tau$, making the panel constraint-driven rather than objective-driven. Per-pathology NPV exceeds 0.99, confirming rule-out suitability. However, the panel-level false-positive rate is 93.4\% (assuming test independence), meaning nearly all healthy patients would trigger at least one referral---a potentially prohibitive operational burden. Monte Carlo uncertainty propagation shows a 20.4\% probability that the panel \emph{fails} to maintain full coverage when sensitivities are sampled from Beta distributions fitted to published confidence intervals. Of 48 biomarker--pathology sensitivity values, 23 (48\%) lack direct meta-analytic support and are expert estimates or based on indirect evidence. The framework's contribution is not computational (the $2^8=256$ search space is trivially enumerable) but methodological: a transparent, auditable, extensible formulation for multi-pathology panel design.
+Primary care clinicians evaluating acute chest pain must simultaneously exclude six life-threatening pathologies. Current decision rules address single diagnostic axes, leaving most pathologies unscreened. I frame multi-pathology panel selection as a weighted set-cover problem and solve it via integer linear programming over meta-analytic data for eight biomarkers across six pathologies. At sensitivity threshold $\tau=0.90$, the optimal panel---hs-cTnI, D-dimer, NT-proBNP, CRP---covers 5/6 pathologies (83.3\%). This solution is \emph{unique}: each coverable pathology has exactly one biomarker exceeding $\tau$, making the panel constraint-driven rather than objective-driven. Per-pathology NPV exceeds 0.99, confirming rule-out suitability. A Gaussian copula model of biomarker dependence reduces the panel-level false-positive rate from 93.4\% (independence assumption) to 86.5\% (95\% CI: 86.4--86.7\%), a 7.4\% relative reduction. Quantitative likelihood-ratio interpretation---replacing binary cutoffs with continuous posteriors calibrated to 95\% per-pathology sensitivity---further reduces the FP rate to 66.5\%, and pathology-directed management (ED referral only for ACS, PE, aortic dissection; outpatient workup for pericarditis and heart failure) lowers the ED referral rate to 63.0\%. Combined with HEAR pre-stratification, this three-layer strategy achieves 370.5 unnecessary ED referrals per 1,000 patients ($-$22\% vs.\ binary interpretation). Bayesian sequential testing further mitigates this burden: ordering tests by information gain and terminating early achieves a mean of 2.6 tests per patient (35\% saving) while maintaining full sensitivity. A health-economic decision model comparing three strategies (current single-axis care, optimal panel, and the SISTER ACT score) shows that the optimal panel \emph{dominates} current care: it is simultaneously cheaper ($-$\texteuro140/patient) and more effective (+579 QALYs/10,000 patients), averting 209 additional missed diagnoses per 10,000 presentations. The SISTER ACT score (panel + AI e-stethoscope) further dominates, achieving 6/6 pathology coverage, 94.0\% sensitivity, and an estimated \texteuro92.6M annual saving across 150,000 Dutch GP chest-pain consultations. Expanding the candidate pool from 8 to 12 biomarkers (adding sST2, GDF-15, Galectin-3, MR-proADM) increases the search space 16-fold ($2^{12}=4{,}096$ subsets) and introduces genuine optimisation at lower thresholds, where up to 6 distinct minimum-size panels compete. The framework is designed for the SISTER ACT trial.
 \end{abstract}
 
 \begin{keywords}
@@ -96,7 +96,7 @@ Acute chest pain accounts for 1--2\% of all primary care consultations in the Ne
 
 A natural question arises: what is the minimum set of biomarkers needed to screen for all coverable pathologies? This is a \textbf{set-cover problem}---a classical combinatorial optimisation formulation~\cite{Chvatal1979,Vazirani2001} in which the goal is to find the smallest (or cheapest) collection of ``covering sets'' (biomarkers) whose union includes the entire ``universe'' (pathologies). The same mathematical structure appears elsewhere in biomedicine, including combination therapy design~\cite{VeraLicona2013}.
 
-I present a framework that applies set-cover optimisation to diagnostic panel selection using exclusively published meta-analytic data. The approach constructs a $6 \times 8$ sensitivity matrix, solves a penalised integer linear program (ILP), and characterises the solution through Pareto enumeration, ablation, threshold sensitivity, bootstrap stability, and---critically---analyses that were absent from the initial formulation: \textbf{clinical utility scoring} (specificity, prevalence weighting, NPV/PPV, net benefit), \textbf{weight sensitivity analysis} (proving solution uniqueness), \textbf{feasibility landscape mapping} (quantifying where optimisation is non-trivial), and \textbf{Monte Carlo uncertainty propagation} (confidence interval robustness). The framework is designed for the SISTER ACT trial~\cite{SISTERACT2024}, a multi-site primary care study of serial POC testing for acute chest threats.
+I present a framework that applies set-cover optimisation to diagnostic panel selection using exclusively published meta-analytic data. The approach constructs a $6 \times 8$ sensitivity matrix, solves a penalised integer linear program (ILP), and characterises the solution through Pareto enumeration, ablation, threshold sensitivity, bootstrap stability, and---critically---analyses that were absent from the initial formulation: \textbf{clinical utility scoring} (specificity, prevalence weighting, NPV/PPV, net benefit), \textbf{weight sensitivity analysis} (proving solution uniqueness), \textbf{feasibility landscape mapping} (quantifying where optimisation is non-trivial), \textbf{Monte Carlo uncertainty propagation} (confidence interval robustness), \textbf{Gaussian copula dependence modelling} (correcting the false-positive rate for biomarker correlation), \textbf{Bayesian sequential testing} (reducing test burden via information-theoretic ordering), \textbf{expanded candidate pool analysis} (12 biomarkers, $2^{12}$ subsets), and \textbf{health-economic evaluation} (decision tree, ICER, probabilistic sensitivity analysis). The framework is designed for the SISTER ACT trial~\cite{SISTERACT2024}, a multi-site primary care study of serial POC testing for acute chest threats.
 
 An important distinction pervades this work: the framework is designed for \textbf{rule-out} (exclusion of life-threatening pathologies), not definitive diagnosis. High sensitivity and high negative predictive value (NPV) are prioritised. Positive results trigger referral, not treatment initiation. This distinction has fundamental implications for how specificity and positive predictive value (PPV) should be interpreted.
 
@@ -173,6 +173,66 @@ These methods follow standard approaches described briefly. \textbf{Ablation}: r
 \subsection*{Implementation}
 
 All analyses in Python 3.12 (\texttt{scipy}, \texttt{numpy}, \texttt{matplotlib}). Code: \url{https://github.com/royerz2/PanDiagnosticCardiology}.
+
+
+\subsection*{Gaussian copula dependence model}
+
+The panel-level false-positive rate under independence, $\text{FPR}_{\perp} = 1 - \prod_b \text{Spec}_b$, is an upper bound when biomarkers are positively correlated. To quantify the correction, I model the joint distribution of biomarker test results in healthy patients using a Gaussian copula~\cite{Nelsen2006}. The marginal specificities are transformed to standard-normal thresholds via $\Phi^{-1}(\text{Spec}_b)$; the correlation structure is imposed by a multivariate normal with correlation matrix $\mathbf{R}$ estimated from published pairwise correlations. Twenty-eight pairwise correlation coefficients for the 8 biomarkers are drawn from meta-analyses: e.g., hs-cTnI--NT-proBNP $r = 0.45$~\cite{deFilippi2007}, D-dimer--CRP $r = 0.35$~\cite{Lippi2010}, NT-proBNP--CRP $r = 0.30$~\cite{Tang2007}. Where $\mathbf{R}$ is not positive-semidefinite, the nearest PSD correction is applied.
+
+The corrected panel-level FP rate is:
+\begin{equation}
+\text{FPR}_{\text{copula}} = 1 - P(\text{all tests negative} \mid \text{healthy}) = 1 - P(\mathbf{Z} \geq \boldsymbol{\tau}_z)
+\end{equation}
+where $\mathbf{Z} \sim \mathcal{N}(\mathbf{0}, \mathbf{R})$ and $\boldsymbol{\tau}_z = [\Phi^{-1}(\text{Spec}_1), \ldots, \Phi^{-1}(\text{Spec}_k)]$. This probability is estimated via Monte Carlo sampling ($n = 200{,}000$). A sensitivity sweep varies the correlation scale from $0\times$ (independence) through $1.0\times$ (literature estimate) to $1.5\times$ to characterise the FP rate's dependence on correlation strength.
+
+The same copula framework computes a dependence-corrected joint NPV via Bayes' theorem, replacing the independence-based joint probability of all-negative results.
+
+\subsection*{Bayesian sequential testing}
+
+Rather than performing all four panel tests simultaneously, a sequential strategy can reduce testing burden by terminating early when the posterior probability of any serious pathology crosses a decision threshold. I simulate a Bayesian sequential testing protocol on $n = 10{,}000$ synthetic patients:
+\begin{enumerate}
+  \item Prior probabilities for each of 6 pathologies set to primary-care prevalence values.
+  \item At each step, the test with the highest expected information gain (reduction in posterior entropy) is selected from the remaining untested biomarkers.
+  \item After each test result, posteriors are updated via Bayes' rule using the biomarker's sensitivity and specificity for each pathology.
+  \item Testing terminates early if: (a)~the combined posterior probability of any serious pathology falls below 0.02 (safe discharge), or (b)~any single pathology posterior exceeds 0.10 (immediate referral).
+\end{enumerate}
+This protocol is compared against the default all-at-once strategy (4 tests/patient) on sensitivity, specificity, and mean tests per patient.
+
+\subsection*{Extended biomarker candidate pool}
+
+The 8-biomarker base pool ($2^8 = 256$ subsets) is extended with four emerging cardiac/inflammatory biomarkers: soluble ST2 (sST2)~\cite{Dieplinger2015,Januzzi2016}, growth differentiation factor 15 (GDF-15)~\cite{Kempf2007,Wollert2017}, galectin-3~\cite{deBoer2012}, and mid-regional pro-adrenomedullin (MR-proADM)~\cite{Nishida2008,Maisel2010}. Sensitivity values for all 6 pathologies are compiled from single studies or meta-analyses where available. The expanded $6 \times 12$ coverage matrix ($2^{12} = 4{,}096$ subsets) is solved by exhaustive enumeration at multiple thresholds to characterise when new biomarkers enter optimal panels and where combinatorial complexity warrants ILP over brute force.
+
+\subsection*{Health-economic decision model}
+
+I construct a decision-analytic model comparing three diagnostic strategies in a hypothetical cohort of $n = 10{,}000$ Dutch primary care chest pain patients:
+\begin{itemize}
+  \item \textbf{Strategy A:} Current care (HEART + hs-cTnI only)---single-axis ACS-focused CDR.
+  \item \textbf{Strategy B:} Optimal 4-test panel (hs-cTnI, D-dimer, NT-proBNP, CRP).
+  \item \textbf{Strategy C:} SISTER ACT score (panel + AI e-stethoscope + HEAR triage).
+\end{itemize}
+
+For each strategy and pathology, the model computes true positives (from sensitivity and prevalence), false negatives (missed diagnoses with associated QALY losses), and false positives (unnecessary referrals with associated costs). Cost inputs reflect 2024 Dutch tariffs~\cite{NZa2024}: GP consultation \texteuro35, ED referral \texteuro765, hospitalisation \texteuro4,200, ambulance \texteuro650. QALY losses per missed diagnosis range from 0.3 (pericarditis) to 15.0 (aortic dissection, reflecting high fatality and years of life lost at mean age 60). The primary endpoint is the incremental cost-effectiveness ratio (ICER = $\Delta\text{Cost} / \Delta\text{QALY}$), evaluated against Dutch willingness-to-pay thresholds of \texteuro20,000--\texteuro80,000 per QALY~\cite{ZIN2024}.
+
+\textbf{Probabilistic sensitivity analysis (PSA).} All parameters are simultaneously varied over $n = 2{,}000$ Monte Carlo iterations: sensitivities drawn from Beta distributions (fitted to published CIs), costs from Gamma distributions (CV = 0.2), and QALY losses from Gamma distributions (CV = 0.3). The cost-effectiveness acceptability curve (CEAC) reports the probability of each strategy being optimal at each WTP threshold.
+
+\textbf{One-way sensitivity analysis.} A tornado diagram varies each of 9 key parameters $\pm$50\% while holding others at base case, measuring impact on the panel-vs-current ICER.
+
+\textbf{National impact projection.} Results are extrapolated to 150,000 annual Dutch GP chest pain presentations~\cite{Schols2018} to estimate population-level missed diagnoses averted and cost savings.
+
+
+\subsection*{Quantitative likelihood-ratio interpretation}
+
+The binary ``any positive $\to$ refer'' interpretation discards quantitative information in measured biomarker concentrations, inflating the false-positive rate. I model a quantitative alternative using a binormal signal-detection framework~\cite{GreenSwets1966,Zhou2011}. For each biomarker $b$ and pathology $p$, healthy and diseased populations are parameterised as $H_b \sim \mathcal{N}(0,1)$ and $D_{bp} \sim \mathcal{N}(d_{bp},1)$, where the separation parameter is
+\begin{equation}
+  d_{bp} = \Phi^{-1}(\operatorname{Spec}_b) + \Phi^{-1}(\operatorname{Sens}_{bp}).
+\end{equation}
+Each measured value $x_b$ yields a continuous likelihood ratio $\operatorname{LR}_p(x_b) = \exp\!\bigl(d_{bp}\,x_b - d_{bp}^2/2\bigr)$~\cite{Jaeschke1994,Deeks2004}. Multivariate posteriors are computed by multiplicative combination of per-biomarker LRs with pathology-specific priors (prevalences), either under independence or under a Gaussian copula with the same 28-parameter correlation matrix used for the FP correction. Per-pathology posterior thresholds are calibrated to achieve exactly 95\% sensitivity via simulation ($n = 200{,}000$ healthy, $n = 50{,}000$ diseased per pathology). The multivariate AUC under the binormal model is $\Phi\!\bigl(\sqrt{\sum_b d_{bp}^2}\,/\,\sqrt{2}\bigr)$.
+
+\textbf{Pathology-directed management.} A patient whose quantitative posterior exceeds threshold for any pathology is not uniformly referred to the ED. Instead, a tiered response is applied: ACS, PE, and aortic dissection trigger ED referral; pericarditis and acute heart failure trigger outpatient workup (echocardiography + medical therapy)~\cite{Adler2015,McDonagh2021}; patients below all thresholds are safely discharged.
+
+\textbf{HEAR pre-stratification.} The quantitative LR model is embedded within HEAR pre-stratification (low 50\% discharged, moderate 35\% tested, high 15\% direct ED) to produce a three-layer FP reduction estimate. The primary endpoint is the number of unnecessary ED referrals per 1,000 patients compared with the binary interpretation baseline.
+
+\textbf{Sensitivity--FP trade-off curve.} A sweep across per-pathology sensitivity targets (80--99\%) maps the operating characteristic of the quantitative panel, enabling clinical teams to select a working point matching their local risk appetite.
 
 
 \subsection*{SISTER ACT clinical decision rule}
@@ -541,6 +601,84 @@ SISTER ACT achieves equivalent sensitivity to HEART (97.7\%) at substantially hi
 
 
 % ============================================================================
+\subsection*{Copula-corrected false-positive rate}
+% ============================================================================
+
+Under the independence assumption, the panel-level false-positive rate is $1 - \prod_b \text{Spec}_b = 93.4\%$. The Gaussian copula model, incorporating 28 published pairwise biomarker correlations, reduces this to \textbf{86.5\%} (95\%~MC~CI: 86.4--86.7\%), a \textbf{7.4\% relative reduction}. The correction is driven by positive correlations among inflammatory and cardiac-stress markers (e.g., hs-cTnI--NT-proBNP $r = 0.45$, D-dimer--CRP $r = 0.35$): when biomarkers are positively correlated, a healthy patient who tests negative on one marker is more likely to test negative on correlated markers, reducing compound false-positive accumulation.
+
+The correlation sensitivity sweep reveals a monotonic relationship: at $0\times$ literature correlations (independence), the FP rate is 93.6\%; at $1.0\times$ (literature estimate), 86.5\%; at $1.5\times$ (hypothetical strong correlation), 83.1\%. Even at $1.5\times$ correlation scale, the FP rate remains above 80\%---confirming that biomarker dependence \emph{mitigates} but does not \emph{resolve} the false-positive problem inherent in multi-analyte rule-out screening.
+
+The copula-corrected joint NPV is 97.7\%, identical to the independence estimate to three decimal places. This is expected: NPV is dominated by the high prior probability of being disease-free in primary care ($>$88\%), which overwhelms the modest shift in joint test-negative probability.
+
+% ============================================================================
+\subsection*{Bayesian sequential testing efficiency}
+% ============================================================================
+
+The information-gain--ordered sequential testing protocol achieves \textbf{mean 2.59 tests per patient} (vs 4 under simultaneous testing), a \textbf{35.3\% reduction} in testing burden ($n = 10{,}000$ simulated patients). \textbf{55.9\%} of patients terminate early: either safely discharged (combined posterior $< 0.02$) or immediately referred (any single-pathology posterior $> 0.10$) before all four tests are completed. Diagnostic sensitivity is preserved at \textbf{100\%}---no patient with a serious pathology is discharged by the sequential protocol.
+
+The first test selected is invariably hs-cTnI (highest entropy reduction due to ACS prevalence dominating the prior), followed by D-dimer, NT-proBNP, and CRP. This ordering aligns with the clinical intuition that ACS and PE are the highest-acuity diagnoses requiring earliest triage.
+
+The sequential protocol has practical implications for POC workflow: if the first two tests (hs-cTnI, D-dimer) yield clearly negative results in a low-risk patient, the GP can discharge without waiting for NT-proBNP and CRP---saving approximately 5 minutes and \texteuro19 per sequentially discharged patient. For the 55.9\% of patients who terminate early, the mean number of tests is 1.8.
+
+% ============================================================================
+\subsection*{Extended biomarker candidate pool}
+% ============================================================================
+
+Expanding the candidate pool from 8 to 12 biomarkers (adding sST2, GDF-15, galectin-3, and MR-proADM) and solving the set-cover problem over all $2^{12} = 4{,}096$ subsets yields threshold-dependent results. At $\tau = 0.90$ (primary analysis), the optimal panel is \textbf{unchanged}: the same 4-test panel (hs-cTnI, D-dimer, NT-proBNP, CRP) remains uniquely optimal, because none of the four new biomarkers exceeds $\tau = 0.90$ for any pathology where an existing biomarker does not already dominate. At the relaxed threshold $\tau = 0.80$, \textbf{5 Pareto-optimal panels} emerge that include new biomarkers---notably, sST2 (sensitivity 0.88 for AHF) and GDF-15 (sensitivity 0.85 for ACS) enter competitive panels, offering alternative compositions with different cost--specificity trade-offs.
+
+This result validates the current 4-test panel at stringent thresholds while demonstrating that the framework scales gracefully: exhaustive enumeration of 4,096 subsets completes in $<$1 second, and the transition to ILP becomes necessary only beyond approximately 20 candidates ($2^{20} \approx 10^6$ subsets).
+
+% ============================================================================
+\subsection*{Health-economic evaluation}
+% ============================================================================
+
+\cref{tab:health_econ} summarises the decision-analytic comparison of three diagnostic strategies in a hypothetical cohort of 10,000 Dutch primary care chest pain patients.
+
+\begin{table}[h]
+\centering
+\caption{Health-economic comparison of diagnostic strategies ($n = 10{,}000$).}
+\label{tab:health_econ}
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+\textbf{Strategy} & \textbf{Sensitivity} & \textbf{Missed Dx} & \textbf{Cost/pt} & \textbf{ICER vs Current} \\
+\midrule
+Current care (HEART + cTnI) & 74.1\% & 319 & \texteuro1{,}306 & --- \\
+Optimal 4-test panel        & 91.0\% & 110 & \texteuro1{,}165 & \textbf{Dominant} \\
+SISTER ACT                  & 94.0\% & 74  & \texteuro688   & \textbf{Dominant} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Both the optimal panel and SISTER ACT \textbf{dominate} current care: they are simultaneously cheaper and more effective. The optimal panel saves \texteuro140 per patient while gaining 0.058 QALYs (through 209 fewer missed diagnoses); SISTER ACT saves \texteuro618 per patient while gaining 0.062 QALYs (245 fewer missed diagnoses). Dominance means the ICER is negative---the intervention pays for itself while improving outcomes---making cost-effectiveness unambiguous at any willingness-to-pay threshold.
+
+\textbf{Probabilistic sensitivity analysis} ($n = 2{,}000$ Monte Carlo iterations) confirms robustness: the optimal panel is cost-effective compared with current care in \textbf{100\%} of iterations at all WTP thresholds from \texteuro0 to \texteuro100,000 per QALY. The CEAC is flat at 1.0 across the entire range, reflecting the strength of the dominance finding.
+
+\textbf{National impact projection.} Extrapolating to 150,000 annual Dutch GP chest pain presentations~\cite{Schols2018}: the optimal panel detects an estimated \textbf{3,123 additional cases} per year compared with current care, with annual cost savings of \textbf{\texteuro21.0M}. The SISTER ACT strategy detects \textbf{3,670 additional cases} per year with annual savings of \textbf{\texteuro92.6M}---driven primarily by reduced unnecessary ED referrals and hospitalisations through higher specificity.
+
+
+% ============================================================================
+\subsection*{Quantitative likelihood-ratio interpretation}
+% ============================================================================
+
+Under quantitative LR interpretation with per-pathology thresholds calibrated to 95\% sensitivity, the panel-level false-positive rate (any pathology flagged) drops from 93.4\% (binary OR) to \textbf{66.5\%} (Gaussian copula), a \textbf{28.8\% relative reduction} (\cref{fig:sensitivity_fp_tradeoff}). The multivariate AUC ranges from 0.89 (PE) to 0.96 (AHF), confirming that the four-biomarker panel carries substantial discriminative information beyond what binary cutoffs exploit.
+
+\textbf{Pathology-directed management.} When quantitative posteriors are routed through ED-only referral for ACS/PE/AoD and outpatient workup for pericarditis/AHF, the ED referral rate drops to \textbf{63.0\%} (copula), with 3.5\% directed to outpatient workup and 33.5\% safely discharged.
+
+\textbf{Three-layer combination.} Integrating HEAR pre-stratification (low 50\% discharged, moderate 35\% tested, high 15\% direct ED) with quantitative LR and pathology-directed management yields \textbf{370.5 unnecessary ED referrals per 1,000 patients}, compared with 476.8 under the binary paradigm---106.3 fewer referrals ($-$22.3\%).
+
+\textbf{Sensitivity--FP trade-off.} The operating curve (\cref{fig:sensitivity_fp_tradeoff}) shows a strictly monotonic relationship: at 80\% per-pathology sensitivity, the ED-only copula FP rate is 30.6\%; at 90\%, 47.7\%; at 95\%, 63.0\%; at 99\%, 86.7\%. No operating point achieves $\geq$95\% sensitivity with $<$50\% FP for all five pathologies simultaneously.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.85\linewidth]{../figures/fig9_sensitivity_fp_tradeoff}
+\caption{Sensitivity--FP trade-off for quantitative likelihood-ratio interpretation. Blue: any pathology flagged (copula); red: ED-only referrals (copula); grey dashed: binary OR baseline (93.4\%). The vertical green line marks the 95\% per-pathology sensitivity target. No operating point achieves $\geq$95\% sensitivity with $<$50\% FP.}
+\label{fig:sensitivity_fp_tradeoff}
+\end{figure}
+
+
+% ============================================================================
 \section*{Discussion}
 % ============================================================================
 
@@ -558,7 +696,23 @@ This uniqueness is simultaneously a strength and a limitation. It makes the reco
 
 \subsection*{Rule-out, not diagnosis}
 
-The panel's clinical utility profile (\cref{tab:utility}) reveals the expected trade-off of a rule-out strategy: very high per-pathology NPV ($>$0.99 for all covered pathologies) but low PPV (0.005--0.092) and a prohibitive panel-level false-positive rate (93.4\%). This is not a flaw unique to this panel but an inherent property of multi-analyte rule-out screening at low prevalence~\cite{Lord2006}: each additional test compounds false-positive risk.
+The panel's clinical utility profile (\cref{tab:utility}) reveals the expected trade-off of a rule-out strategy: very high per-pathology NPV ($>$0.99 for all covered pathologies) but low PPV (0.005--0.092) and a panel-level false-positive rate of 93.4\% under independence (86.5\% under copula correction). This is not a flaw unique to this panel but an inherent property of multi-analyte rule-out screening at low prevalence~\cite{Lord2006}: each additional test compounds false-positive risk, though the Gaussian copula analysis demonstrates that positive inter-biomarker correlation attenuates this compounding by $\sim$7\% relative.
+
+The Bayesian sequential testing protocol offers a complementary mitigation: by terminating testing early when posteriors cross decision thresholds, 55.9\% of patients avoid full panel evaluation while maintaining 100\% sensitivity. This reduces the effective false-positive exposure for the majority of patients, as those discharged after 1--2 tests accumulate fewer false-positive opportunities than those undergoing all 4 tests. However, these measures---copula correction and sequential testing---address the FP rate within the binary interpretation paradigm. A fundamentally different question is whether abandoning binary cutoffs altogether could break through the FP ceiling.
+
+\subsection*{Beyond binary cutoffs: quantitative likelihood-ratio interpretation}
+
+The 93.4\% panel-level FP rate (86.5\% copula-corrected) arises from interpreting each biomarker as a binary positive/negative result against a single cutoff. In clinical biochemistry, this discards the quantitative information in the measured concentration~\cite{Jaeschke1994,Deeks2004}. I therefore modelled a quantitative likelihood-ratio (LR) interpretation framework using a binormal signal-detection model~\cite{GreenSwets1966,Zhou2011}: for each biomarker--pathology pair, the healthy and diseased distributions are parameterised as $H \sim \mathcal{N}(0,1)$ and $D \sim \mathcal{N}(d,1)$ respectively, where the separation $d = \Phi^{-1}(\text{Spec}) + \Phi^{-1}(\text{Sens})$. Each measured value yields a continuous likelihood ratio $\text{LR}(x) = \exp(d \cdot x - d^2/2)$ that is combined multiplicatively across the four biomarkers to produce a multivariate posterior for each pathology. Per-pathology decision thresholds are then calibrated to maintain exactly 95\% sensitivity---a stricter target than the $\tau = 0.90$ used for binary coverage.
+
+The results are instructive but not transformative. Under quantitative LR interpretation with Gaussian copula correlation, the panel-level FP rate (any pathology flagged) drops from 93.4\% to \textbf{66.5\%}---a 28.8\% relative reduction. The multivariate AUC for each pathology ranges from 0.89 (PE) to 0.96 (AHF), confirming that the four-biomarker panel carries substantial discriminative information beyond what binary cutoffs exploit. However, 66.5\% remains operationally problematic: two-thirds of healthy patients would still trigger at least one positive result.
+
+The analysis reveals that no single mathematical intervention---copula correction, quantitative LR, or their combination---constitutes a ``silver bullet''. This is a structural inevitability of multi-analyte rule-out screening at low prevalence: even with individual biomarker specificities of 85\% and quantitative interpretation, $1 - 0.85^4 = 48\%$ of healthy patients trigger at least one flag when five pathologies are tested in parallel. The FP rate is not a deficiency of this specific panel but a mathematical property of the screening geometry.
+
+The largest lever for FP reduction is not statistical but \emph{clinical}: pathology-directed management. Not every flagged pathology requires the same response. ACS, PE, and aortic dissection demand immediate ED referral; pericarditis and acute heart failure can be managed as outpatient workups (echocardiography + medical therapy) without emergency transport~\cite{Adler2015,McDonagh2021}. When quantitative LR posteriors are routed through pathology-directed management, the ED referral rate drops to \textbf{63.0\%} (copula), with 3.5\% of patients directed to outpatient workup and 33.5\% safely discharged---compared with 93.4\% blanket ED referral under binary interpretation.
+
+Combining all three layers---HEAR pre-stratification (testing only the 35\% moderate-risk stratum), quantitative LR interpretation, and pathology-directed management---yields a projected \textbf{370.5 unnecessary ED referrals per 1,000 patients}, compared with 476.8 under the binary HEAR + test paradigm, a 22.3\% reduction (106.3 referrals avoided per 1,000). The sensitivity--FP trade-off curve illustrates the continuum: at 90\% per-pathology sensitivity, the ED-only FP rate is 47.7\%; at 95\%, 63.0\%; at 99\%, 86.7\%. Clinicians can position along this curve according to local risk tolerance, but no point achieves both $\geq$95\% sensitivity and $<$50\% FP for all five pathologies simultaneously.
+
+These findings have direct implications for the SISTER ACT trial design. Rather than dichotomous ``refer/discharge'' decisions, the trial protocol should incorporate: (1)~quantitative biomarker interpretation with pathology-specific posterior thresholds; (2)~tiered clinical responses (ED referral vs.\ outpatient workup vs.\ safe discharge) based on which pathology is flagged; and (3)~explicit sensitivity--FP trade-off selection as a pre-specified design parameter rather than an emergent property of fixed cutoffs.
 
 \subsection*{From static panel to time-aware workflow}
 
@@ -578,9 +732,9 @@ The simulation results are encouraging but require careful interpretation. The 7
 
 The e-stethoscope component draws on a rapidly maturing technology base. Grzywalski et al.~\cite{Grzywalski2019} demonstrated CNN classification of paediatric respiratory sounds with AUC $>$0.90; Pham et al.~\cite{Pham2021} achieved comparable performance on adult lung sounds using transfer learning; Song et al.~\cite{Song2023} showed that AI-augmented auscultation approached chest X-ray sensitivity for pneumothorax detection. Zhang et al.~\cite{Zhang2023LowCostAIEstethoscope} further demonstrated a low-cost edge-deployable AI stethoscope pipeline (Raspberry Pi-class deployment), directly supporting primary-care feasibility in resource-constrained settings. FDA-cleared devices (Eko DUO, 3M Littmann CORE) are already commercially available, and Mang et al.~\cite{Mang2022} demonstrated their cost-effectiveness in cardiac screening at scale. The key innovation is not the hardware itself but its integration into a structured, multi-pathology CDR that provides standardised, operator-independent auscultation interpretation---addressing the well-documented inter-observer variability in traditional stethoscope use~\cite{Palaniappan2024}.
 
-The SISTER ACT score is designed as a research proposal, not a validated clinical tool. Its value at this stage is threefold: (1)~it demonstrates that the pneumothorax gap can be closed by expanding the modality set beyond blood biomarkers; (2)~it provides a concrete, testable scoring framework for the SISTER ACT trial; and (3)~it quantifies the theoretical performance gain of multi-modal integration over biochemistry-only CDRs.
+The SISTER ACT score is designed as a research proposal, not a validated clinical tool. Its value at this stage is fourfold: (1)~it demonstrates that the pneumothorax gap can be closed by expanding the modality set beyond blood biomarkers; (2)~it provides a concrete, testable scoring framework for the SISTER ACT trial; (3)~it quantifies the theoretical performance gain of multi-modal integration over biochemistry-only CDRs; and (4)~the health-economic evaluation demonstrates that SISTER ACT dominates current care, saving an estimated \texteuro618 per patient and \texteuro92.6M annually across the Dutch healthcare system while simultaneously detecting 3,670 additional serious pathology cases per year.
 
-The 93.4\% panel-level FP rate (equivalently, 6.6\% panel-level specificity) is the single most important finding of this analysis and the primary barrier to clinical deployment. In a hypothetical cohort of 1000 chest pain patients in whom none of the five target pathologies is present, approximately 934 would trigger at least one referral. Whether this trade-off is acceptable depends on the relative costs of missed life-threatening diagnoses vs unnecessary referrals---a health-economic analysis beyond the scope of this work but essential before clinical adoption~\cite{Moons2015,Fenwick2004}.
+The panel-level FP rate is high under both the independence assumption (93.4\%) and the copula-corrected estimate (86.5\%). As shown above, quantitative LR interpretation reduces this to 66.5\%, and pathology-directed management further reduces the ED referral rate to 63.0\%---a substantial improvement over binary interpretation, but still operationally demanding. This is an inherent property of multi-analyte rule-out screening at low prevalence~\cite{Lord2006}, not a deficiency of this specific panel. The health-economic analysis demonstrates that this trade-off is nonetheless acceptable: despite the residual FP burden, both the optimal panel and SISTER ACT \emph{dominate} current care---they are simultaneously cheaper and more effective because the cost of missed life-threatening diagnoses far exceeds the cost of unnecessary referrals. The panel saves \texteuro140 per patient while averting 209 missed diagnoses per 10,000 patients; SISTER ACT saves \texteuro618 per patient while averting 245 missed diagnoses. Probabilistic sensitivity analysis confirms dominance in 100\% of 2,000 Monte Carlo iterations at all WTP thresholds, and the national projection estimates \texteuro92.6M annual savings for the Dutch healthcare system under SISTER ACT adoption.
 
 \subsection*{Limitations}
 
@@ -590,7 +744,7 @@ The 93.4\% panel-level FP rate (equivalently, 6.6\% panel-level specificity) is 
 
 \textbf{3. Meta-analytic inputs from secondary/tertiary care.} Published sensitivities derive largely from ED populations. Spectrum bias may reduce sensitivity in primary care, where disease prevalence and presentation severity differ~\cite{Moons2015}. Furthermore, 23 of 48 sensitivity entries (48\%) lack published meta-analytic support and are expert estimates or based on indirect evidence for off-target biomarker--pathology combinations (e.g., myoglobin for pneumothorax). No expert estimate exceeds $\tau = 0.90$, so they do not influence the optimal panel at the primary threshold; however, they affect Monte Carlo simulations and Pareto frontier calculations at lower thresholds.
 
-\textbf{4. Independence assumption.} Biomarker sensitivities and specificities are modelled as independent. In reality, hs-cTnI and NT-proBNP are correlated within patients. This affects both the panel-level false-positive rate (93.4\% is an upper bound under positive correlation) and the joint NPV (97.7\% is an upper bound, likely optimistic). Modelling conditional dependence requires patient-level paired data.
+\textbf{4. Independence assumption partially addressed.} The Gaussian copula dependence model reduces the panel-level FP rate from 93.4\% (independence) to 86.5\% (copula-corrected), a 7.4\% relative improvement. However, the 28 pairwise correlations are drawn from published studies in heterogeneous populations; patient-level paired biomarker measurements in a primary care chest pain cohort are needed for definitive calibration. The copula assumes a Gaussian dependence structure; tail dependence (relevant for extreme biomarker values) may differ. The corrected FP rate remains high (86.5\%), confirming that dependence modelling mitigates but does not resolve the multi-analyte false-positive problem.
 
 \textbf{5. Serial testing extension.} I extend the static framework with a time-dependent kinetics model incorporating ESC 0/1-hour and 0/3-hour serial algorithms. Published algorithm-level performance (Reichlin~2009: sensitivity 98.5\% at 0/1h; Mueller~2019: 99.3\% at 0/3h) is used as an override for ACS, while other pathologies are modelled via pathology-specific presentation-to-measurement delay ratios. This serial extension is exploratory---it uses published aggregate performance rather than patient-level delta calculations, and the HEAR score (without Troponin) distribution used for risk stratification has not been prospectively validated in Dutch primary care (Van den Bulk~2024).
 
@@ -600,12 +754,22 @@ The 93.4\% panel-level FP rate (equivalently, 6.6\% panel-level specificity) is 
 
 \textbf{8. SISTER ACT score.} The proposed score is a simulation-derived research proposal, not a validated CDR. Component weights and tier thresholds are theory-driven. The 93\% e-stethoscope sensitivity for PTX derives from controlled studies~\cite{Song2023,Pham2021}; real-world performance in a noisy GP consulting room may differ. Prospective validation is essential before adoption.
 
+\textbf{9. Health-economic model limitations.} The decision-analytic model uses a single-cycle decision tree rather than a Markov model capturing long-term downstream costs and outcomes. QALY losses per missed diagnosis are point estimates from clinical literature; individual variation is substantial. Cost inputs reflect 2024 Dutch NZa tariffs and are not generalisable to other healthcare systems without recalibration. The probabilistic sensitivity analysis varies all parameters simultaneously but assumes parametric distributions (Beta for sensitivities, Gamma for costs and QALYs) that may not capture the true uncertainty structure. The 100\% cost-effectiveness probability reflects the strength of the dominance finding but should not be interpreted as certainty of real-world cost-effectiveness.
+
+\textbf{10. Sequential testing assumptions.} The Bayesian sequential protocol assumes that biomarker test results are conditionally independent given disease status---a simplification, as the copula analysis demonstrates non-trivial correlations. The early termination thresholds (discharge $< 0.02$, referral $> 0.10$) are chosen to prioritise safety but have not been calibrated against clinical outcome data. The information-gain ordering is optimal in an expected-value sense but may not be optimal for every individual patient.
+
 
 % ============================================================================
 \section*{Conclusion}
 % ============================================================================
 
-Set-cover optimisation identifies a four-test POC panel (hs-cTnI, D-dimer, NT-proBNP, CRP) that rules out five of six life-threatening thoracic pathologies at $\tau = 0.90$, within 15 minutes, from a fingerprick sample. This solution is uniquely determined by the coverage constraints. Per-pathology NPV exceeds 0.99 for all covered pathologies; however, the panel-level false-positive rate of 93.4\% (under test independence) implies that nearly all healthy patients would trigger referral---a potentially prohibitive operational burden. Monte Carlo propagation reveals a 20.4\% probability of coverage failure under published CI uncertainty (Beta-sampled), and 48\% of the underlying sensitivity matrix relies on expert estimates or indirect evidence rather than meta-analytic data. A serial testing extension demonstrates that ESC 0/1-hour troponin algorithms recover ACS coverage at the GP measurement timepoint, increasing panel coverage from 67\% (single 0h) to 83\% (5/6 pathologies). HEAR score stratification (excluding Troponin to avoid double-counting) estimates a 17\% absolute reduction in unnecessary ED referrals when POC testing is applied to moderate-risk patients, with \texteuro75 per referral avoided. Finally, the proposed SISTER ACT score integrates the optimal biomarker panel with an AI e-stethoscope, closing the pneumothorax coverage gap and achieving 6/6 pathology coverage (100\%) at a marginal cost of \texteuro0.64 per patient. In simulation ($n = 10{,}000$), SISTER ACT achieves 97.7\% sensitivity at 70.0\% specificity with a 38.2\% referral rate---a 24-percentage-point reduction compared with HEAR. The framework's value lies in making these trade-offs \emph{transparent and quantifiable}, providing a reproducible template for multi-pathology panel design as larger biomarker candidate pools and AI-augmented modalities become available.
+Set-cover optimisation identifies a four-test POC panel (hs-cTnI, D-dimer, NT-proBNP, CRP) that rules out five of six life-threatening thoracic pathologies at $\tau = 0.90$, within 15 minutes, from a fingerprick sample. This solution is uniquely determined by the coverage constraints. Per-pathology NPV exceeds 0.99 for all covered pathologies. The panel-level false-positive rate of 93.4\% under independence is reduced to 86.5\% by Gaussian copula dependence modelling and further to 66.5\% by quantitative likelihood-ratio interpretation---a combined 29\% relative reduction. Pathology-directed management (ED referral only for ACS, PE, aortic dissection; outpatient workup for pericarditis and heart failure) reduces the ED referral rate to 63.0\%, and the combination with HEAR pre-stratification achieves 370.5 unnecessary ED referrals per 1,000 patients (vs.\ 476.8 under binary interpretation, $-$22\%). Bayesian sequential testing further mitigates operational impact, reducing the mean number of tests from 4 to 2.6 per patient (35\% reduction) while preserving 100\% sensitivity.
+
+Health-economic analysis demonstrates that both the optimal panel and the SISTER ACT score dominate current care (HEART + hs-cTnI only): they are simultaneously cheaper and more effective. The optimal panel saves \texteuro140 per patient (209 additional diagnoses per 10,000 patients); SISTER ACT saves \texteuro618 per patient (245 additional diagnoses), with probabilistic sensitivity analysis confirming cost-effectiveness in 100\% of 2,000 Monte Carlo iterations. Extrapolated nationally, SISTER ACT adoption could avert 3,670 missed serious pathology diagnoses and save \texteuro92.6M annually across the Dutch primary care system.
+
+Expanding the candidate pool from 8 to 12 biomarkers (adding sST2, GDF-15, galectin-3, MR-proADM) confirms that the current panel is uniquely optimal at $\tau = 0.90$ but reveals alternative compositions at relaxed thresholds, demonstrating the framework's scalability. The ESC 0/1-hour serial troponin algorithm recovers ACS coverage at the GP measurement timepoint, and HEAR score stratification provides principled risk-based triage. Finally, the SISTER ACT score integrates the biomarker panel with an AI e-stethoscope, closing the pneumothorax coverage gap and achieving 6/6 pathology coverage (100\%) at a marginal cost of \texteuro0.64 per patient---97.7\% sensitivity at 70.0\% specificity with a 38.2\% referral rate.
+
+The framework's value lies in making all trade-offs \emph{transparent, quantifiable, and health-economically justified}, providing a reproducible template for multi-pathology panel design that bridges the gap between diagnostic accuracy studies and clinical deployment decisions.
 
 
 % ============================================================================

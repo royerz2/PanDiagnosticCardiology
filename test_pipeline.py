@@ -730,3 +730,119 @@ class TestHealthEconomics:
         assert 'psa' in result
         assert 'dutch_gp_impact' in result
         assert 'extended_pool' in result
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+# QUANTITATIVE LR INTERPRETATION TESTS
+# ═══════════════════════════════════════════════════════════════════════════
+
+class TestQuantitativeLR:
+    """Validate the quantitative likelihood-ratio interpretation module."""
+
+    def test_binormal_separation_sanity(self):
+        from quantitative_panel_interpretation import binormal_separation
+        # Perfect test: sens=1, spec=1 → separation → +inf (capped by inv-CDF)
+        # High-quality test: sens=0.95, spec=0.95 → d ≈ 3.29
+        d = binormal_separation(0.95, 0.95)
+        assert 3.0 < d < 4.0
+
+    def test_binormal_separation_symmetric(self):
+        from quantitative_panel_interpretation import binormal_separation
+        # sens=0.80, spec=0.60 should equal spec=0.80, sens=0.60
+        assert abs(binormal_separation(0.80, 0.60) - binormal_separation(0.60, 0.80)) < 0.01
+
+    def test_binormal_auc_range(self):
+        from quantitative_panel_interpretation import binormal_auc
+        # d=0 → AUC=0.5; d=3 → AUC ≈ 0.98
+        assert abs(binormal_auc(0.0) - 0.5) < 0.001
+        assert binormal_auc(3.0) > 0.95
+
+    def test_multivariate_auc(self):
+        from quantitative_panel_interpretation import multivariate_auc
+        seps = np.array([1.0, 1.0, 1.0])
+        auc = multivariate_auc(seps)
+        assert 0.8 < auc < 1.0
+
+    def test_separation_matrix_shape(self):
+        from quantitative_panel_interpretation import (
+            _compute_separation_matrix, PANEL_BIOMARKERS, PATHOLOGIES,
+        )
+        sep = _compute_separation_matrix()
+        for bm in PANEL_BIOMARKERS:
+            assert bm in sep
+            for path in PATHOLOGIES:
+                assert path in sep[bm]
+                assert isinstance(sep[bm][path], float)
+
+    def test_full_analysis_runs(self):
+        from quantitative_panel_interpretation import run_full_analysis
+        result = run_full_analysis(
+            n_healthy=10_000, n_disease=5_000, target_sensitivity=0.95, seed=42,
+        )
+        assert 'binary_or_rule' in result
+        assert 'quantitative_lr' in result
+        assert 'pathology_directed_management' in result
+        assert 'hear_stratified_workflow' in result
+
+    def test_binary_fp_above_90pct(self):
+        from quantitative_panel_interpretation import run_full_analysis
+        result = run_full_analysis(
+            n_healthy=20_000, n_disease=5_000, target_sensitivity=0.95, seed=42,
+        )
+        assert result['binary_or_rule']['panel_fp_rate'] > 0.90
+
+    def test_quantitative_lr_reduces_fp(self):
+        from quantitative_panel_interpretation import run_full_analysis
+        result = run_full_analysis(
+            n_healthy=20_000, n_disease=5_000, target_sensitivity=0.95, seed=42,
+        )
+        binary_fp = result['binary_or_rule']['panel_fp_rate']
+        quant_fp = result['quantitative_lr']['any_pathology_fp']['copula']
+        assert quant_fp < binary_fp, "Quantitative LR should reduce FP vs binary"
+
+    def test_pathology_directed_reduces_ed(self):
+        from quantitative_panel_interpretation import run_full_analysis
+        result = run_full_analysis(
+            n_healthy=20_000, n_disease=5_000, target_sensitivity=0.95, seed=42,
+        )
+        any_fp = result['quantitative_lr']['any_pathology_fp']['copula']
+        ed_rate = result['pathology_directed_management']['copula']['ed_referral_rate']
+        assert ed_rate <= any_fp, "ED-only routing should be ≤ any-pathology FP"
+
+    def test_per_pathology_sensitivity_maintained(self):
+        from quantitative_panel_interpretation import run_full_analysis, COVERABLE
+        result = run_full_analysis(
+            n_healthy=20_000, n_disease=5_000, target_sensitivity=0.95, seed=42,
+        )
+        for path in COVERABLE:
+            sens = result['quantitative_lr']['per_pathology_sensitivity'][path]
+            # Allow 2% tolerance due to Monte Carlo noise at small n
+            assert sens >= 0.93, f"Sensitivity for {path} = {sens} < 0.93"
+
+    def test_sensitivity_sweep(self):
+        from quantitative_panel_interpretation import sweep_sensitivity_vs_fp
+        sweep = sweep_sensitivity_vs_fp(
+            target_sensitivities=[0.80, 0.90, 0.95],
+            n_healthy=10_000, n_disease=5_000, seed=42,
+        )
+        assert len(sweep) == 3
+        # FP should increase with sensitivity
+        fps = [s['any_pathology_fp_copula'] for s in sweep]
+        assert fps[0] <= fps[1] <= fps[2]
+
+    def test_hear_workflow_sums(self):
+        from quantitative_panel_interpretation import run_full_analysis
+        result = run_full_analysis(
+            n_healthy=10_000, n_disease=5_000, target_sensitivity=0.95, seed=42,
+        )
+        flow = result['hear_stratified_workflow']['per_1000_patients']
+        total = flow['low_risk_discharged'] + flow['tested'] + flow['high_risk_direct_ed']
+        assert abs(total - 1000) < 1, "HEAR strata must sum to 1000"
+
+    def test_multivariate_auc_per_pathology(self):
+        from quantitative_panel_interpretation import run_full_analysis
+        result = run_full_analysis(
+            n_healthy=10_000, n_disease=5_000, target_sensitivity=0.95, seed=42,
+        )
+        for path, auc in result['multivariate_auc_per_pathology'].items():
+            assert 0.5 < auc < 1.0, f"AUC for {path} = {auc} out of range"

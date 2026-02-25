@@ -220,6 +220,21 @@ For each strategy and pathology, the model computes true positives (from sensiti
 \textbf{National impact projection.} Results are extrapolated to 150,000 annual Dutch GP chest pain presentations~\cite{Schols2018} to estimate population-level missed diagnoses averted and cost savings.
 
 
+\subsection*{Quantitative likelihood-ratio interpretation}
+
+The binary ``any positive $\to$ refer'' interpretation discards quantitative information in measured biomarker concentrations, inflating the false-positive rate. I model a quantitative alternative using a binormal signal-detection framework~\cite{GreenSwets1966,Zhou2011}. For each biomarker $b$ and pathology $p$, healthy and diseased populations are parameterised as $H_b \sim \mathcal{N}(0,1)$ and $D_{bp} \sim \mathcal{N}(d_{bp},1)$, where the separation parameter is
+\begin{equation}
+  d_{bp} = \Phi^{-1}(\operatorname{Spec}_b) + \Phi^{-1}(\operatorname{Sens}_{bp}).
+\end{equation}
+Each measured value $x_b$ yields a continuous likelihood ratio $\operatorname{LR}_p(x_b) = \exp\!\bigl(d_{bp}\,x_b - d_{bp}^2/2\bigr)$~\cite{Jaeschke1994,Deeks2004}. Multivariate posteriors are computed by multiplicative combination of per-biomarker LRs with pathology-specific priors (prevalences), either under independence or under a Gaussian copula with the same 28-parameter correlation matrix used for the FP correction. Per-pathology posterior thresholds are calibrated to achieve exactly 95\% sensitivity via simulation ($n = 200{,}000$ healthy, $n = 50{,}000$ diseased per pathology). The multivariate AUC under the binormal model is $\Phi\!\bigl(\sqrt{\sum_b d_{bp}^2}\,/\,\sqrt{2}\bigr)$.
+
+\textbf{Pathology-directed management.} A patient whose quantitative posterior exceeds threshold for any pathology is not uniformly referred to the ED. Instead, a tiered response is applied: ACS, PE, and aortic dissection trigger ED referral; pericarditis and acute heart failure trigger outpatient workup (echocardiography + medical therapy)~\cite{Adler2015,McDonagh2021}; patients below all thresholds are safely discharged.
+
+\textbf{HEAR pre-stratification.} The quantitative LR model is embedded within HEAR pre-stratification (low 50\% discharged, moderate 35\% tested, high 15\% direct ED) to produce a three-layer FP reduction estimate. The primary endpoint is the number of unnecessary ED referrals per 1,000 patients compared with the binary interpretation baseline.
+
+\textbf{Sensitivity--FP trade-off curve.} A sweep across per-pathology sensitivity targets (80--99\%) maps the operating characteristic of the quantitative panel, enabling clinical teams to select a working point matching their local risk appetite.
+
+
 \subsection*{SISTER ACT clinical decision rule}
 
 The analyses above identify pneumothorax as a structural coverage gap: no blood-based biomarker exceeds 0.30 sensitivity at any threshold. To close this gap I propose the \textbf{SISTER ACT score}---a multi-pathology clinical decision rule integrating the optimal biomarker panel with an AI-augmented electronic stethoscope (AI e-stethoscope). The score comprises seven components spelling \textbf{S-I-S-T-E-R-ACT} (range 0--20):
@@ -641,6 +656,26 @@ Both the optimal panel and SISTER ACT \textbf{dominate} current care: they are s
 \textbf{Probabilistic sensitivity analysis} ($n = 2{,}000$ Monte Carlo iterations) confirms robustness: the optimal panel is cost-effective compared with current care in \textbf{100\%} of iterations at all WTP thresholds from \texteuro0 to \texteuro100,000 per QALY. The CEAC is flat at 1.0 across the entire range, reflecting the strength of the dominance finding.
 
 \textbf{National impact projection.} Extrapolating to 150,000 annual Dutch GP chest pain presentations~\cite{Schols2018}: the optimal panel detects an estimated \textbf{3,123 additional cases} per year compared with current care, with annual cost savings of \textbf{\texteuro21.0M}. The SISTER ACT strategy detects \textbf{3,670 additional cases} per year with annual savings of \textbf{\texteuro92.6M}---driven primarily by reduced unnecessary ED referrals and hospitalisations through higher specificity.
+
+
+% ============================================================================
+\subsection*{Quantitative likelihood-ratio interpretation}
+% ============================================================================
+
+Under quantitative LR interpretation with per-pathology thresholds calibrated to 95\% sensitivity, the panel-level false-positive rate (any pathology flagged) drops from 93.4\% (binary OR) to \textbf{66.5\%} (Gaussian copula), a \textbf{28.8\% relative reduction} (\cref{fig:sensitivity_fp_tradeoff}). The multivariate AUC ranges from 0.89 (PE) to 0.96 (AHF), confirming that the four-biomarker panel carries substantial discriminative information beyond what binary cutoffs exploit.
+
+\textbf{Pathology-directed management.} When quantitative posteriors are routed through ED-only referral for ACS/PE/AoD and outpatient workup for pericarditis/AHF, the ED referral rate drops to \textbf{63.0\%} (copula), with 3.5\% directed to outpatient workup and 33.5\% safely discharged.
+
+\textbf{Three-layer combination.} Integrating HEAR pre-stratification (low 50\% discharged, moderate 35\% tested, high 15\% direct ED) with quantitative LR and pathology-directed management yields \textbf{370.5 unnecessary ED referrals per 1,000 patients}, compared with 476.8 under the binary paradigm---106.3 fewer referrals ($-$22.3\%).
+
+\textbf{Sensitivity--FP trade-off.} The operating curve (\cref{fig:sensitivity_fp_tradeoff}) shows a strictly monotonic relationship: at 80\% per-pathology sensitivity, the ED-only copula FP rate is 30.6\%; at 90\%, 47.7\%; at 95\%, 63.0\%; at 99\%, 86.7\%. No operating point achieves $\geq$95\% sensitivity with $<$50\% FP for all five pathologies simultaneously.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.85\linewidth]{../figures/fig9_sensitivity_fp_tradeoff}
+\caption{Sensitivity--FP trade-off for quantitative likelihood-ratio interpretation. Blue: any pathology flagged (copula); red: ED-only referrals (copula); grey dashed: binary OR baseline (93.4\%). The vertical green line marks the 95\% per-pathology sensitivity target. No operating point achieves $\geq$95\% sensitivity with $<$50\% FP.}
+\label{fig:sensitivity_fp_tradeoff}
+\end{figure}
 
 
 % ============================================================================
