@@ -564,3 +564,169 @@ class TestCDRComparison:
         sister = comp['systems']['SISTER_ACT']
         hear = comp['systems']['HEAR']
         assert sister['referral_rate'] < hear['referral_rate']
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+# CORRELATION & DEPENDENCE MODEL TESTS
+# ═══════════════════════════════════════════════════════════════════════════
+
+class TestCorrelationDependence:
+    """Validate the Gaussian copula correlation model."""
+
+    def test_correlation_matrix_shape(self):
+        from correlation_dependence_model import build_correlation_matrix
+        R = build_correlation_matrix()
+        assert R.shape[0] == R.shape[1]
+        assert R.shape[0] >= 4
+
+    def test_correlation_matrix_symmetric(self):
+        from correlation_dependence_model import build_correlation_matrix
+        R = build_correlation_matrix()
+        np.testing.assert_array_almost_equal(R, R.T)
+
+    def test_correlation_matrix_positive_semidefinite(self):
+        from correlation_dependence_model import build_correlation_matrix
+        R = build_correlation_matrix()
+        eigvals = np.linalg.eigvalsh(R)
+        assert np.all(eigvals >= -1e-10), "Correlation matrix must be PSD"
+
+    def test_corrected_fp_rate_below_independence(self):
+        from correlation_dependence_model import corrected_panel_fp_rate
+        panel = ["hs-cTnI", "D-dimer", "NT-proBNP", "CRP"]
+        result = corrected_panel_fp_rate(panel, n_mc=50_000, seed=42)
+        assert result['copula_corrected']['fp_rate'] < result['independence_assumption']['fp_rate']
+
+    def test_corrected_joint_npv_high(self):
+        from correlation_dependence_model import corrected_joint_npv
+        panel = ["hs-cTnI", "D-dimer", "NT-proBNP", "CRP"]
+        result = corrected_joint_npv(panel, n_mc=50_000, seed=42)
+        assert result['copula_corrected_npv'] > 0.95
+
+    def test_bayesian_sequential_saves_tests(self):
+        from correlation_dependence_model import bayesian_sequential_testing
+        panel = ["hs-cTnI", "D-dimer", "NT-proBNP", "CRP"]
+        result = bayesian_sequential_testing(panel, n_patients=1000, seed=42)
+        assert result['average_tests_per_patient'] < len(panel)
+
+    def test_run_dependence_analysis_completes(self):
+        from correlation_dependence_model import run_dependence_analysis
+        result = run_dependence_analysis(
+            panel_biomarkers=["hs-cTnI", "D-dimer", "NT-proBNP", "CRP"],
+        )
+        assert 'corrected_fp_rate' in result
+        assert 'sequential_testing' in result
+        assert 'corrected_npv' in result
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+# EXTENDED BIOMARKER POOL TESTS
+# ═══════════════════════════════════════════════════════════════════════════
+
+class TestExtendedBiomarkerPool:
+    """Validate the expanded 12-biomarker candidate pool."""
+
+    def test_extended_matrix_shape(self):
+        from biomarker_coverage_matrix import build_extended_pool_matrix
+        C = build_extended_pool_matrix(include_extended=True)
+        assert C.shape == (6, 12), f"Expected (6, 12), got {C.shape}"
+
+    def test_extended_biomarkers_present(self):
+        from biomarker_coverage_matrix import (
+            build_extended_pool_matrix, EXTENDED_BIOMARKERS,
+        )
+        C = build_extended_pool_matrix(include_extended=True)
+        for b in EXTENDED_BIOMARKERS:
+            assert b in C.columns, f"Missing extended biomarker: {b}"
+
+    def test_original_biomarkers_unchanged(self):
+        from biomarker_coverage_matrix import (
+            build_coverage_matrix, build_extended_pool_matrix,
+        )
+        C_orig = build_coverage_matrix()
+        C_ext = build_extended_pool_matrix(include_extended=True)
+        for b in C_orig.columns:
+            pd.testing.assert_series_equal(
+                C_orig[b], C_ext[b],
+                check_names=True,
+                obj=f"Original biomarker {b} values changed in extended matrix",
+            )
+
+    def test_extended_entries_have_sources(self):
+        from biomarker_coverage_matrix import EXTENDED_COVERAGE_DATA
+        for pathology, biomarker_dict in EXTENDED_COVERAGE_DATA.items():
+            for biomarker, entry in biomarker_dict.items():
+                assert entry.source, f"Missing source for {pathology}/{biomarker}"
+
+    def test_extended_meta_available(self):
+        from biomarker_coverage_matrix import (
+            EXTENDED_BIOMARKER_META, EXTENDED_BIOMARKERS,
+        )
+        for b in EXTENDED_BIOMARKERS:
+            assert b in EXTENDED_BIOMARKER_META, f"Missing meta for {b}"
+            meta = EXTENDED_BIOMARKER_META[b]
+            assert meta.cost_eur > 0, f"Invalid cost for {b}"
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+# HEALTH ECONOMICS TESTS
+# ═══════════════════════════════════════════════════════════════════════════
+
+class TestHealthEconomics:
+    """Validate the health-economic decision analytic model."""
+
+    def test_strategy_evaluation_runs(self):
+        from health_economics import evaluate_strategy, STRATEGIES
+        for key, strategy in STRATEGIES.items():
+            result = evaluate_strategy(strategy, cohort_size=1000)
+            assert result.total_cost > 0
+            assert 0 <= result.sensitivity <= 1
+            assert 0 <= result.specificity <= 1
+
+    def test_icer_computation(self):
+        from health_economics import evaluate_strategy, compute_icer, STRATEGIES
+        current = evaluate_strategy(STRATEGIES['current_care'], 1000)
+        optimal = evaluate_strategy(STRATEGIES['optimal_panel'], 1000)
+        icer = compute_icer(current, optimal)
+        assert 'icer_eur_per_qaly' in icer
+        assert 'net_monetary_benefit' in icer
+
+    def test_optimal_panel_detects_more_than_current(self):
+        from health_economics import evaluate_strategy, STRATEGIES
+        current = evaluate_strategy(STRATEGIES['current_care'], 10_000)
+        optimal = evaluate_strategy(STRATEGIES['optimal_panel'], 10_000)
+        # Optimal panel covers more pathologies → fewer missed cases
+        assert optimal.missed_cases <= current.missed_cases
+
+    def test_sister_act_detects_most(self):
+        from health_economics import evaluate_strategy, STRATEGIES
+        optimal = evaluate_strategy(STRATEGIES['optimal_panel'], 10_000)
+        sister = evaluate_strategy(STRATEGIES['sister_act'], 10_000)
+        assert sister.missed_cases <= optimal.missed_cases
+
+    def test_tornado_analysis_runs(self):
+        from health_economics import tornado_sensitivity_analysis
+        result = tornado_sensitivity_analysis(cohort_size=1000)
+        assert 'base_case_icer' in result
+        assert len(result['parameters']) > 0
+        # Parameters should be sorted by swing
+        swings = [p['swing'] for p in result['parameters']]
+        assert swings == sorted(swings, reverse=True)
+
+    def test_psa_runs(self):
+        from health_economics import probabilistic_sensitivity_analysis
+        result = probabilistic_sensitivity_analysis(
+            n_iterations=100, cohort_size=1000, seed=42,
+        )
+        assert 'ceac' in result
+        assert 'strategy_summaries' in result
+        assert 'icer_panel_vs_current' in result
+
+    def test_full_analysis_runs(self):
+        from health_economics import run_health_economics_analysis
+        result = run_health_economics_analysis(cohort_size=1000)
+        assert 'strategy_outcomes' in result
+        assert 'icers' in result
+        assert 'tornado' in result
+        assert 'psa' in result
+        assert 'dutch_gp_impact' in result
+        assert 'extended_pool' in result

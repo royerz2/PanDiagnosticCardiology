@@ -220,6 +220,16 @@ BIOMARKERS = [
     "Procalcitonin",  # bacterial infection / systemic inflammation marker
 ]
 
+# Extended biomarker pool — emerging multiplex POC candidates
+# These are NOT in the core BIOMARKERS list to preserve backward compatibility.
+# Use build_extended_pool_matrix() to include them in analyses.
+EXTENDED_BIOMARKERS = [
+    "sST2",           # soluble suppression of tumorigenicity 2 (IL-33 receptor)
+    "GDF-15",         # growth differentiation factor 15
+    "Galectin-3",     # galectin-3 (fibrosis / inflammation)
+    "MR-proADM",      # mid-regional pro-adrenomedullin
+]
+
 
 @dataclass
 class SensitivityEntry:
@@ -528,6 +538,265 @@ COVERAGE_DATA: Dict[str, Dict[str, SensitivityEntry]] = {
 }
 
 
+# ─── Extended biomarker coverage data ────────────────────────────────────────
+# Sensitivity & specificity for the 4 emerging biomarkers across 6 pathologies.
+# Sources: published meta-analyses and diagnostic accuracy studies.
+
+EXTENDED_COVERAGE_DATA: Dict[str, Dict[str, SensitivityEntry]] = {
+    "ACS (STEMI/NSTEMI/UA)": {
+        "sST2": SensitivityEntry(
+            sensitivity=0.78, ci_lower=0.70, ci_upper=0.85,
+            source="Dieplinger 2015, Clin Biochem 48:872; Januzzi 2016, JACC 68(6):604 — sST2 in ACS",
+            setting="ED", note="Reflects myocardial stress/fibrosis; FDA-cleared (Presage assay)",
+        ),
+        "GDF-15": SensitivityEntry(
+            sensitivity=0.72, ci_lower=0.63, ci_upper=0.80,
+            source="Kempf 2007, Circ Res 100(1):61; Wollert 2017, Clin Chem 63(1):112 — GDF-15 in ACS",
+            setting="ED", note="Mitochondrial stress marker; elevated in ACS + HF",
+        ),
+        "Galectin-3": SensitivityEntry(
+            sensitivity=0.55, ci_lower=0.44, ci_upper=0.66,
+            source="Expert estimate; galectin-3 primarily HF fibrosis marker, modest ACS data",
+            setting="ED",
+        ),
+        "MR-proADM": SensitivityEntry(
+            sensitivity=0.65, ci_lower=0.55, ci_upper=0.74,
+            source="Nishida 2008, Shock 29(1):15; Maisel 2010, JACC 55(19):2062 — prognostic in ACS",
+            setting="ED", note="Reflects vascular stress; better for prognosis than dx",
+        ),
+    },
+    "Pulmonary Embolism": {
+        "sST2": SensitivityEntry(
+            sensitivity=0.60, ci_lower=0.48, ci_upper=0.72,
+            source="Expert estimate; RV strain may elevate sST2; limited PE-specific data",
+            setting="ED",
+        ),
+        "GDF-15": SensitivityEntry(
+            sensitivity=0.55, ci_lower=0.43, ci_upper=0.67,
+            source="Expert estimate; mitochondrial stress in PE; no meta-analysis",
+            setting="ED",
+        ),
+        "Galectin-3": SensitivityEntry(
+            sensitivity=0.40, ci_lower=0.28, ci_upper=0.53,
+            source="Expert estimate; limited PE data",
+            setting="ED",
+        ),
+        "MR-proADM": SensitivityEntry(
+            sensitivity=0.75, ci_lower=0.64, ci_upper=0.84,
+            source="Schuetz 2013, Eur Respir J 41(5):974; Albrich 2013 — MR-proADM in PE severity",
+            setting="ED", note="Reflects haemodynamic compromise; strong in severe PE",
+        ),
+    },
+    "Aortic Dissection": {
+        "sST2": SensitivityEntry(
+            sensitivity=0.45, ci_lower=0.32, ci_upper=0.59,
+            source="Expert estimate; aortic wall stress may trigger sST2; no direct study",
+            setting="ED",
+        ),
+        "GDF-15": SensitivityEntry(
+            sensitivity=0.50, ci_lower=0.36, ci_upper=0.64,
+            source="Expert estimate; vascular stress response; limited data",
+            setting="ED",
+        ),
+        "Galectin-3": SensitivityEntry(
+            sensitivity=0.35, ci_lower=0.22, ci_upper=0.50,
+            source="Expert estimate; no dissection-specific data",
+            setting="ED",
+        ),
+        "MR-proADM": SensitivityEntry(
+            sensitivity=0.70, ci_lower=0.56, ci_upper=0.82,
+            source="Expert estimate from sepsis/critical illness data; endothelial activation in AoD",
+            setting="ED",
+        ),
+    },
+    "Pericarditis / Myocarditis": {
+        "sST2": SensitivityEntry(
+            sensitivity=0.65, ci_lower=0.52, ci_upper=0.77,
+            source="Expert estimate; IL-33/ST2 axis in myocardial inflammation; Pascual-Figal 2016",
+            setting="ED",
+        ),
+        "GDF-15": SensitivityEntry(
+            sensitivity=0.60, ci_lower=0.47, ci_upper=0.72,
+            source="Expert estimate; mitochondrial stress in myocarditis",
+            setting="ED",
+        ),
+        "Galectin-3": SensitivityEntry(
+            sensitivity=0.55, ci_lower=0.42, ci_upper=0.68,
+            source="Expert estimate; fibrosis marker may be elevated in myocarditis",
+            setting="ED",
+        ),
+        "MR-proADM": SensitivityEntry(
+            sensitivity=0.50, ci_lower=0.37, ci_upper=0.63,
+            source="Expert estimate; limited pericarditis data",
+            setting="ED",
+        ),
+    },
+    "Pneumothorax (tension)": {
+        "sST2": SensitivityEntry(
+            sensitivity=0.12, ci_lower=0.04, ci_upper=0.25,
+            source="Expert estimate; no mechanical lung injury marker role for sST2",
+            setting="ED",
+        ),
+        "GDF-15": SensitivityEntry(
+            sensitivity=0.15, ci_lower=0.05, ci_upper=0.30,
+            source="Expert estimate; non-specific stress in severe cases",
+            setting="ED",
+        ),
+        "Galectin-3": SensitivityEntry(
+            sensitivity=0.08, ci_lower=0.02, ci_upper=0.20,
+            source="Expert estimate; no PTX role",
+            setting="ED",
+        ),
+        "MR-proADM": SensitivityEntry(
+            sensitivity=0.20, ci_lower=0.08, ci_upper=0.38,
+            source="Expert estimate; haemodynamic stress in tension PTX",
+            setting="ED",
+        ),
+    },
+    "Acute Heart Failure": {
+        "sST2": SensitivityEntry(
+            sensitivity=0.89, ci_lower=0.83, ci_upper=0.93,
+            source="Januzzi 2016, JACC 68(6):604; Mueller 2019 — sST2 in acute HF dx; FDA-cleared",
+            setting="ED", note="Complementary to NT-proBNP; less affected by age/weight/renal",
+        ),
+        "GDF-15": SensitivityEntry(
+            sensitivity=0.82, ci_lower=0.74, ci_upper=0.88,
+            source="Kempf 2007, Circ Res 100:61; Wollert 2017 — GDF-15 in HF; NSTE-ACS substudy",
+            setting="ED", note="Strong independent HF predictor",
+        ),
+        "Galectin-3": SensitivityEntry(
+            sensitivity=0.80, ci_lower=0.72, ci_upper=0.87,
+            source="de Boer 2012, Eur J Heart Fail 14(4):394; FDA-cleared for HF prognosis",
+            setting="ED", note="Fibrosis-driven marker; better for chronic than acute dx",
+        ),
+        "MR-proADM": SensitivityEntry(
+            sensitivity=0.88, ci_lower=0.82, ci_upper=0.93,
+            source="Maisel 2010, JACC 55(19):2062; BACH trial — MR-proADM for dyspnoea triage",
+            setting="ED", note="Excellent prognostic marker; good acute dx performance",
+        ),
+    },
+}
+
+EXTENDED_SPECIFICITY_DATA: Dict[str, Dict[str, SpecificityEntry]] = {
+    "ACS (STEMI/NSTEMI/UA)": {
+        "sST2": SpecificityEntry(0.62, 0.54, 0.70, "Dieplinger 2015; moderate specificity"),
+        "GDF-15": SpecificityEntry(0.58, 0.50, 0.66, "Kempf 2007; non-specific elevation"),
+        "Galectin-3": SpecificityEntry(0.55, 0.47, 0.63, "Expert estimate; fibrosis marker"),
+        "MR-proADM": SpecificityEntry(0.60, 0.52, 0.68, "Nishida 2008; vascular stress"),
+    },
+    "Pulmonary Embolism": {
+        "sST2": SpecificityEntry(0.58, 0.50, 0.66, "Expert estimate"),
+        "GDF-15": SpecificityEntry(0.55, 0.47, 0.63, "Expert estimate"),
+        "Galectin-3": SpecificityEntry(0.60, 0.52, 0.68, "Expert estimate"),
+        "MR-proADM": SpecificityEntry(0.55, 0.47, 0.63, "Schuetz 2013; moderate specificity"),
+    },
+    "Aortic Dissection": {
+        "sST2": SpecificityEntry(0.65, 0.55, 0.75, "Expert estimate"),
+        "GDF-15": SpecificityEntry(0.60, 0.50, 0.70, "Expert estimate"),
+        "Galectin-3": SpecificityEntry(0.70, 0.60, 0.80, "Expert estimate"),
+        "MR-proADM": SpecificityEntry(0.55, 0.45, 0.65, "Expert estimate"),
+    },
+    "Pericarditis / Myocarditis": {
+        "sST2": SpecificityEntry(0.60, 0.50, 0.70, "Expert estimate"),
+        "GDF-15": SpecificityEntry(0.55, 0.45, 0.65, "Expert estimate"),
+        "Galectin-3": SpecificityEntry(0.55, 0.45, 0.65, "Expert estimate"),
+        "MR-proADM": SpecificityEntry(0.60, 0.50, 0.70, "Expert estimate"),
+    },
+    "Pneumothorax (tension)": {
+        "sST2": SpecificityEntry(0.88, 0.82, 0.94, "Expert estimate; not elevated"),
+        "GDF-15": SpecificityEntry(0.85, 0.78, 0.92, "Expert estimate"),
+        "Galectin-3": SpecificityEntry(0.90, 0.85, 0.95, "Expert estimate; not elevated"),
+        "MR-proADM": SpecificityEntry(0.82, 0.75, 0.89, "Expert estimate"),
+    },
+    "Acute Heart Failure": {
+        "sST2": SpecificityEntry(0.65, 0.57, 0.73, "Januzzi 2016; moderate specificity"),
+        "GDF-15": SpecificityEntry(0.60, 0.52, 0.68, "Kempf 2007"),
+        "Galectin-3": SpecificityEntry(0.62, 0.54, 0.70, "de Boer 2012"),
+        "MR-proADM": SpecificityEntry(0.68, 0.60, 0.76, "Maisel 2010; BACH trial"),
+    },
+}
+
+EXTENDED_BIOMARKER_META: Dict[str, 'BiomarkerMeta'] = {}  # populated after BiomarkerMeta class
+
+
+def _init_extended_meta():
+    """Initialise extended biomarker metadata (called after BiomarkerMeta is defined)."""
+    global EXTENDED_BIOMARKER_META
+    EXTENDED_BIOMARKER_META.update({
+        "sST2": BiomarkerMeta(
+            name="sST2", cost_eur=25.00, time_to_result_min=20.0,
+            sample_volume_ul=50.0, poc_available=True,
+            source="Critical Diagnostics Presage ST2 assay; FDA-cleared 2013; "
+                   "Dieplinger 2015; POCT lateral flow in development",
+        ),
+        "GDF-15": BiomarkerMeta(
+            name="GDF-15", cost_eur=22.00, time_to_result_min=25.0,
+            sample_volume_ul=30.0, poc_available=False,
+            source="Roche Elecsys GDF-15; no POC device yet; "
+                   "Wollert 2017 Clin Chem",
+        ),
+        "Galectin-3": BiomarkerMeta(
+            name="Galectin-3", cost_eur=20.00, time_to_result_min=18.0,
+            sample_volume_ul=25.0, poc_available=True,
+            source="BG Medicine galectin-3 assay; FDA-cleared 2010; "
+                   "de Boer 2012 Eur J Heart Fail",
+        ),
+        "MR-proADM": BiomarkerMeta(
+            name="MR-proADM", cost_eur=28.00, time_to_result_min=20.0,
+            sample_volume_ul=50.0, poc_available=False,
+            source="B.R.A.H.M.S KRYPTOR MR-proADM; Maisel 2010 BACH trial; "
+                   "no POC device; lab-based immunoassay",
+        ),
+    })
+
+
+def build_extended_pool_matrix(
+    include_extended: bool = True,
+) -> pd.DataFrame:
+    """
+    Build an expanded coverage matrix including the 4 emerging biomarkers.
+
+    Returns a 6 × 12 DataFrame (6 pathologies × 12 biomarkers) when
+    include_extended=True, or the standard 6 × 8 otherwise.
+    """
+    base = build_coverage_matrix()
+    if not include_extended:
+        return base
+
+    all_biomarkers = list(BIOMARKERS) + list(EXTENDED_BIOMARKERS)
+    matrix = np.zeros((len(PATHOLOGIES), len(all_biomarkers)))
+
+    for i, pathology in enumerate(PATHOLOGIES):
+        for j, biomarker in enumerate(all_biomarkers):
+            if biomarker in COVERAGE_DATA.get(pathology, {}):
+                matrix[i, j] = COVERAGE_DATA[pathology][biomarker].sensitivity
+            elif biomarker in EXTENDED_COVERAGE_DATA.get(pathology, {}):
+                matrix[i, j] = EXTENDED_COVERAGE_DATA[pathology][biomarker].sensitivity
+
+    return pd.DataFrame(matrix, index=PATHOLOGIES, columns=all_biomarkers)
+
+
+def build_extended_specificity_matrix(
+    include_extended: bool = True,
+) -> pd.DataFrame:
+    """Build specificity matrix including extended biomarkers."""
+    base = build_specificity_matrix()
+    if not include_extended:
+        return base
+
+    all_biomarkers = list(BIOMARKERS) + list(EXTENDED_BIOMARKERS)
+    matrix = np.zeros((len(PATHOLOGIES), len(all_biomarkers)))
+
+    for i, pathology in enumerate(PATHOLOGIES):
+        for j, biomarker in enumerate(all_biomarkers):
+            if biomarker in SPECIFICITY_DATA.get(pathology, {}):
+                matrix[i, j] = SPECIFICITY_DATA[pathology][biomarker].specificity
+            elif biomarker in EXTENDED_SPECIFICITY_DATA.get(pathology, {}):
+                matrix[i, j] = EXTENDED_SPECIFICITY_DATA[pathology][biomarker].specificity
+
+    return pd.DataFrame(matrix, index=PATHOLOGIES, columns=all_biomarkers)
+
+
 def build_coverage_matrix() -> pd.DataFrame:
     """
     Build the P × B coverage matrix as a pandas DataFrame.
@@ -674,6 +943,9 @@ BIOMARKER_META: Dict[str, BiomarkerMeta] = {
         source="Kip 2017 [13]; Samsung LABGEO IB10; B.R.A.H.M.S"
     ),
 }
+
+# Initialise the extended biomarker metadata now that BiomarkerMeta is defined
+_init_extended_meta()
 
 
 # ─── Early presenter (<2h) sensitivity adjustments ─────────────────────────

@@ -1,0 +1,210 @@
+{
+  "method": "Quantitative LR interpretation + pathology-directed management",
+  "description": "Three-layer FP reduction: (1) quantitative LR replaces binary cutoffs, (2) pathology-directed management routes pericarditis/AHF to outpatient instead of ED, (3) HEAR pre-stratification limits testing to 35% moderate-risk.",
+  "binary_or_rule": {
+    "panel_fp_rate": 0.9336,
+    "panel_specificity": 0.0664,
+    "per_pathology_sensitivity": {
+      "ACS": 0.9937,
+      "PE": 0.996,
+      "AoD": 0.9967,
+      "Pericarditis": 0.9974,
+      "AHF": 0.9975
+    },
+    "note": "Any positive \u2192 ED referral. No pathology discrimination."
+  },
+  "quantitative_lr": {
+    "per_pathology_thresholds": {
+      "ACS": 0.010548,
+      "PE": 0.00395,
+      "AoD": 0.000804,
+      "Pericarditis": 0.011709,
+      "AHF": 0.008967
+    },
+    "per_pathology_sensitivity": {
+      "ACS": 0.95,
+      "PE": 0.95,
+      "AoD": 0.95,
+      "Pericarditis": 0.95,
+      "AHF": 0.95
+    },
+    "any_pathology_fp": {
+      "independent": 0.7298,
+      "copula": 0.6651
+    },
+    "ed_only_fp": {
+      "independent": 0.669,
+      "copula": 0.6299
+    }
+  },
+  "pathology_directed_management": {
+    "independent": {
+      "ed_referral_rate": 0.66902,
+      "outpatient_workup_rate": 0.060825,
+      "discharge_rate": 0.270155,
+      "any_action_rate": 0.729845
+    },
+    "copula": {
+      "ed_referral_rate": 0.629915,
+      "outpatient_workup_rate": 0.03518,
+      "discharge_rate": 0.334905,
+      "any_action_rate": 0.665095
+    },
+    "explanation": "ED referral triggered ONLY for ACS/PE/AoD. Pericarditis/AHF \u2192 outpatient echo + medical Rx. All below threshold \u2192 safe discharge."
+  },
+  "hear_stratified_workflow": {
+    "per_1000_patients": {
+      "low_risk_discharged": 500,
+      "tested": 350,
+      "high_risk_direct_ed": 150,
+      "test_triggered_ed_referrals": 220.5,
+      "test_triggered_outpatient_workups": 12.3,
+      "test_discharged": 117.2,
+      "total_ed_referrals": 370.5,
+      "total_unnecessary_ed_pct": "37.0%"
+    },
+    "vs_binary_or": {
+      "binary_ed_from_testing": 326.8,
+      "binary_total_ed": 476.8,
+      "ed_referrals_avoided": 106.3,
+      "reduction_pct": "22.3%"
+    }
+  },
+  "multivariate_auc_per_pathology": {
+    "ACS": 0.9291,
+    "PE": 0.8901,
+    "AoD": 0.906,
+    "Pericarditis": 0.9239,
+    "Pneumothorax": 0.9383,
+    "AHF": 0.9569
+  },
+  "theoretical_mv_roc": {
+    "ACS": {
+      "separations": {
+        "hs-cTnI": 1.745,
+        "D-dimer": -0.507,
+        "NT-proBNP": 0.96,
+        "CRP": -0.305
+      },
+      "d_multivariate": 2.078,
+      "auc_multivariate": 0.9291,
+      "specificity_at_95pct_sensitivity": 0.6675
+    },
+    "PE": {
+      "separations": {
+        "hs-cTnI": -0.025,
+        "D-dimer": 1.443,
+        "NT-proBNP": 0.96,
+        "CRP": 0.08
+      },
+      "d_multivariate": 1.735,
+      "auc_multivariate": 0.8901,
+      "specificity_at_95pct_sensitivity": 0.5359
+    },
+    "AoD": {
+      "separations": {
+        "hs-cTnI": -0.482,
+        "D-dimer": 1.679,
+        "NT-proBNP": 0.581,
+        "CRP": 0.277
+      },
+      "d_multivariate": 1.862,
+      "auc_multivariate": 0.906,
+      "specificity_at_95pct_sensitivity": 0.5858
+    },
+    "Pericarditis": {
+      "separations": {
+        "hs-cTnI": 1.016,
+        "D-dimer": -0.587,
+        "NT-proBNP": 1.231,
+        "CRP": 1.1
+      },
+      "d_multivariate": 2.025,
+      "auc_multivariate": 0.9239,
+      "specificity_at_95pct_sensitivity": 0.6481
+    },
+    "Pneumothorax": {
+      "separations": {
+        "hs-cTnI": -1.181,
+        "D-dimer": -1.238,
+        "NT-proBNP": -0.135,
+        "CRP": -1.342
+      },
+      "d_multivariate": 2.179,
+      "auc_multivariate": 0.9383,
+      "specificity_at_95pct_sensitivity": 0.7033
+    },
+    "AHF": {
+      "separations": {
+        "hs-cTnI": 0.568,
+        "D-dimer": 0.051,
+        "NT-proBNP": 2.351,
+        "CRP": -0.18
+      },
+      "d_multivariate": 2.426,
+      "auc_multivariate": 0.9569,
+      "specificity_at_95pct_sensitivity": 0.7827
+    }
+  },
+  "sensitivity_fp_tradeoff": [
+    {
+      "target_sensitivity": 0.8,
+      "any_pathology_fp_indep": 0.3458,
+      "any_pathology_fp_copula": 0.3409,
+      "ed_only_fp_indep": 0.2945,
+      "ed_only_fp_copula": 0.3059
+    },
+    {
+      "target_sensitivity": 0.85,
+      "any_pathology_fp_indep": 0.4368,
+      "any_pathology_fp_copula": 0.4157,
+      "ed_only_fp_indep": 0.3772,
+      "ed_only_fp_copula": 0.3781
+    },
+    {
+      "target_sensitivity": 0.9,
+      "any_pathology_fp_indep": 0.5571,
+      "any_pathology_fp_copula": 0.5149,
+      "ed_only_fp_indep": 0.4938,
+      "ed_only_fp_copula": 0.4769
+    },
+    {
+      "target_sensitivity": 0.92,
+      "any_pathology_fp_indep": 0.6187,
+      "any_pathology_fp_copula": 0.5671,
+      "ed_only_fp_indep": 0.554,
+      "ed_only_fp_copula": 0.5294
+    },
+    {
+      "target_sensitivity": 0.95,
+      "any_pathology_fp_indep": 0.7298,
+      "any_pathology_fp_copula": 0.6651,
+      "ed_only_fp_indep": 0.669,
+      "ed_only_fp_copula": 0.6299
+    },
+    {
+      "target_sensitivity": 0.97,
+      "any_pathology_fp_indep": 0.8235,
+      "any_pathology_fp_copula": 0.7522,
+      "ed_only_fp_indep": 0.7705,
+      "ed_only_fp_copula": 0.7213
+    },
+    {
+      "target_sensitivity": 0.99,
+      "any_pathology_fp_indep": 0.942,
+      "any_pathology_fp_copula": 0.8833,
+      "ed_only_fp_indep": 0.9158,
+      "ed_only_fp_copula": 0.8668
+    }
+  ],
+  "fp_reduction_summary": {
+    "binary_or_total_fp": "93.4%",
+    "quant_lr_total_fp_copula": "66.5%",
+    "quant_lr_ed_only_fp_copula": "63.0%",
+    "pathology_directed_ed_rate_copula": "63.0%",
+    "pathology_directed_discharge_rate_copula": "33.5%",
+    "hear_plus_quant_unnecessary_ed_per_1000": 370.5,
+    "hear_plus_binary_unnecessary_ed_per_1000": 476.8,
+    "ed_referrals_avoided_per_1000": 106.3
+  }
+}

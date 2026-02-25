@@ -22,6 +22,9 @@ Runs the complete analysis pipeline:
  16. HEAR score stratification & Dutch GP patient flow
  17. Publication figures (8 panels)
  18. SISTER ACT score with AI e-stethoscope analysis
+ 19. Biomarker correlation & conditional dependence modelling
+ 20. Extended biomarker pool optimisation (12 biomarkers)
+ 21. Health-economic analysis (ICER, PSA, CEAC, Dutch GP impact)
 """
 
 import os
@@ -48,6 +51,8 @@ from pareto_ablation_analysis import (
 from serial_testing_model import run_serial_analysis
 from sister_act_score import run_sister_act_analysis
 from visualisation import generate_all_figures
+from correlation_dependence_model import run_dependence_analysis
+from health_economics import run_health_economics_analysis
 
 logging.basicConfig(
     level=logging.INFO,
@@ -245,6 +250,41 @@ def main():
     print(f"  Extended coverage: {sa_cov['coverage']}")
     print(f"  Sensitivity: {sa_sp['sensitivity'] * 100:.1f}% | Specificity: {sa_sp['specificity'] * 100:.1f}%")
     print(f"  Referral rate: {sa_cdr['referral_rate'] * 100:.1f}% | Missed/1000: {sa_sp['miss_rate_per_1000']:.1f}")
+
+    # ── Step 19: Correlation & Conditional Dependence ──
+    print(f"\n[STEP 19] Biomarker correlation & conditional dependence modelling...")
+    dep_results = run_dependence_analysis(
+        panel_biomarkers=["hs-cTnI", "D-dimer", "NT-proBNP", "CRP"],
+        output_dir=output_dir,
+    )
+    fp_ind = dep_results['corrected_fp_rate']['independence_assumption']['fp_rate']
+    fp_cop = dep_results['corrected_fp_rate']['copula_corrected']['fp_rate']
+    print(f"  Independence FP rate: {fp_ind:.1%}")
+    print(f"  Copula-corrected FP: {fp_cop:.1%}")
+    print(f"  Reduction: {(fp_ind - fp_cop) / fp_ind * 100:.1f}% via correlation modelling")
+    bn = dep_results['sequential_testing']
+    print(f"  Sequential testing: mean {bn['average_tests_per_patient']:.1f} tests/patient")
+    print(f"    (saves {4 - bn['average_tests_per_patient']:.1f} tests on average)")
+
+    # ── Step 20: Extended Pool Optimisation ──
+    print(f"\n[STEP 20] Extended biomarker pool optimisation (12 biomarkers)...")
+    from biomarker_coverage_matrix import build_extended_pool_matrix, EXTENDED_BIOMARKERS
+    ext_C = build_extended_pool_matrix(include_extended=True)
+    print(f"  Extended matrix: {ext_C.shape[0]} pathologies × {ext_C.shape[1]} biomarkers")
+    print(f"  New biomarkers: {', '.join(EXTENDED_BIOMARKERS)}")
+    ext_C.to_csv(os.path.join(output_dir, "extended_coverage_matrix.csv"))
+
+    # ── Step 21: Health-Economic Analysis ──
+    print(f"\n[STEP 21] Health-economic analysis (ICER, PSA, Dutch GP impact)...")
+    he_results = run_health_economics_analysis(
+        output_dir=output_dir,
+        cohort_size=10_000,
+    )
+    for key, outcome in he_results['strategy_outcomes'].items():
+        print(f"  {outcome['name']}: €{outcome['cost_per_patient']:.2f}/patient, "
+              f"sens={outcome['sensitivity']:.1%}, missed={outcome['missed_cases']}")
+    for key, icer in he_results['icers'].items():
+        print(f"  ICER ({key}): {icer['icer_eur_per_qaly']}")
 
     # ── Summary ──
     print(f"\n{'=' * 90}")

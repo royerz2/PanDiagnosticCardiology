@@ -172,6 +172,96 @@ A.~J. Vickers and E.~B. Elkin.
   models.
 \newblock {\em Medical Decision Making}, 26(6):565--574, 2006.
 
+\bibitem{Nelsen2006}
+Roger~B. Nelsen.
+\newblock {\em An Introduction to Copulas}.
+\newblock Springer Series in Statistics. Springer, 2nd edition, 2006.
+
+\bibitem{deFilippi2007}
+Christopher~R. de~Filippi, James~A. de~Lemos, Robert~H. Christenson, John~S.
+  Gottdiener, Willem~J. Kop, Min Zhan, and Stephen~L. Seliger.
+\newblock Association of serial measures of cardiac troponin {T} using a
+  sensitive assay with incident heart failure and cardiovascular mortality in
+  older adults.
+\newblock {\em JAMA}, 304(22):2494--2502, 2010.
+
+\bibitem{Lippi2010}
+Giuseppe Lippi, Massimo Franchini, Giovanni Targher, and Emmanuel~J. Favaloro.
+\newblock Help me, {D}octor! {M}y {D}-dimer is raised.
+\newblock {\em Annals of Medicine}, 43(8):587--592, 2011.
+
+\bibitem{Tang2007}
+W.~H.~Wilson Tang, Gary~S. Francis, David~A. Morrow, L.~Kristin Newby,
+  Christopher~P. Cannon, Robert~L. Jesse, Alan~B. Storrow, and Robert~H.
+  Christenson.
+\newblock National {A}cademy of {C}linical {B}iochemistry laboratory medicine
+  practice guidelines: clinical utilization of cardiac biomarker testing in
+  heart failure.
+\newblock {\em Circulation}, 116(5):e99--e109, 2007.
+
+\bibitem{Dieplinger2015}
+Benjamin Dieplinger and Thomas Mueller.
+\newblock Soluble {ST2} in heart failure.
+\newblock {\em Clinica Chimica Acta}, 443:57--70, 2015.
+
+\bibitem{Januzzi2016}
+James~L. Januzzi, Domingo Pascual-Figal, and Lori~B. Daniels.
+\newblock {ST2} testing for chronic heart failure therapy monitoring: the
+  {I}nternational {ST2} {C}onsensus {P}anel.
+\newblock {\em The American Journal of Cardiology}, 115(7):70B--75B, 2015.
+
+\bibitem{Kempf2007}
+Tibor Kempf, Moritz Eden, Jens Strelau, Mona Naguib, Claudia Willenbockel,
+  Jörn Tongers, Joerg Heineke, Daniel Kotlarz, Jiang Xu, Jeffery~D. Molkentin,
+  Helmut~W. Niessen, Helmut Drexler, and Kai~C. Wollert.
+\newblock The transforming growth factor-$\beta$ superfamily member
+  growth-differentiation factor-15 protects the heart from ischemia/reperfusion
+  injury.
+\newblock {\em Circulation Research}, 98(3):351--360, 2006.
+
+\bibitem{Wollert2017}
+Kai~C. Wollert, Tibor Kempf, and Lars Wallentin.
+\newblock Growth differentiation factor 15 as a biomarker in cardiovascular
+  disease.
+\newblock {\em Clinical Chemistry}, 63(1):140--151, 2017.
+
+\bibitem{deBoer2012}
+Rudolf~A. de~Boer, Adriaan~A. Voors, Pieter Muntendam, Wiek~H. van Gilst, and
+  Dirk~J. van Veldhuisen.
+\newblock Galectin-3: a novel mediator of heart failure development and
+  progression.
+\newblock {\em European Journal of Heart Failure}, 11(9):811--817, 2009.
+
+\bibitem{Nishida2008}
+Hiromi Nishida, Takeshi Horio, Yoshiaki Suzuki, Yoshio Iwashima, Keiko Tokuda,
+  Kei Kamide, Kenji Kangawa, and Yuhei Kawano.
+\newblock Plasma adrenomedullin as an independent predictor of future
+  cardiovascular events in high-risk patients: comparison with {C}-reactive
+  protein and adiponectin.
+\newblock {\em Peptides}, 29(4):599--605, 2008.
+
+\bibitem{Maisel2010}
+Alan Maisel, Christian Mueller, Richard~M. Nowak, W.~Frank Peacock, Piotr
+  Ponikowski, Martin Möckel, Christopher Hogan, Alan H.~B. Wu, Mark Richards,
+  Paul Clopton, Gerasimos~S. Filippatos, Salvatore Di~Somma, Inder Anand, Leong
+  Ng, Lori~B. Daniels, Judd~E. Hollander, Alan~B. Storrow, Robert Christenson,
+  Rudolf Burger, and James McCord.
+\newblock Mid-region pro-hormone markers for diagnosis and prognosis in acute
+  dyspnea: results from the {BACH} ({B}iomarkers in {A}cute {H}eart failure)
+  trial.
+\newblock {\em Journal of the American College of Cardiology},
+  55(19):2062--2076, 2010.
+
+\bibitem{NZa2024}
+{Nederlandse Zorgautoriteit}.
+\newblock Tarieven huisartsenzorg en multidisciplinaire zorg 2024, 2024.
+\newblock Tarieven huisartsenzorg 2024. Accessed: 2025-01-15.
+
+\bibitem{ZIN2024}
+{Zorginstituut Nederland}.
+\newblock Kosteneffectiviteit in de praktijk, 2024.
+\newblock Accessed 2024-12-01.
+
 \bibitem{Grzywalski2019}
 Tomasz Grzywalski, Mateusz Piecuch, Maciej Szajek, Anna Bryk, Honorata
   Kociolek, Anna Czajkowska, Marta Jedrychowska, and Robert Sander.
@@ -261,11 +351,6 @@ S.~van~den Bulk, A.~Manten, T.~N. Bonten, and R.~E. Harskamp.
   systematic review.
 \newblock {\em Annals of Family Medicine}, 22(5):426--436, 2024.
 
-\bibitem{NZa2024}
-{Nederlandse Zorgautoriteit}.
-\newblock Tarieven huisartsenzorg en multidisciplinaire zorg 2024, 2024.
-\newblock Tarieven huisartsenzorg 2024. Accessed: 2025-01-15.
-
 \bibitem{Bergholz2021}
 J.~S. Bergholz and J.~J. Zhao.
 \newblock Compensatory mechanisms and adaptive rewiring in therapeutic
@@ -284,6 +369,42 @@ R.~Erzurumluoğlu.
 \newblock {ALIN} framework: Computational hypothesis generation for tri-axial
   combination therapy across cancer types.
 \newblock Preprint, 2026.
+
+\bibitem{Jaeschke1994}
+R.~Jaeschke, G.~H. Guyatt, and D.~L. Sackett.
+\newblock Users' guides to the medical literature. {III}. {How} to use an
+  article about a diagnostic test. {B}. {What} are the results and will they
+  help me in caring for my patients?
+\newblock {\em JAMA}, 271(9):703--707, 1994.
+
+\bibitem{Deeks2004}
+J.~J. Deeks and D.~G. Altman.
+\newblock Diagnostic tests 4: likelihood ratios.
+\newblock {\em BMJ}, 329(7458):168--169, 2004.
+
+\bibitem{GreenSwets1966}
+D.~M. Green and J.~A. Swets.
+\newblock {\em Signal Detection Theory and Psychophysics}.
+\newblock Wiley, 1966.
+
+\bibitem{Zhou2011}
+X.-H. Zhou, N.~A. Obuchowski, and D.~K. McClish.
+\newblock {\em Statistical Methods in Diagnostic Medicine}.
+\newblock Wiley, 2 edition, 2011.
+
+\bibitem{Adler2015}
+Y.~Adler, P.~Charron, M.~Imazio, L.~Badano, G.~Baro{\'n}-Esquivias, J.~Bogaert,
+  A.~Brucato, H.~Bueno, R.~Carmena, et~al.
+\newblock 2015 {ESC} guidelines for the diagnosis and management of pericardial
+  diseases.
+\newblock {\em European Heart Journal}, 36(42):2921--2964, 2015.
+
+\bibitem{McDonagh2021}
+T.~A. McDonagh, M.~Metra, M.~Adamo, R.~S. Gardner, A.~Baumbach, M.~B{\"o}hm,
+  H.~Burri, J.~Butler, J.~\v{C}elutkien{\.e}, et~al.
+\newblock 2021 {ESC} guidelines for the diagnosis and treatment of acute and
+  chronic heart failure.
+\newblock {\em European Heart Journal}, 42(36):3599--3726, 2021.
 
 \bibitem{Body2015}
 R.~Body, G.~Burrows, S.~Carley, L.~Cullen, M.~Than, A.~S. Jaffe, and J.~French.
@@ -310,12 +431,6 @@ K.~G.~M. Moons, D.~G. Altman, J.~B. Reitsma, et~al.
 \newblock Transparent reporting of a multivariable prediction model for
   individual prognosis or diagnosis ({TRIPOD}): Explanation and elaboration.
 \newblock {\em Annals of Internal Medicine}, 162(1):W1--W73, 2015.
-
-\bibitem{Fenwick2004}
-E.~Fenwick, K.~Claxton, and M.~Sculpher.
-\newblock Representing uncertainty: the role of cost-effectiveness
-  acceptability curves.
-\newblock {\em Health Economics}, 13(5):405--415, 2004.
 
 \bibitem{Kip2017}
 M.~M.~A. Kip, R.~Kusters, M.~J. IJzerman, and L.~M.~G. Steuten.
