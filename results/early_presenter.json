@@ -10,7 +10,7 @@
     "size": 4,
     "coverage": 0.8333333333333334,
     "cost_eur": 36.0,
-    "worst_case_sensitivity": 0.2
+    "worst_case_sensitivity": 0.0
   },
   "early_presenter": {
     "panel": [
@@ -21,7 +21,7 @@
     "size": 3,
     "coverage": 0.6666666666666666,
     "cost_eur": 26.0,
-    "worst_case_sensitivity": 0.2
+    "worst_case_sensitivity": 0.0
   },
   "panel_changed": true,
   "new_markers_needed": [],

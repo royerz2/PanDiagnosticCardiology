@@ -1,0 +1,890 @@
+{
+  "strategy_outcomes": {
+    "current_care": {
+      "name": "Current Care (HEART + hs-cTnI)",
+      "sensitivity": 0.7369,
+      "specificity": 0.54,
+      "referral_rate": 0.4941,
+      "missed_cases": 324,
+      "unnecessary_referrals": 4034,
+      "cost_per_patient": 1317.97,
+      "total_cost": 13179689.0,
+      "total_qaly_loss": 443.55,
+      "qalys_per_patient": 0.044355,
+      "per_pathology": [
+        {
+          "pathology": "ACS",
+          "prevalence": 0.035,
+          "n_diseased": 350.0,
+          "sensitivity": 0.95,
+          "specificity": 0.54,
+          "true_positives": 332.5,
+          "false_negatives": 17.5,
+          "missed_dx_cost_eur": 787500.0,
+          "qaly_loss": 43.75
+        },
+        {
+          "pathology": "PE",
+          "prevalence": 0.015,
+          "n_diseased": 150.0,
+          "sensitivity": 0.45,
+          "specificity": 0.6,
+          "true_positives": 67.5,
+          "false_negatives": 82.5,
+          "missed_dx_cost_eur": 2887500.0,
+          "qaly_loss": 165.0
+        },
+        {
+          "pathology": "AoD",
+          "prevalence": 0.003,
+          "n_diseased": 30.0,
+          "sensitivity": 0.28,
+          "specificity": 0.65,
+          "true_positives": 8.4,
+          "false_negatives": 21.6,
+          "missed_dx_cost_eur": 1404000.0,
+          "qaly_loss": 43.2
+        },
+        {
+          "pathology": "Peri/Myo",
+          "prevalence": 0.04,
+          "n_diseased": 400.0,
+          "sensitivity": 0.82,
+          "specificity": 0.5,
+          "true_positives": 328.0,
+          "false_negatives": 72.0,
+          "missed_dx_cost_eur": 576000.0,
+          "qaly_loss": 21.6
+        },
+        {
+          "pathology": "PTX",
+          "prevalence": 0.005,
+          "n_diseased": 50.0,
+          "sensitivity": 0.0,
+          "specificity": 0.9,
+          "true_positives": 0.0,
+          "false_negatives": 50.0,
+          "missed_dx_cost_eur": 1250000.0,
+          "qaly_loss": 50.0
+        },
+        {
+          "pathology": "AHF",
+          "prevalence": 0.025,
+          "n_diseased": 250.0,
+          "sensitivity": 0.68,
+          "specificity": 0.55,
+          "true_positives": 170.0,
+          "false_negatives": 80.0,
+          "missed_dx_cost_eur": 1440000.0,
+          "qaly_loss": 120.0
+        }
+      ]
+    },
+    "optimal_panel": {
+      "name": "Optimal 4-Test Panel",
+      "sensitivity": 0.9021,
+      "specificity": 0.0655,
+      "referral_rate": 0.9305,
+      "missed_cases": 120,
+      "unnecessary_referrals": 8196,
+      "cost_per_patient": 1189.73,
+      "total_cost": 11897287.0,
+      "total_qaly_loss": 138.9,
+      "qalys_per_patient": 0.01389,
+      "per_pathology": [
+        {
+          "pathology": "ACS",
+          "prevalence": 0.035,
+          "n_diseased": 350.0,
+          "sensitivity": 0.95,
+          "specificity": 0.54,
+          "true_positives": 332.5,
+          "false_negatives": 17.5,
+          "missed_dx_cost_eur": 787500.0,
+          "qaly_loss": 43.75
+        },
+        {
+          "pathology": "PE",
+          "prevalence": 0.015,
+          "n_diseased": 150.0,
+          "sensitivity": 0.95,
+          "specificity": 0.42,
+          "true_positives": 142.5,
+          "false_negatives": 7.5,
+          "missed_dx_cost_eur": 262500.0,
+          "qaly_loss": 15.0
+        },
+        {
+          "pathology": "AoD",
+          "prevalence": 0.003,
+          "n_diseased": 30.0,
+          "sensitivity": 0.97,
+          "specificity": 0.47,
+          "true_positives": 29.1,
+          "false_negatives": 0.9,
+          "missed_dx_cost_eur": 58500.0,
+          "qaly_loss": 1.8
+        },
+        {
+          "pathology": "Peri/Myo",
+          "prevalence": 0.04,
+          "n_diseased": 400.0,
+          "sensitivity": 0.92,
+          "specificity": 0.38,
+          "true_positives": 368.0,
+          "false_negatives": 32.0,
+          "missed_dx_cost_eur": 256000.0,
+          "qaly_loss": 9.6
+        },
+        {
+          "pathology": "PTX",
+          "prevalence": 0.005,
+          "n_diseased": 50.0,
+          "sensitivity": 0.0,
+          "specificity": 0.9,
+          "true_positives": 0.0,
+          "false_negatives": 50.0,
+          "missed_dx_cost_eur": 1250000.0,
+          "qaly_loss": 50.0
+        },
+        {
+          "pathology": "AHF",
+          "prevalence": 0.025,
+          "n_diseased": 250.0,
+          "sensitivity": 0.95,
+          "specificity": 0.76,
+          "true_positives": 237.5,
+          "false_negatives": 12.5,
+          "missed_dx_cost_eur": 225000.0,
+          "qaly_loss": 18.75
+        }
+      ]
+    },
+    "sister_act": {
+      "name": "SISTER ACT Score",
+      "sensitivity": 0.9399,
+      "specificity": 0.0557,
+      "referral_rate": 0.5297,
+      "missed_cases": 74,
+      "unnecessary_referrals": 4141,
+      "cost_per_patient": 688.35,
+      "total_cost": 6883509.0,
+      "total_qaly_loss": 92.4,
+      "qalys_per_patient": 0.00924,
+      "per_pathology": [
+        {
+          "pathology": "ACS",
+          "prevalence": 0.035,
+          "n_diseased": 350.0,
+          "sensitivity": 0.95,
+          "specificity": 0.54,
+          "true_positives": 332.5,
+          "false_negatives": 17.5,
+          "missed_dx_cost_eur": 787500.0,
+          "qaly_loss": 43.75
+        },
+        {
+          "pathology": "PE",
+          "prevalence": 0.015,
+          "n_diseased": 150.0,
+          "sensitivity": 0.95,
+          "specificity": 0.42,
+          "true_positives": 142.5,
+          "false_negatives": 7.5,
+          "missed_dx_cost_eur": 262500.0,
+          "qaly_loss": 15.0
+        },
+        {
+          "pathology": "AoD",
+          "prevalence": 0.003,
+          "n_diseased": 30.0,
+          "sensitivity": 0.97,
+          "specificity": 0.47,
+          "true_positives": 29.1,
+          "false_negatives": 0.9,
+          "missed_dx_cost_eur": 58500.0,
+          "qaly_loss": 1.8
+        },
+        {
+          "pathology": "Peri/Myo",
+          "prevalence": 0.04,
+          "n_diseased": 400.0,
+          "sensitivity": 0.92,
+          "specificity": 0.38,
+          "true_positives": 368.0,
+          "false_negatives": 32.0,
+          "missed_dx_cost_eur": 256000.0,
+          "qaly_loss": 9.6
+        },
+        {
+          "pathology": "PTX",
+          "prevalence": 0.005,
+          "n_diseased": 50.0,
+          "sensitivity": 0.93,
+          "specificity": 0.85,
+          "true_positives": 46.5,
+          "false_negatives": 3.5,
+          "missed_dx_cost_eur": 87500.0,
+          "qaly_loss": 3.5
+        },
+        {
+          "pathology": "AHF",
+          "prevalence": 0.025,
+          "n_diseased": 250.0,
+          "sensitivity": 0.95,
+          "specificity": 0.76,
+          "true_positives": 237.5,
+          "false_negatives": 12.5,
+          "missed_dx_cost_eur": 225000.0,
+          "qaly_loss": 18.75
+        }
+      ]
+    }
+  },
+  "icers": {
+    "panel_vs_current": {
+      "baseline": "Current Care (HEART + hs-cTnI)",
+      "alternative": "Optimal 4-Test Panel",
+      "delta_cost_eur": -1282402.0,
+      "delta_qaly_loss_averted": 304.65,
+      "delta_missed_cases": 204,
+      "icer_eur_per_qaly": -4209.0,
+      "cost_per_missed_dx_averted": -6286.0,
+      "net_monetary_benefit": {
+        "WTP_20000": {
+          "wtp_eur_per_qaly": 20000,
+          "nmb": 7375402.0,
+          "cost_effective": 1.0
+        },
+        "WTP_50000": {
+          "wtp_eur_per_qaly": 50000,
+          "nmb": 16514902.0,
+          "cost_effective": 1.0
+        },
+        "WTP_80000": {
+          "wtp_eur_per_qaly": 80000,
+          "nmb": 25654402.0,
+          "cost_effective": 1.0
+        },
+        "WTP_100000": {
+          "wtp_eur_per_qaly": 100000,
+          "nmb": 31747402.0,
+          "cost_effective": 1.0
+        }
+      },
+      "interpretation": "DOMINANT: Alternative is both cheaper and more effective."
+    },
+    "sister_act_vs_current": {
+      "baseline": "Current Care (HEART + hs-cTnI)",
+      "alternative": "SISTER ACT Score",
+      "delta_cost_eur": -6296180.0,
+      "delta_qaly_loss_averted": 351.15,
+      "delta_missed_cases": 250,
+      "icer_eur_per_qaly": -17930.0,
+      "cost_per_missed_dx_averted": -25185.0,
+      "net_monetary_benefit": {
+        "WTP_20000": {
+          "wtp_eur_per_qaly": 20000,
+          "nmb": 13319180.0,
+          "cost_effective": 1.0
+        },
+        "WTP_50000": {
+          "wtp_eur_per_qaly": 50000,
+          "nmb": 23853680.0,
+          "cost_effective": 1.0
+        },
+        "WTP_80000": {
+          "wtp_eur_per_qaly": 80000,
+          "nmb": 34388180.0,
+          "cost_effective": 1.0
+        },
+        "WTP_100000": {
+          "wtp_eur_per_qaly": 100000,
+          "nmb": 41411180.0,
+          "cost_effective": 1.0
+        }
+      },
+      "interpretation": "DOMINANT: Alternative is both cheaper and more effective."
+    },
+    "sister_act_vs_panel": {
+      "baseline": "Optimal 4-Test Panel",
+      "alternative": "SISTER ACT Score",
+      "delta_cost_eur": -5013778.0,
+      "delta_qaly_loss_averted": 46.5,
+      "delta_missed_cases": 46,
+      "icer_eur_per_qaly": -107823.0,
+      "cost_per_missed_dx_averted": -108995.0,
+      "net_monetary_benefit": {
+        "WTP_20000": {
+          "wtp_eur_per_qaly": 20000,
+          "nmb": 5943778.0,
+          "cost_effective": 1.0
+        },
+        "WTP_50000": {
+          "wtp_eur_per_qaly": 50000,
+          "nmb": 7338778.0,
+          "cost_effective": 1.0
+        },
+        "WTP_80000": {
+          "wtp_eur_per_qaly": 80000,
+          "nmb": 8733778.0,
+          "cost_effective": 1.0
+        },
+        "WTP_100000": {
+          "wtp_eur_per_qaly": 100000,
+          "nmb": 9663778.0,
+          "cost_effective": 1.0
+        }
+      },
+      "interpretation": "DOMINANT: Alternative is both cheaper and more effective."
+    }
+  },
+  "tornado": {
+    "base_case_icer": -4209.0,
+    "parameters": [
+      {
+        "parameter": "ED referral cost",
+        "base_value": 765.0,
+        "icer_low": -9689.0,
+        "icer_high": 1270.0,
+        "swing": 10959.0
+      },
+      {
+        "parameter": "Productivity loss",
+        "base_value": 150.0,
+        "icer_low": -5234.0,
+        "icer_high": -3185.0,
+        "swing": 2049.0
+      },
+      {
+        "parameter": "Missed ACS QALY loss",
+        "base_value": 2.5,
+        "icer_low": -4209.0,
+        "icer_high": -4209.0,
+        "swing": 0.0
+      },
+      {
+        "parameter": "Missed PE QALY loss",
+        "base_value": 2.0,
+        "icer_low": -4209.0,
+        "icer_high": -4209.0,
+        "swing": 0.0
+      },
+      {
+        "parameter": "Missed AoD QALY loss",
+        "base_value": 15.0,
+        "icer_low": -4209.0,
+        "icer_high": -4209.0,
+        "swing": 0.0
+      },
+      {
+        "parameter": "ACS prevalence",
+        "base_value": 0.035,
+        "icer_low": -4209.0,
+        "icer_high": -4209.0,
+        "swing": 0.0
+      },
+      {
+        "parameter": "POC panel cost",
+        "base_value": 36.0,
+        "icer_low": -4209.0,
+        "icer_high": -4209.0,
+        "swing": 0.0
+      },
+      {
+        "parameter": "D-dimer specificity (PE)",
+        "base_value": 0.42,
+        "icer_low": -4209.0,
+        "icer_high": -4209.0,
+        "swing": 0.0
+      },
+      {
+        "parameter": "hs-cTnI specificity (ACS)",
+        "base_value": 0.54,
+        "icer_low": -4209.0,
+        "icer_high": -4209.0,
+        "swing": 0.0
+      }
+    ]
+  },
+  "psa": {
+    "n_iterations": 2000,
+    "cohort_size": 10000,
+    "ceac": {
+      "current_care": {
+        "0": 0.0,
+        "5000": 0.0,
+        "10000": 0.0,
+        "15000": 0.0,
+        "20000": 0.0,
+        "25000": 0.0,
+        "30000": 0.0,
+        "35000": 0.0,
+        "40000": 0.0,
+        "45000": 0.0,
+        "50000": 0.0,
+        "55000": 0.0,
+        "60000": 0.0,
+        "65000": 0.0,
+        "70000": 0.0,
+        "75000": 0.0,
+        "80000": 0.0,
+        "85000": 0.0,
+        "90000": 0.0,
+        "95000": 0.0,
+        "100000": 0.0,
+        "105000": 0.0,
+        "110000": 0.0,
+        "115000": 0.0,
+        "120000": 0.0,
+        "125000": 0.0,
+        "130000": 0.0,
+        "135000": 0.0,
+        "140000": 0.0,
+        "145000": 0.0,
+        "150000": 0.0,
+        "155000": 0.0,
+        "160000": 0.0,
+        "165000": 0.0,
+        "170000": 0.0,
+        "175000": 0.0,
+        "180000": 0.0,
+        "185000": 0.0,
+        "190000": 0.0,
+        "195000": 0.0,
+        "200000": 0.0
+      },
+      "optimal_panel": {
+        "0": 0.0,
+        "5000": 0.0,
+        "10000": 0.0,
+        "15000": 0.0,
+        "20000": 0.0,
+        "25000": 0.0,
+        "30000": 0.0,
+        "35000": 0.0,
+        "40000": 0.0,
+        "45000": 0.0,
+        "50000": 0.0,
+        "55000": 0.0,
+        "60000": 0.0,
+        "65000": 0.0,
+        "70000": 0.0,
+        "75000": 0.0,
+        "80000": 0.0,
+        "85000": 0.0,
+        "90000": 0.0,
+        "95000": 0.0,
+        "100000": 0.0,
+        "105000": 0.0,
+        "110000": 0.0,
+        "115000": 0.0,
+        "120000": 0.0,
+        "125000": 0.0,
+        "130000": 0.0,
+        "135000": 0.0,
+        "140000": 0.0,
+        "145000": 0.0,
+        "150000": 0.0,
+        "155000": 0.0,
+        "160000": 0.0,
+        "165000": 0.0,
+        "170000": 0.0,
+        "175000": 0.0,
+        "180000": 0.0,
+        "185000": 0.0,
+        "190000": 0.0,
+        "195000": 0.0,
+        "200000": 0.0
+      },
+      "sister_act": {
+        "0": 1.0,
+        "5000": 1.0,
+        "10000": 1.0,
+        "15000": 1.0,
+        "20000": 1.0,
+        "25000": 1.0,
+        "30000": 1.0,
+        "35000": 1.0,
+        "40000": 1.0,
+        "45000": 1.0,
+        "50000": 1.0,
+        "55000": 1.0,
+        "60000": 1.0,
+        "65000": 1.0,
+        "70000": 1.0,
+        "75000": 1.0,
+        "80000": 1.0,
+        "85000": 1.0,
+        "90000": 1.0,
+        "95000": 1.0,
+        "100000": 1.0,
+        "105000": 1.0,
+        "110000": 1.0,
+        "115000": 1.0,
+        "120000": 1.0,
+        "125000": 1.0,
+        "130000": 1.0,
+        "135000": 1.0,
+        "140000": 1.0,
+        "145000": 1.0,
+        "150000": 1.0,
+        "155000": 1.0,
+        "160000": 1.0,
+        "165000": 1.0,
+        "170000": 1.0,
+        "175000": 1.0,
+        "180000": 1.0,
+        "185000": 1.0,
+        "190000": 1.0,
+        "195000": 1.0,
+        "200000": 1.0
+      }
+    },
+    "strategy_summaries": {
+      "current_care": {
+        "cost_mean": 13165423.0,
+        "cost_ci": [
+          7528787.0,
+          20944271.0
+        ],
+        "qaly_loss_mean": 441.81,
+        "qaly_loss_ci": [
+          219.258,
+          726.785
+        ]
+      },
+      "optimal_panel": {
+        "cost_mean": 11995139.0,
+        "cost_ci": [
+          5939654.0,
+          21108540.0
+        ],
+        "qaly_loss_mean": 138.355,
+        "qaly_loss_ci": [
+          68.662,
+          227.597
+        ]
+      },
+      "sister_act": {
+        "cost_mean": 6938140.0,
+        "cost_ci": [
+          3451898.0,
+          12173487.0
+        ],
+        "qaly_loss_mean": 92.037,
+        "qaly_loss_ci": [
+          45.676,
+          151.403
+        ]
+      }
+    },
+    "icer_panel_vs_current": {
+      "mean": -4222.0,
+      "median": -4204.0,
+      "ci_2.5": -9115.0,
+      "ci_97.5": 516.0,
+      "p_cost_effective_20k": 0.9995,
+      "p_cost_effective_50k": 1.0,
+      "p_cost_effective_80k": 1.0
+    },
+    "note": "PSA varies sensitivities (Beta), costs (Gamma CV=0.2), QALY losses (Gamma CV=0.3) over n_iterations. CEAC shows probability of being optimal at each WTP threshold."
+  },
+  "dutch_gp_impact": {
+    "annual_presentations": 150000,
+    "current_care": {
+      "missed_cases": 4854,
+      "unnecessary_referrals": 60513,
+      "total_cost_eur": 197695335.0,
+      "total_qaly_loss": 6653.25
+    },
+    "optimal_panel": {
+      "missed_cases": 1806,
+      "unnecessary_referrals": 122933,
+      "total_cost_eur": 178459309.0,
+      "total_qaly_loss": 2083.5,
+      "vs_current": {
+        "baseline": "Current Care (HEART + hs-cTnI)",
+        "alternative": "Optimal 4-Test Panel",
+        "delta_cost_eur": -19236026.0,
+        "delta_qaly_loss_averted": 4569.75,
+        "delta_missed_cases": 3048,
+        "icer_eur_per_qaly": -4209.0,
+        "cost_per_missed_dx_averted": -6311.0,
+        "net_monetary_benefit": {
+          "WTP_20000": {
+            "wtp_eur_per_qaly": 20000,
+            "nmb": 110631026.0,
+            "cost_effective": 1.0
+          },
+          "WTP_50000": {
+            "wtp_eur_per_qaly": 50000,
+            "nmb": 247723526.0,
+            "cost_effective": 1.0
+          },
+          "WTP_80000": {
+            "wtp_eur_per_qaly": 80000,
+            "nmb": 384816026.0,
+            "cost_effective": 1.0
+          },
+          "WTP_100000": {
+            "wtp_eur_per_qaly": 100000,
+            "nmb": 476211026.0,
+            "cost_effective": 1.0
+          }
+        },
+        "interpretation": "DOMINANT: Alternative is both cheaper and more effective."
+      }
+    },
+    "sister_act": {
+      "missed_cases": 1109,
+      "unnecessary_referrals": 62113,
+      "total_cost_eur": 103252630.0,
+      "total_qaly_loss": 1386.0,
+      "vs_current": {
+        "baseline": "Current Care (HEART + hs-cTnI)",
+        "alternative": "SISTER ACT Score",
+        "delta_cost_eur": -94442705.0,
+        "delta_qaly_loss_averted": 5267.25,
+        "delta_missed_cases": 3745,
+        "icer_eur_per_qaly": -17930.0,
+        "cost_per_missed_dx_averted": -25218.0,
+        "net_monetary_benefit": {
+          "WTP_20000": {
+            "wtp_eur_per_qaly": 20000,
+            "nmb": 199787705.0,
+            "cost_effective": 1.0
+          },
+          "WTP_50000": {
+            "wtp_eur_per_qaly": 50000,
+            "nmb": 357805205.0,
+            "cost_effective": 1.0
+          },
+          "WTP_80000": {
+            "wtp_eur_per_qaly": 80000,
+            "nmb": 515822705.0,
+            "cost_effective": 1.0
+          },
+          "WTP_100000": {
+            "wtp_eur_per_qaly": 100000,
+            "nmb": 621167705.0,
+            "cost_effective": 1.0
+          }
+        },
+        "interpretation": "DOMINANT: Alternative is both cheaper and more effective."
+      }
+    },
+    "summary": {
+      "additional_cases_detected_panel": 3048,
+      "additional_cases_detected_sister": 3745,
+      "annual_cost_difference_panel": -19236026.0,
+      "annual_cost_difference_sister": -94442705.0
+    }
+  },
+  "extended_pool": {
+    "pool_size": 12,
+    "core_biomarkers": [
+      "hs-cTnI",
+      "D-dimer",
+      "NT-proBNP",
+      "CRP",
+      "Copeptin",
+      "H-FABP",
+      "Myoglobin",
+      "Procalcitonin"
+    ],
+    "extended_biomarkers": [
+      "sST2",
+      "GDF-15",
+      "Galectin-3",
+      "MR-proADM"
+    ],
+    "results": {
+      "tau=0.8": {
+        "threshold": 0.8,
+        "total_biomarkers": 12,
+        "total_subsets": 4096,
+        "coverable_pathologies": 5,
+        "min_panel_size": 3,
+        "n_optimal_panels": 15,
+        "optimal_panels": [
+          [
+            "D-dimer",
+            "NT-proBNP",
+            "hs-cTnI"
+          ],
+          [
+            "D-dimer",
+            "hs-cTnI",
+            "sST2"
+          ],
+          [
+            "D-dimer",
+            "GDF-15",
+            "hs-cTnI"
+          ],
+          [
+            "D-dimer",
+            "Galectin-3",
+            "hs-cTnI"
+          ],
+          [
+            "D-dimer",
+            "MR-proADM",
+            "hs-cTnI"
+          ],
+          [
+            "CRP",
+            "D-dimer",
+            "NT-proBNP"
+          ],
+          [
+            "D-dimer",
+            "Myoglobin",
+            "NT-proBNP"
+          ],
+          [
+            "CRP",
+            "D-dimer",
+            "sST2"
+          ],
+          [
+            "CRP",
+            "D-dimer",
+            "GDF-15"
+          ],
+          [
+            "CRP",
+            "D-dimer",
+            "Galectin-3"
+          ]
+        ],
+        "new_biomarkers_in_optimal": [
+          "GDF-15",
+          "Galectin-3",
+          "MR-proADM",
+          "sST2"
+        ],
+        "search_space_increase": "4096 vs 256 (\u00d716)"
+      },
+      "tau=0.85": {
+        "threshold": 0.85,
+        "total_biomarkers": 12,
+        "total_subsets": 4096,
+        "coverable_pathologies": 5,
+        "min_panel_size": 4,
+        "n_optimal_panels": 18,
+        "optimal_panels": [
+          [
+            "CRP",
+            "D-dimer",
+            "NT-proBNP",
+            "hs-cTnI"
+          ],
+          [
+            "D-dimer",
+            "Myoglobin",
+            "NT-proBNP",
+            "hs-cTnI"
+          ],
+          [
+            "CRP",
+            "D-dimer",
+            "hs-cTnI",
+            "sST2"
+          ],
+          [
+            "CRP",
+            "D-dimer",
+            "MR-proADM",
+            "hs-cTnI"
+          ],
+          [
+            "D-dimer",
+            "Myoglobin",
+            "hs-cTnI",
+            "sST2"
+          ],
+          [
+            "D-dimer",
+            "MR-proADM",
+            "Myoglobin",
+            "hs-cTnI"
+          ],
+          [
+            "CRP",
+            "Copeptin",
+            "D-dimer",
+            "NT-proBNP"
+          ],
+          [
+            "CRP",
+            "D-dimer",
+            "Galectin-3",
+            "NT-proBNP"
+          ],
+          [
+            "Copeptin",
+            "D-dimer",
+            "Myoglobin",
+            "NT-proBNP"
+          ],
+          [
+            "D-dimer",
+            "Galectin-3",
+            "Myoglobin",
+            "NT-proBNP"
+          ]
+        ],
+        "new_biomarkers_in_optimal": [
+          "Galectin-3",
+          "MR-proADM",
+          "sST2"
+        ],
+        "search_space_increase": "4096 vs 256 (\u00d716)"
+      },
+      "tau=0.9": {
+        "threshold": 0.9,
+        "total_biomarkers": 12,
+        "total_subsets": 4096,
+        "coverable_pathologies": 5,
+        "min_panel_size": 4,
+        "n_optimal_panels": 2,
+        "optimal_panels": [
+          [
+            "CRP",
+            "D-dimer",
+            "NT-proBNP",
+            "hs-cTnI"
+          ],
+          [
+            "D-dimer",
+            "Myoglobin",
+            "NT-proBNP",
+            "hs-cTnI"
+          ]
+        ],
+        "new_biomarkers_in_optimal": [],
+        "search_space_increase": "4096 vs 256 (\u00d716)"
+      },
+      "tau=0.95": {
+        "threshold": 0.95,
+        "total_biomarkers": 12,
+        "total_subsets": 4096,
+        "coverable_pathologies": 4,
+        "min_panel_size": 3,
+        "n_optimal_panels": 1,
+        "optimal_panels": [
+          [
+            "D-dimer",
+            "NT-proBNP",
+            "hs-cTnI"
+          ]
+        ],
+        "new_biomarkers_in_optimal": [],
+        "search_space_increase": "4096 vs 256 (\u00d716)"
+      }
+    },
+    "clinical_interpretation": "With 12 biomarkers, the search space expands from 256 to 4096 subsets. At tau=0.90 the optimal panel likely remains unchanged (the coverage constraint is determined by the same 4 biomarkers exceeding tau). At lower thresholds (tau=0.80), new biomarkers like sST2, MR-proADM may enter alternate optimal panels due to their HF/PE coverage. The framework value increases dramatically with pool sizes of 20-50+ biomarkers where exhaustive enumeration becomes impractical."
+  }
+}

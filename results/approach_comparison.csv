@@ -1,9 +1,9 @@
 approach,biomarkers,n_tests,coverage,pathologies_covered,pathologies_uncovered,worst_case_sensitivity,cost_eur,max_time_min,sample_volume_ul
-HEART + hs-cTnI (ACS-focused),hs-cTnI,1,0.16666666666666666,1,"Acute Heart Failure, Aortic Dissection, Pericarditis / Myocarditis, Pneumothorax (tension), Pulmonary Embolism",0.1,10.0,15.0,20.0
-Wells + D-dimer (PE-focused),D-dimer,1,0.3333333333333333,2,"ACS (STEMI/NSTEMI/UA), Acute Heart Failure, Pericarditis / Myocarditis, Pneumothorax (tension)",0.15,7.0,10.0,15.0
-Combined: hs-cTnI + D-dimer,"D-dimer, hs-cTnI",2,0.5,3,"Acute Heart Failure, Pericarditis / Myocarditis, Pneumothorax (tension)",0.15,17.0,15.0,35.0
-Optimal 2-test (exhaustive),"CRP, D-dimer",2,0.5,3,"ACS (STEMI/NSTEMI/UA), Acute Heart Failure, Pneumothorax (tension)",0.15,12.0,10.0,20.0
-Optimal 2-test (exhaustive),"D-dimer, hs-cTnI",2,0.5,3,"Acute Heart Failure, Pericarditis / Myocarditis, Pneumothorax (tension)",0.15,17.0,15.0,35.0
-Optimal 2-test (exhaustive),"D-dimer, NT-proBNP",2,0.5,3,"ACS (STEMI/NSTEMI/UA), Pericarditis / Myocarditis, Pneumothorax (tension)",0.2,21.0,15.0,30.0
-Optimal 3-test (exhaustive),"CRP, D-dimer, Myoglobin",3,0.5,3,"ACS (STEMI/NSTEMI/UA), Acute Heart Failure, Pneumothorax (tension)",0.15,18.5,10.0,30.0
-Optimal 3-test (exhaustive),"CRP, D-dimer, H-FABP",3,0.5,3,"ACS (STEMI/NSTEMI/UA), Acute Heart Failure, Pneumothorax (tension)",0.15,20.0,15.0,30.0
+HEART + hs-cTnI (ACS-focused),hs-cTnI,1,0.16666666666666666,1,"Acute Heart Failure, Aortic Dissection, Pericarditis / Myocarditis, Pneumothorax (tension), Pulmonary Embolism",0.0,10.0,15.0,20.0
+Wells + D-dimer (PE-focused),D-dimer,1,0.3333333333333333,2,"ACS (STEMI/NSTEMI/UA), Acute Heart Failure, Pericarditis / Myocarditis, Pneumothorax (tension)",0.0,7.0,10.0,15.0
+Combined: hs-cTnI + D-dimer,"D-dimer, hs-cTnI",2,0.5,3,"Acute Heart Failure, Pericarditis / Myocarditis, Pneumothorax (tension)",0.0,17.0,15.0,35.0
+Optimal 2-test (exhaustive),"CRP, D-dimer",2,0.5,3,"ACS (STEMI/NSTEMI/UA), Acute Heart Failure, Pneumothorax (tension)",0.0,12.0,10.0,20.0
+Optimal 2-test (exhaustive),"D-dimer, Myoglobin",2,0.5,3,"ACS (STEMI/NSTEMI/UA), Acute Heart Failure, Pneumothorax (tension)",0.0,13.5,10.0,25.0
+Optimal 2-test (exhaustive),"D-dimer, hs-cTnI",2,0.5,3,"Acute Heart Failure, Pericarditis / Myocarditis, Pneumothorax (tension)",0.0,17.0,15.0,35.0
+Optimal 2-test (exhaustive),"D-dimer, NT-proBNP",2,0.5,3,"ACS (STEMI/NSTEMI/UA), Pericarditis / Myocarditis, Pneumothorax (tension)",0.0,21.0,15.0,30.0
+Optimal 3-test (exhaustive),"CRP, D-dimer, Myoglobin",3,0.5,3,"ACS (STEMI/NSTEMI/UA), Acute Heart Failure, Pneumothorax (tension)",0.0,18.5,10.0,30.0

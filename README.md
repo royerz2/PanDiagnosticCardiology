@@ -1,34 +1,46 @@
 # PanDiagnosticCardiology
 
-Set-cover optimisation for rapid, multi-pathology cardiology diagnostics.
+**Multi-Pathology Point-of-Care Diagnostic Panel Optimisation: A Computational Framework for Acute Chest Pain Triage**
 
-This repository implements a reproducible computational pipeline to identify the minimum biomarker panel that covers major life-threatening chest-pain pathologies under sensitivity constraints, with robustness, ablation, and clinical utility analyses.
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-## Scope
+This repository implements a reproducible computational framework that formalises multi-pathology POCT panel selection as a weighted set-cover problem and applies it to the acute chest pain triage context (SISTER ACT trial). The framework identifies a uniquely optimal four-test panel, quantifies uncertainty honestly, and produces a prioritised measurement agenda for prospective trials.
 
-- Builds a pathology-biomarker coverage matrix from curated literature-derived inputs.
-- Solves for minimum diagnostic panels using weighted set-cover / minimal hitting-set formulations.
-- Runs sensitivity, ablation, bootstrap, Monte Carlo, and serial testing analyses.
-- Produces publication figures and structured result artifacts in CSV/JSON.
+## Key result
+
+At a sensitivity threshold of 0.90, the ILP and exhaustive enumeration return the same unique panel:
+
+> **hs-cTnI + D-dimer + NT-proBNP + CRP**
+>
+> 4 tests | 5/6 pathologies covered | EUR 36 | 15 min | 55 uL capillary blood
+
+Panel selection is **invariant** to all plausible specificity values (confirmed across 2,000 joint Monte Carlo draws). The ED false-positive rate after full mitigation is bounded to 14.8--16.4% (95% credible interval).
 
 ## Repository layout
 
-- `run_pipeline.py`: full end-to-end analysis runner.
-- `diagnostic_panel_solver.py`: core optimisation solver and scoring logic.
-- `biomarker_coverage_matrix.py`: coverage/source matrix construction.
-- `pareto_ablation_analysis.py`: Pareto, ablation, utility, uncertainty analyses.
-- `serial_testing_model.py`: serial testing and pathway-level simulations.
-- `sister_act_score.py`: SISTER ACT extension and AI e-stethoscope analysis.
-- `visualisation.py`: figure generation.
-- `results/`: generated tables and JSON outputs.
-- `figures/`: publication figure outputs.
-- `manuscript/`: manuscript source and bibliography assets.
+| File | Purpose |
+|------|---------|
+| `run_pipeline.py` | End-to-end pipeline runner (23 steps) |
+| `biomarker_coverage_matrix.py` | Coverage matrix construction from published meta-analyses |
+| `diagnostic_panel_solver.py` | ILP / exhaustive / greedy set-cover solvers |
+| `pareto_ablation_analysis.py` | Pareto frontier, ablation, bootstrap, threshold sensitivity |
+| `serial_testing_model.py` | Serial testing, HEAR stratification, Dutch GP patient flow |
+| `correlation_dependence_model.py` | Gaussian copula false-positive correction |
+| `quantitative_panel_interpretation.py` | Likelihood-ratio interpretation and pathology-directed routing |
+| `health_economics.py` | Single-cycle decision tree, ICER, CEAC |
+| `sister_act_score.py` | PACE composite score and extended analyses |
+| `sensitivity_analysis.py` | Parametric SA, tornado, what-if envelope |
+| `visualisation.py` | Publication figure generation |
+| `test_pipeline.py` | Pytest suite for pipeline verification |
+| `results/` | Generated CSV/JSON outputs |
+| `figures/` | Generated publication figures |
+| `manuscript/` | LaTeX manuscript source and bibliography |
 
 ## Quick start
 
-### 1) Create environment
+### 1. Create environment
 
-Python 3.10+ is recommended.
+Python 3.10+ required.
 
 ```bash
 python3 -m venv .venv
@@ -36,41 +48,70 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-### 2) Run full pipeline
+### 2. Run full pipeline
 
 ```bash
 python run_pipeline.py
 ```
 
-### 3) Run tests
+This executes all 23 analytical steps and populates `results/` and `figures/`.
+
+### 3. Run tests
 
 ```bash
 pytest test_pipeline.py -v
 ```
 
-## Outputs
+### 4. Compile manuscript
 
-After running the pipeline:
+```bash
+cd manuscript
+pdflatex paper.tex && bibtex paper && pdflatex paper.tex && pdflatex paper.tex
+```
 
-- Primary analysis tables and summaries are written to `results/`.
-- Publication-grade visual assets are written to `figures/`.
+## Pipeline steps
 
-## Reproducibility notes
+1. Coverage matrix construction
+2. Set-cover optimisation (ILP + exhaustive verification)
+3. Marginal diagnostic value analysis
+4. Reference approach comparison
+5. Pareto frontier
+6. Ablation analysis
+7. Threshold sensitivity
+8. Bootstrap panel stability (*n* = 1,000)
+9. Early presenter subgroup analysis
+10. Weight sensitivity (penalty invariance proof)
+11. Feasibility landscape (solution uniqueness)
+12. Clinical utility (specificity, prevalence, NPV, net benefit)
+13. Full 48-cell source provenance table
+14. Monte Carlo CI propagation (*n* = 5,000)
+15. Copeptin threshold sensitivity
+16. Serial testing, HEAR score, and Dutch GP patient flow
+17. Publication figures
+18. PACE composite score analysis
+19. Biomarker correlation and Gaussian copula modelling
+20. Extended biomarker pool (12 markers)
+21. Health-economic analysis
+22. Quantitative LR interpretation and pathology-directed management
+23. Parametric sensitivity analysis (tornado + what-if envelope)
 
-- The project is deterministic for most analytical steps; stochastic procedures use fixed structures with reported summary statistics.
-- Input assumptions and methodological details are documented in `CHEATSHEET.md` and manuscript materials.
+## Reproducibility
+
+- All stochastic procedures use fixed random seeds or report summary statistics.
+- Input assumptions and methodological details are documented in `CHEATSHEET.md` and the manuscript.
+- The full pipeline regenerates all results and figures from source data.
 
 ## Citation
 
-If you use this repository in academic work, please cite:
+If you use this repository, please cite:
 
-- Erzurumluoğlu R. PanDiagnosticCardiology (2026).
+> Erzurumluoglu, R. (2026). *Multi-Pathology Point-of-Care Diagnostic Panel Optimisation: A Computational Framework for Acute Chest Pain Triage.* https://github.com/royerz2/PanDiagnosticCardiology
 
-You can also use metadata in `CITATION.cff`.
+See also `CITATION.cff` for machine-readable metadata.
 
 ## License
 
-This project is released under the MIT License. See `LICENSE`.
+MIT. See [LICENSE](LICENSE).
 
 ## Disclaimer
 

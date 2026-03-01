@@ -46,7 +46,7 @@
         "best_overall": "hs-cTnI",
         "overall_sensitivity": 0.95,
         "overall_covers": "True",
-        "estetho_sensitivity": 0.15
+        "estetho_sensitivity": 0.2
       },
       {
         "pathology": "PE",
@@ -76,12 +76,12 @@
         "best_overall": "CRP",
         "overall_sensitivity": 0.92,
         "overall_covers": "True",
-        "estetho_sensitivity": 0.6
+        "estetho_sensitivity": 0.35
       },
       {
         "pathology": "PTX",
-        "best_biomarker": "Copeptin",
-        "biomarker_sensitivity": 0.3,
+        "best_biomarker": "hs-cTnI",
+        "biomarker_sensitivity": 0.0,
         "biomarker_covers": "False",
         "best_overall": "AI-Stetho",
         "overall_sensitivity": 0.93,

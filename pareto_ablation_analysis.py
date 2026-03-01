@@ -232,18 +232,37 @@ def bootstrap_panel_stability(
     
     For each bootstrap iteration:
       1. Sample each C[p,b] from Beta(α, β) fitted to point estimate + CI
-      2. Solve the MDP on the perturbed matrix
-      3. Record the optimal panel
+      2. Check whether the reference panel still achieves its target coverage
+      3. Re-solve the MDP on the perturbed matrix with matched min_coverage
+      4. Record the optimal panel
     
-    Returns frequency of each panel composition and stability metrics.
+    The min_coverage constraint matches the reference panel's actual coverage
+    so that the bootstrap tests stability under equivalent optimality criteria
+    (not artificially relaxed constraints that favour smaller panels).
+    
+    Returns frequency of each panel composition, reference-panel validity rate,
+    and stability metrics.
     """
     rng = np.random.RandomState(seed)
     alpha_df, beta_df = build_beta_parameters()
+
+    # ── Solve reference problem (unperturbed) to anchor the bootstrap ────
+    ref_solver = DiagnosticPanelSolver()
+    ref_solutions = ref_solver.solve(tau=tau, max_size=8)
+    if not ref_solutions:
+        return {'error': 'No reference solution found'}
+    ref_panel = ref_solutions[0]
+    ref_biomarkers = frozenset(ref_panel.biomarkers)
+    ref_n_covered = len(ref_panel.pathologies_covered)
+    # Use reference panel's coverage as min_coverage for fair comparison
+    min_cov = ref_n_covered / len(PATHOLOGIES)  # e.g. 5/6 ≈ 0.833
 
     panel_counts = {}
     biomarker_counts = {b: 0 for b in BIOMARKERS}
     panel_sizes = []
     coverage_values = []
+    ref_panel_valid = 0       # iterations where reference panel keeps coverage
+    ref_panel_selected = 0    # iterations where solver picks exactly the reference
 
     for _ in range(n_bootstrap):
         # Sample sensitivities from Beta distributions
@@ -257,8 +276,17 @@ def bootstrap_panel_stability(
             sampled, index=PATHOLOGIES, columns=BIOMARKERS
         ).clip(0.0, 1.0)
 
+        # Check whether the reference panel still meets its coverage target
+        covered_now = sum(
+            1 for p in PATHOLOGIES
+            if any(perturbed.loc[p, bm] >= tau for bm in ref_biomarkers)
+        )
+        if covered_now >= ref_n_covered:
+            ref_panel_valid += 1
+
+        # Re-solve with matched min_coverage
         solver = DiagnosticPanelSolver(coverage_matrix=perturbed)
-        solutions = solver.solve(tau=tau, max_size=8, min_coverage=0.5)
+        solutions = solver.solve(tau=tau, max_size=8, min_coverage=min_cov)
 
         if solutions:
             best = solutions[0]
@@ -266,8 +294,10 @@ def bootstrap_panel_stability(
             panel_counts[key] = panel_counts.get(key, 0) + 1
             panel_sizes.append(len(best))
             coverage_values.append(best.coverage)
-            for b in best.biomarkers:
-                biomarker_counts[b] += 1
+            for bm in best.biomarkers:
+                biomarker_counts[bm] += 1
+            if frozenset(best.biomarkers) == ref_biomarkers:
+                ref_panel_selected += 1
 
     # Sort panels by frequency
     sorted_panels = sorted(panel_counts.items(), key=lambda x: -x[1])
@@ -275,6 +305,10 @@ def bootstrap_panel_stability(
     return {
         'n_bootstrap': n_bootstrap,
         'tau': tau,
+        'reference_panel': sorted(ref_biomarkers),
+        'reference_coverage': ref_panel.coverage,
+        'reference_panel_valid_rate': ref_panel_valid / n_bootstrap,
+        'reference_panel_selected_rate': ref_panel_selected / n_bootstrap,
         'panel_frequency': [
             {'panel': list(p), 'count': c, 'frequency': c / n_bootstrap}
             for p, c in sorted_panels[:20]

@@ -1,0 +1,507 @@
+{
+  "correlation_matrix": {
+    "panel": {
+      "hs-cTnI": {
+        "hs-cTnI": 1.0,
+        "D-dimer": 0.2,
+        "NT-proBNP": 0.45,
+        "CRP": 0.25
+      },
+      "D-dimer": {
+        "hs-cTnI": 0.2,
+        "D-dimer": 1.0,
+        "NT-proBNP": 0.3,
+        "CRP": 0.35
+      },
+      "NT-proBNP": {
+        "hs-cTnI": 0.45,
+        "D-dimer": 0.3,
+        "NT-proBNP": 1.0,
+        "CRP": 0.25
+      },
+      "CRP": {
+        "hs-cTnI": 0.25,
+        "D-dimer": 0.35,
+        "NT-proBNP": 0.25,
+        "CRP": 1.0
+      }
+    },
+    "full_8x8": {
+      "hs-cTnI": {
+        "hs-cTnI": 1.0,
+        "D-dimer": 0.2,
+        "NT-proBNP": 0.45,
+        "CRP": 0.25,
+        "Copeptin": 0.4,
+        "H-FABP": 0.55,
+        "Myoglobin": 0.5,
+        "Procalcitonin": 0.1
+      },
+      "D-dimer": {
+        "hs-cTnI": 0.2,
+        "D-dimer": 1.0,
+        "NT-proBNP": 0.3,
+        "CRP": 0.35,
+        "Copeptin": 0.2,
+        "H-FABP": 0.15,
+        "Myoglobin": 0.15,
+        "Procalcitonin": 0.25
+      },
+      "NT-proBNP": {
+        "hs-cTnI": 0.45,
+        "D-dimer": 0.3,
+        "NT-proBNP": 1.0,
+        "CRP": 0.25,
+        "Copeptin": 0.35,
+        "H-FABP": 0.3,
+        "Myoglobin": 0.2,
+        "Procalcitonin": 0.15
+      },
+      "CRP": {
+        "hs-cTnI": 0.25,
+        "D-dimer": 0.35,
+        "NT-proBNP": 0.25,
+        "CRP": 1.0,
+        "Copeptin": 0.2,
+        "H-FABP": 0.2,
+        "Myoglobin": 0.2,
+        "Procalcitonin": 0.45
+      },
+      "Copeptin": {
+        "hs-cTnI": 0.4,
+        "D-dimer": 0.2,
+        "NT-proBNP": 0.35,
+        "CRP": 0.2,
+        "Copeptin": 1.0,
+        "H-FABP": 0.25,
+        "Myoglobin": 0.2,
+        "Procalcitonin": 0.15
+      },
+      "H-FABP": {
+        "hs-cTnI": 0.55,
+        "D-dimer": 0.15,
+        "NT-proBNP": 0.3,
+        "CRP": 0.2,
+        "Copeptin": 0.25,
+        "H-FABP": 1.0,
+        "Myoglobin": 0.6,
+        "Procalcitonin": 0.1
+      },
+      "Myoglobin": {
+        "hs-cTnI": 0.5,
+        "D-dimer": 0.15,
+        "NT-proBNP": 0.2,
+        "CRP": 0.2,
+        "Copeptin": 0.2,
+        "H-FABP": 0.6,
+        "Myoglobin": 1.0,
+        "Procalcitonin": 0.1
+      },
+      "Procalcitonin": {
+        "hs-cTnI": 0.1,
+        "D-dimer": 0.25,
+        "NT-proBNP": 0.15,
+        "CRP": 0.45,
+        "Copeptin": 0.15,
+        "H-FABP": 0.1,
+        "Myoglobin": 0.1,
+        "Procalcitonin": 1.0
+      }
+    },
+    "sources": [
+      {
+        "pair": "hs-cTnI \u2194 NT-proBNP",
+        "r": 0.45,
+        "ci": [
+          0.35,
+          0.55
+        ],
+        "source": "deFilippi 2007, Circulation 115:1345; Januzzi 2005, Eur Heart J 26(3):215 \u2014 both reflect myocardial stress"
+      },
+      {
+        "pair": "hs-cTnI \u2194 D-dimer",
+        "r": 0.2,
+        "ci": [
+          0.1,
+          0.3
+        ],
+        "source": "Lippi 2015, Clin Chem Lab Med 53(4):517 \u2014 coagulation vs cardiac pathways; modest correlation"
+      },
+      {
+        "pair": "hs-cTnI \u2194 CRP",
+        "r": 0.25,
+        "ci": [
+          0.15,
+          0.35
+        ],
+        "source": "Kaptoge 2010, Lancet 375(9709):132 \u2014 Emerging Risk Factors Collaboration; inflammation\u2013myocardial crosstalk"
+      },
+      {
+        "pair": "D-dimer \u2194 NT-proBNP",
+        "r": 0.3,
+        "ci": [
+          0.2,
+          0.4
+        ],
+        "source": "Klok 2008, Am J Respir Crit Care Med 178:425; both elevated in PE and HF \u2014 shared venous stasis pathway"
+      },
+      {
+        "pair": "D-dimer \u2194 CRP",
+        "r": 0.35,
+        "ci": [
+          0.25,
+          0.45
+        ],
+        "source": "Lowe 2004, Br J Haematol 126(1):61 \u2014 acute-phase response co-activation; fibrinogen link"
+      },
+      {
+        "pair": "NT-proBNP \u2194 CRP",
+        "r": 0.25,
+        "ci": [
+          0.15,
+          0.35
+        ],
+        "source": "Anand 2005, Circulation 112(10):1428 \u2014 inflammatory burden in HF; Val-HeFT biomarker substudy"
+      }
+    ]
+  },
+  "corrected_fp_rate": {
+    "panel": [
+      "hs-cTnI",
+      "D-dimer",
+      "NT-proBNP",
+      "CRP"
+    ],
+    "n_mc_samples": 200000,
+    "per_test_specificities": {
+      "hs-cTnI": 0.54,
+      "D-dimer": 0.42,
+      "NT-proBNP": 0.76,
+      "CRP": 0.38
+    },
+    "independence_assumption": {
+      "p_all_neg_given_healthy": 0.0655,
+      "fp_rate": 0.9345
+    },
+    "copula_corrected": {
+      "p_all_neg_given_healthy": 0.135,
+      "fp_rate": 0.865,
+      "mc_standard_error": 0.00076,
+      "fp_rate_ci_95": [
+        0.8635,
+        0.8665
+      ]
+    },
+    "fp_rate_reduction": {
+      "absolute": 0.0695,
+      "relative": 7.4,
+      "note": "Positive correlation between biomarkers reduces the panel-level FP rate because true-negative results are correlated: a patient who is negative on troponin is more likely to also be negative on NT-proBNP. The independence assumption (93.4%) is an UPPER BOUND on the true FP rate."
+    },
+    "per_test_details": {
+      "hs-cTnI": {
+        "specificity": 0.54,
+        "individual_fp_rate": 0.46,
+        "marginal_p_negative": 0.5401
+      },
+      "D-dimer": {
+        "specificity": 0.42,
+        "individual_fp_rate": 0.58,
+        "marginal_p_negative": 0.4224
+      },
+      "NT-proBNP": {
+        "specificity": 0.76,
+        "individual_fp_rate": 0.24,
+        "marginal_p_negative": 0.7597
+      },
+      "CRP": {
+        "specificity": 0.38,
+        "individual_fp_rate": 0.62,
+        "marginal_p_negative": 0.3817
+      }
+    },
+    "correlation_sensitivity_sweep": [
+      {
+        "correlation_scale": 0.0,
+        "label": "independence",
+        "fp_rate": 0.9357,
+        "p_all_neg": 0.0643
+      },
+      {
+        "correlation_scale": 0.25,
+        "label": "25% of literature",
+        "fp_rate": 0.917,
+        "p_all_neg": 0.083
+      },
+      {
+        "correlation_scale": 0.5,
+        "label": "50% of literature",
+        "fp_rate": 0.899,
+        "p_all_neg": 0.101
+      },
+      {
+        "correlation_scale": 0.75,
+        "label": "75% of literature",
+        "fp_rate": 0.8847,
+        "p_all_neg": 0.1153
+      },
+      {
+        "correlation_scale": 1.0,
+        "label": "literature estimate",
+        "fp_rate": 0.8664,
+        "p_all_neg": 0.1336
+      },
+      {
+        "correlation_scale": 1.25,
+        "label": "125% of literature",
+        "fp_rate": 0.8482,
+        "p_all_neg": 0.1518
+      },
+      {
+        "correlation_scale": 1.5,
+        "label": "150% of literature",
+        "fp_rate": 0.8308,
+        "p_all_neg": 0.1692
+      }
+    ]
+  },
+  "corrected_npv": {
+    "panel": [
+      "hs-cTnI",
+      "D-dimer",
+      "NT-proBNP",
+      "CRP"
+    ],
+    "independence_npv": 0.972752,
+    "copula_corrected_npv": 0.972752,
+    "npv_change": {
+      "absolute": 0.0,
+      "note": "Positive correlation slightly changes joint NPV. The direction depends on whether the correlation effect on P(all neg | healthy) dominates the effect on P(all neg | disease). Both NPVs remain >0.99, confirming rule-out suitability under either assumption."
+    },
+    "per_pathology": {
+      "ACS": {
+        "best_biomarker": "hs-cTnI",
+        "sensitivity": 0.95,
+        "p_all_neg_given_disease_indep": 0.006065,
+        "p_all_neg_given_disease_copula": 0.012501
+      },
+      "PE": {
+        "best_biomarker": "D-dimer",
+        "sensitivity": 0.95,
+        "p_all_neg_given_disease_indep": 0.007798,
+        "p_all_neg_given_disease_copula": 0.016073
+      },
+      "AoD": {
+        "best_biomarker": "D-dimer",
+        "sensitivity": 0.97,
+        "p_all_neg_given_disease_indep": 0.004679,
+        "p_all_neg_given_disease_copula": 0.009644
+      },
+      "Peri/Myo": {
+        "best_biomarker": "CRP",
+        "sensitivity": 0.92,
+        "p_all_neg_given_disease_indep": 0.013789,
+        "p_all_neg_given_disease_copula": 0.028424
+      },
+      "PTX": {
+        "best_biomarker": "hs-cTnI",
+        "sensitivity": 0.0,
+        "p_all_neg_given_disease_indep": 0.121296,
+        "p_all_neg_given_disease_copula": 0.250028
+      },
+      "AHF": {
+        "best_biomarker": "NT-proBNP",
+        "sensitivity": 0.95,
+        "p_all_neg_given_disease_indep": 0.004309,
+        "p_all_neg_given_disease_copula": 0.008883
+      }
+    },
+    "p_healthy": 0.877,
+    "p_all_neg_given_healthy_indep": 0.0655,
+    "p_all_neg_given_healthy_copula": 0.135
+  },
+  "joint_optimisation": {
+    "t=0.01": {
+      "decision_threshold": 0.01,
+      "harm_benefit_ratio": 0.0101,
+      "optimal_panel": [
+        "D-dimer",
+        "Myoglobin",
+        "NT-proBNP",
+        "hs-cTnI"
+      ],
+      "panel_size": 4,
+      "total_net_benefit": 0.087065,
+      "per_pathology": [
+        {
+          "pathology": "ACS",
+          "biomarker": "hs-cTnI",
+          "sensitivity": 0.95,
+          "specificity": 0.54,
+          "nb_contribution": 0.028766
+        },
+        {
+          "pathology": "PE",
+          "biomarker": "D-dimer",
+          "sensitivity": 0.95,
+          "specificity": 0.42,
+          "nb_contribution": 0.008479
+        },
+        {
+          "pathology": "AoD",
+          "biomarker": "D-dimer",
+          "sensitivity": 0.97,
+          "specificity": 0.47,
+          "nb_contribution": -0.002427
+        },
+        {
+          "pathology": "Peri/Myo",
+          "biomarker": "Myoglobin",
+          "sensitivity": 0.92,
+          "specificity": 0.8,
+          "nb_contribution": 0.034861
+        },
+        {
+          "pathology": "AHF",
+          "biomarker": "NT-proBNP",
+          "sensitivity": 0.95,
+          "specificity": 0.76,
+          "nb_contribution": 0.021386
+        }
+      ],
+      "same_as_sensitivity_only": false
+    },
+    "t=0.02": {
+      "decision_threshold": 0.02,
+      "harm_benefit_ratio": 0.0204,
+      "optimal_panel": [
+        "Myoglobin",
+        "NT-proBNP",
+        "hs-cTnI"
+      ],
+      "panel_size": 3,
+      "total_net_benefit": 0.073047,
+      "per_pathology": [
+        {
+          "pathology": "ACS",
+          "biomarker": "hs-cTnI",
+          "sensitivity": 0.95,
+          "specificity": 0.54,
+          "nb_contribution": 0.024191
+        },
+        {
+          "pathology": "Peri/Myo",
+          "biomarker": "Myoglobin",
+          "sensitivity": 0.92,
+          "specificity": 0.8,
+          "nb_contribution": 0.032882
+        },
+        {
+          "pathology": "AHF",
+          "biomarker": "NT-proBNP",
+          "sensitivity": 0.95,
+          "specificity": 0.76,
+          "nb_contribution": 0.018974
+        }
+      ],
+      "same_as_sensitivity_only": false
+    },
+    "t=0.05": {
+      "decision_threshold": 0.05,
+      "harm_benefit_ratio": 0.0526,
+      "optimal_panel": [
+        "Myoglobin",
+        "NT-proBNP",
+        "hs-cTnI"
+      ],
+      "panel_size": 3,
+      "total_net_benefit": 0.045016,
+      "per_pathology": [
+        {
+          "pathology": "ACS",
+          "biomarker": "hs-cTnI",
+          "sensitivity": 0.95,
+          "specificity": 0.54,
+          "nb_contribution": 0.009887
+        },
+        {
+          "pathology": "Peri/Myo",
+          "biomarker": "Myoglobin",
+          "sensitivity": 0.92,
+          "specificity": 0.8,
+          "nb_contribution": 0.026695
+        },
+        {
+          "pathology": "AHF",
+          "biomarker": "NT-proBNP",
+          "sensitivity": 0.95,
+          "specificity": 0.76,
+          "nb_contribution": 0.011434
+        }
+      ],
+      "same_as_sensitivity_only": false
+    },
+    "t=0.1": {
+      "decision_threshold": 0.1,
+      "harm_benefit_ratio": 0.1111,
+      "optimal_panel": [
+        "Myoglobin"
+      ],
+      "panel_size": 1,
+      "total_net_benefit": 0.014467,
+      "per_pathology": [
+        {
+          "pathology": "Peri/Myo",
+          "biomarker": "Myoglobin",
+          "sensitivity": 0.92,
+          "specificity": 0.8,
+          "nb_contribution": 0.015467
+        }
+      ],
+      "same_as_sensitivity_only": false
+    },
+    "max_specificity_panel": {
+      "panel": [
+        "D-dimer",
+        "Myoglobin",
+        "NT-proBNP",
+        "hs-cTnI"
+      ],
+      "coverage": 0.8333,
+      "mean_specificity": 0.598,
+      "same_as_standard": false
+    }
+  },
+  "sequential_testing": {
+    "panel": [
+      "hs-cTnI",
+      "D-dimer",
+      "NT-proBNP",
+      "CRP"
+    ],
+    "n_patients": 10000,
+    "discharge_threshold": 0.02,
+    "refer_threshold": 0.1,
+    "average_tests_per_patient": 1.0,
+    "median_tests_per_patient": 1,
+    "tests_saved_fraction": 0.75,
+    "early_termination_rate": 1.0,
+    "sensitivity": 1.0,
+    "specificity": 0.0,
+    "referral_rate": 1.0,
+    "first_test_frequency": {
+      "hs-cTnI": 0,
+      "D-dimer": 10000,
+      "NT-proBNP": 0,
+      "CRP": 0
+    },
+    "tests_per_patient_distribution": {
+      "1": 10000
+    },
+    "comparison_vs_all_at_once": {
+      "all_at_once_tests": 4,
+      "sequential_mean_tests": 1.0,
+      "absolute_saving": 3.0,
+      "note": "Sequential testing performs on average fewer tests per patient by stopping early for clearly healthy or clearly sick patients. Trade-off: slightly reduced sensitivity if early termination is too aggressive."
+    }
+  }
+}

@@ -117,23 +117,28 @@ PAIRWISE_CORRELATIONS: List[CorrelationEntry] = [
     ),
     CorrelationEntry(
         "hs-cTnI", "Procalcitonin", 0.10, 0.00, 0.20,
-        "Expert est.; distinct pathways (cardiac vs infection)",
+        "No correlation data in healthy/rule-out chest-pain populations; clinical estimate. "
+        "Sepsis/STEMI studies co-measure both but do not report inter-marker r",
     ),
     CorrelationEntry(
         "D-dimer", "Copeptin", 0.20, 0.10, 0.30,
-        "Expert est.; stress + coagulation in severe illness",
+        "No correlation data in healthy/rule-out chest-pain populations; clinical estimate. "
+        "PE cohort r=0.315 (Kalkan 2016) but includes PE+ patients",
     ),
     CorrelationEntry(
         "D-dimer", "H-FABP", 0.15, 0.05, 0.25,
-        "Expert est.; largely independent pathways",
+        "No correlation data in healthy/rule-out chest-pain populations; clinical estimate. "
+        "Multimarker ACS/HF studies do not publish inter-marker correlation matrices",
     ),
     CorrelationEntry(
         "D-dimer", "Myoglobin", 0.15, 0.05, 0.25,
-        "Expert est.; coagulation vs muscle damage",
+        "No correlation data in healthy/rule-out chest-pain populations; clinical estimate. "
+        "Both present in polytrauma/AKI cohorts but r not reported",
     ),
     CorrelationEntry(
         "D-dimer", "Procalcitonin", 0.25, 0.15, 0.35,
-        "Expert est.; both elevated in sepsis/severe infection",
+        "No correlation data in healthy/rule-out chest-pain populations; clinical estimate. "
+        "Sepsis/critical-illness studies analyse CRP vs PCT but not D-dimer vs PCT",
     ),
     CorrelationEntry(
         "NT-proBNP", "Copeptin", 0.35, 0.25, 0.45,
@@ -142,27 +147,33 @@ PAIRWISE_CORRELATIONS: List[CorrelationEntry] = [
     ),
     CorrelationEntry(
         "NT-proBNP", "H-FABP", 0.30, 0.20, 0.40,
-        "Expert est.; myocardial stress + damage overlap",
+        "No correlation data in healthy/rule-out chest-pain populations; clinical estimate. "
+        "HF cohorts show r~0.5-0.6 but only in established HF/acute dyspnea",
     ),
     CorrelationEntry(
         "NT-proBNP", "Myoglobin", 0.20, 0.10, 0.30,
-        "Expert est.; moderate overlap in cardiac dysfunction",
+        "No correlation data in healthy/rule-out chest-pain populations; clinical estimate. "
+        "Dialysis/critical-illness studies measure both but do not report inter-marker r",
     ),
     CorrelationEntry(
         "NT-proBNP", "Procalcitonin", 0.15, 0.05, 0.25,
-        "Expert est.; both elevated in sepsis-related cardiac stress",
+        "No correlation data in healthy/rule-out chest-pain populations; clinical estimate. "
+        "AKI/CVVHD studies measure both for filter clearance but do not report r",
     ),
     CorrelationEntry(
         "CRP", "Copeptin", 0.20, 0.10, 0.30,
-        "Expert est.; inflammation + stress response",
+        "No correlation data in healthy/rule-out chest-pain populations; clinical estimate. "
+        "Sepsis ICU studies show both correlate with APACHE II but not with each other",
     ),
     CorrelationEntry(
         "CRP", "H-FABP", 0.20, 0.10, 0.30,
-        "Expert est.; inflammation → secondary myocardial damage",
+        "No correlation data in healthy/rule-out chest-pain populations; clinical estimate. "
+        "ACS/HF studies report independent prognostic value but not CRP-HFABP r",
     ),
     CorrelationEntry(
         "CRP", "Myoglobin", 0.20, 0.10, 0.30,
-        "Expert est.; inflammation + muscle damage",
+        "No correlation data in healthy/rule-out chest-pain populations; clinical estimate. "
+        "Both common in ACS/myocarditis but inter-marker r not published",
     ),
     CorrelationEntry(
         "CRP", "Procalcitonin", 0.45, 0.35, 0.55,
@@ -171,15 +182,18 @@ PAIRWISE_CORRELATIONS: List[CorrelationEntry] = [
     ),
     CorrelationEntry(
         "Copeptin", "H-FABP", 0.25, 0.15, 0.35,
-        "Expert est.; stress + damage in acute illness",
+        "No correlation data in healthy/rule-out chest-pain populations; clinical estimate. "
+        "No published correlation matrices include both copeptin and H-FABP",
     ),
     CorrelationEntry(
         "Copeptin", "Myoglobin", 0.20, 0.10, 0.30,
-        "Expert est.; moderate overlap via stress response",
+        "No correlation data in any population; clinical estimate. "
+        "No study simultaneously measuring copeptin and myoglobin identified",
     ),
     CorrelationEntry(
         "Copeptin", "Procalcitonin", 0.15, 0.05, 0.25,
-        "Expert est.; both reflect severe illness / stress",
+        "No correlation data in healthy/rule-out chest-pain populations; clinical estimate. "
+        "Sepsis studies co-measure MR-proADM/PCT/copeptin but report means not r",
     ),
     CorrelationEntry(
         "H-FABP", "Myoglobin", 0.60, 0.50, 0.70,
@@ -188,11 +202,13 @@ PAIRWISE_CORRELATIONS: List[CorrelationEntry] = [
     ),
     CorrelationEntry(
         "H-FABP", "Procalcitonin", 0.10, 0.00, 0.20,
-        "Expert est.; largely independent pathways",
+        "No correlation data in healthy/rule-out chest-pain populations; clinical estimate. "
+        "SICM study measures both but does not publish H-FABP-PCT r",
     ),
     CorrelationEntry(
         "Myoglobin", "Procalcitonin", 0.10, 0.00, 0.20,
-        "Expert est.; muscle damage vs infection",
+        "No correlation data in healthy/rule-out chest-pain populations; clinical estimate. "
+        "Heat-stroke/rhabdomyolysis ICU studies measure both but do not report r",
     ),
 ]
 

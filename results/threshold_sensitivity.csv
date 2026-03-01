@@ -1,8 +1,8 @@
 threshold,min_panel_size,coverage,optimal_panel,cost_eur,worst_case_sensitivity,n_uncovered
-0.8,3,0.8333333333333334,"D-dimer, NT-proBNP, hs-cTnI",31.0,0.2,1
-0.82,3,0.8333333333333334,"D-dimer, NT-proBNP, hs-cTnI",31.0,0.2,1
-0.85,4,0.8333333333333334,"CRP, D-dimer, NT-proBNP, hs-cTnI",36.0,0.2,1
-0.87,4,0.8333333333333334,"CRP, D-dimer, NT-proBNP, hs-cTnI",36.0,0.2,1
-0.9,4,0.8333333333333334,"CRP, D-dimer, NT-proBNP, hs-cTnI",36.0,0.2,1
-0.92,4,0.8333333333333334,"CRP, D-dimer, NT-proBNP, hs-cTnI",36.0,0.2,1
-0.95,3,0.6666666666666666,"D-dimer, NT-proBNP, hs-cTnI",31.0,0.2,2
+0.8,3,0.8333333333333334,"CRP, D-dimer, NT-proBNP",26.0,0.0,1
+0.82,3,0.8333333333333334,"CRP, D-dimer, NT-proBNP",26.0,0.0,1
+0.85,4,0.8333333333333334,"CRP, D-dimer, NT-proBNP, hs-cTnI",36.0,0.0,1
+0.87,4,0.8333333333333334,"CRP, D-dimer, NT-proBNP, hs-cTnI",36.0,0.0,1
+0.9,4,0.8333333333333334,"CRP, D-dimer, NT-proBNP, hs-cTnI",36.0,0.0,1
+0.92,4,0.8333333333333334,"CRP, D-dimer, NT-proBNP, hs-cTnI",36.0,0.0,1
+0.95,3,0.6666666666666666,"D-dimer, NT-proBNP, hs-cTnI",31.0,0.0,2

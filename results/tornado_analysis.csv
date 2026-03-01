@@ -1,0 +1,17 @@
+parameter,biomarker,pathology,point_estimate,ci_lower,ci_upper,value_at_ci_lower,value_at_ci_upper,baseline_value,swing,direction
+Spec(CRP/AoD),CRP,AoD,0.3,0.22,0.38,0.1559,0.1629,0.1601,0.007,higher spec → lower FP
+Spec(NT-proBNP/AoD),NT-proBNP,AoD,0.55,0.46,0.64,0.1626,0.1573,0.1601,0.0053,higher spec → lower FP
+Spec(hs-cTnI/AoD),hs-cTnI,AoD,0.65,0.56,0.74,0.162,0.1575,0.1601,0.0045,higher spec → lower FP
+Spec(hs-cTnI/PE),hs-cTnI,PE,0.6,0.52,0.68,0.1583,0.1626,0.1601,0.0043,higher spec → lower FP
+Spec(CRP/PE),CRP,PE,0.35,0.28,0.42,0.1581,0.1621,0.1601,0.004,higher spec → lower FP
+Spec(NT-proBNP/ACS),NT-proBNP,ACS,0.6,0.52,0.68,0.1595,0.1605,0.1601,0.001,higher spec → lower FP
+Spec(hs-cTnI/Peri/Myo),hs-cTnI/Peri,Myo,0.5,0.42,0.58,0.1601,0.1601,0.1601,0.0,higher spec → lower FP
+Spec(D-dimer/Peri/Myo),D-dimer/Peri,Myo,0.55,0.47,0.63,0.1601,0.1601,0.1601,0.0,higher spec → lower FP
+Spec(NT-proBNP/Peri/Myo),NT-proBNP/Peri,Myo,0.5,0.42,0.58,0.1601,0.1601,0.1601,0.0,higher spec → lower FP
+Spec(hs-cTnI/PTX),hs-cTnI,PTX,0.9,0.85,0.95,0.1601,0.1601,0.1601,0.0,higher spec → lower FP
+Spec(D-dimer/PTX),D-dimer,PTX,0.8,0.72,0.88,0.1601,0.1601,0.1601,0.0,higher spec → lower FP
+Spec(NT-proBNP/PTX),NT-proBNP,PTX,0.85,0.78,0.92,0.1601,0.1601,0.1601,0.0,higher spec → lower FP
+Spec(CRP/PTX),CRP,PTX,0.7,0.62,0.78,0.1601,0.1601,0.1601,0.0,higher spec → lower FP
+Spec(hs-cTnI/AHF),hs-cTnI,AHF,0.55,0.47,0.63,0.1601,0.1601,0.1601,0.0,higher spec → lower FP
+Spec(D-dimer/AHF),D-dimer,AHF,0.4,0.32,0.48,0.1601,0.1601,0.1601,0.0,higher spec → lower FP
+Spec(CRP/AHF),CRP,AHF,0.4,0.32,0.48,0.1601,0.1601,0.1601,0.0,higher spec → lower FP

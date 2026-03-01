@@ -52,9 +52,9 @@
               "covered": "True"
             },
             "Pneumothorax (tension)": {
-              "sensitivity": 0.1968,
-              "best_biomarker": "NT-proBNP",
-              "covered": "False"
+              "sensitivity": 0.0,
+              "best_biomarker": null,
+              "covered": false
             },
             "Acute Heart Failure": {
               "sensitivity": 0.95,
@@ -71,7 +71,7 @@
         "Pulmonary Embolism": 0.95,
         "Aortic Dissection": 0.9477,
         "Pericarditis / Myocarditis": 0.92,
-        "Pneumothorax (tension)": 0.1968,
+        "Pneumothorax (tension)": 0.0,
         "Acute Heart Failure": 0.95
       }
     },
@@ -122,9 +122,9 @@
               "covered": "True"
             },
             "Pneumothorax (tension)": {
-              "sensitivity": 0.1968,
-              "best_biomarker": "NT-proBNP",
-              "covered": "False"
+              "sensitivity": 0.0,
+              "best_biomarker": null,
+              "covered": false
             },
             "Acute Heart Failure": {
               "sensitivity": 0.95,
@@ -159,9 +159,9 @@
               "covered": "True"
             },
             "Pneumothorax (tension)": {
-              "sensitivity": 0.2022,
-              "best_biomarker": "NT-proBNP",
-              "covered": "False"
+              "sensitivity": 0.0,
+              "best_biomarker": null,
+              "covered": false
             },
             "Acute Heart Failure": {
               "sensitivity": 0.95,
@@ -178,7 +178,7 @@
         "Pulmonary Embolism": 0.95,
         "Aortic Dissection": 0.9626,
         "Pericarditis / Myocarditis": 0.92,
-        "Pneumothorax (tension)": 0.2022,
+        "Pneumothorax (tension)": 0.0,
         "Acute Heart Failure": 0.95
       }
     },
@@ -229,9 +229,9 @@
               "covered": "True"
             },
             "Pneumothorax (tension)": {
-              "sensitivity": 0.1968,
-              "best_biomarker": "NT-proBNP",
-              "covered": "False"
+              "sensitivity": 0.0,
+              "best_biomarker": null,
+              "covered": false
             },
             "Acute Heart Failure": {
               "sensitivity": 0.95,
@@ -266,9 +266,9 @@
               "covered": "True"
             },
             "Pneumothorax (tension)": {
-              "sensitivity": 0.2097,
-              "best_biomarker": "NT-proBNP",
-              "covered": "False"
+              "sensitivity": 0.0,
+              "best_biomarker": null,
+              "covered": false
             },
             "Acute Heart Failure": {
               "sensitivity": 0.95,
@@ -285,7 +285,7 @@
         "Pulmonary Embolism": 0.95,
         "Aortic Dissection": 0.9799,
         "Pericarditis / Myocarditis": 0.92,
-        "Pneumothorax (tension)": 0.2097,
+        "Pneumothorax (tension)": 0.0,
         "Acute Heart Failure": 0.95
       }
     },
@@ -338,9 +338,9 @@
               "covered": "True"
             },
             "Pneumothorax (tension)": {
-              "sensitivity": 0.1968,
-              "best_biomarker": "NT-proBNP",
-              "covered": "False"
+              "sensitivity": 0.0,
+              "best_biomarker": null,
+              "covered": false
             },
             "Acute Heart Failure": {
               "sensitivity": 0.95,
@@ -375,9 +375,9 @@
               "covered": "True"
             },
             "Pneumothorax (tension)": {
-              "sensitivity": 0.2022,
-              "best_biomarker": "NT-proBNP",
-              "covered": "False"
+              "sensitivity": 0.0,
+              "best_biomarker": null,
+              "covered": false
             },
             "Acute Heart Failure": {
               "sensitivity": 0.95,
@@ -412,9 +412,9 @@
               "covered": "True"
             },
             "Pneumothorax (tension)": {
-              "sensitivity": 0.2097,
-              "best_biomarker": "NT-proBNP",
-              "covered": "False"
+              "sensitivity": 0.0,
+              "best_biomarker": null,
+              "covered": false
             },
             "Acute Heart Failure": {
               "sensitivity": 0.95,
@@ -431,7 +431,7 @@
         "Pulmonary Embolism": 0.95,
         "Aortic Dissection": 0.9799,
         "Pericarditis / Myocarditis": 0.92,
-        "Pneumothorax (tension)": 0.2097,
+        "Pneumothorax (tension)": 0.0,
         "Acute Heart Failure": 0.95
       }
     },
@@ -480,9 +480,9 @@
               "covered": "True"
             },
             "Pneumothorax (tension)": {
-              "sensitivity": 0.2097,
-              "best_biomarker": "NT-proBNP",
-              "covered": "False"
+              "sensitivity": 0.0,
+              "best_biomarker": null,
+              "covered": false
             },
             "Acute Heart Failure": {
               "sensitivity": 0.95,
@@ -499,7 +499,7 @@
         "Pulmonary Embolism": 0.95,
         "Aortic Dissection": 0.9799,
         "Pericarditis / Myocarditis": 0.92,
-        "Pneumothorax (tension)": 0.2097,
+        "Pneumothorax (tension)": 0.0,
         "Acute Heart Failure": 0.95
       }
     }

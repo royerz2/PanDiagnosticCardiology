@@ -5,6 +5,7 @@ __pycache__/
 *.py[cod]
 .pytest_cache/
 .venv/
+*.egg-info/
 
 # LaTeX intermediate build artifacts
 *.aux
@@ -16,9 +17,19 @@ __pycache__/
 *.fls
 *.fdb_latexmk
 *.synctex.gz
+texput.log
 
-# Generated bundles
+# Manuscript backups (keep only current paper.tex)
+manuscript/paper_v*_backup.tex
+
+# Generated bundles & scratch
+submission_bundle/
 submission_bundle.zip
+shopping_list_results/
+
+# Working notes (not part of the published repo)
+perplexity_shopping_list.md
+biomarker_pathology_matrix.md
 
 # Local compiled docs
 CHEATSHEET.pdf

@@ -153,52 +153,75 @@ ESTETHOSCOPE_PERFORMANCE: Dict[str, EStethoscopePerformance] = {
     ),
     "Pericarditis / Myocarditis": EStethoscopePerformance(
         pathology="Pericarditis / Myocarditis",
-        sensitivity=0.60,
-        specificity=0.88,
-        ci_sens_lower=0.45,
-        ci_sens_upper=0.74,
-        ci_spec_lower=0.80,
-        ci_spec_upper=0.94,
+        sensitivity=0.35,
+        specificity=0.98,
+        ci_sens_lower=0.20,
+        ci_sens_upper=0.60,
+        ci_spec_lower=0.95,
+        ci_spec_upper=1.00,
         acoustic_sign="Pericardial friction rub (scratchy, triphasic)",
         source=(
-            "Expert estimate from Adler 2015 ESC pericarditis guidelines; "
-            "friction rub present in ~60% of acute pericarditis cases; "
-            "AI pattern recognition may improve over manual auscultation"
+            "No AI e-stethoscope validation for pericardial rub detection. "
+            "Manual auscultation: rub present in ~33% of acute pericarditis "
+            "(ESC e-Journal pericarditis; Medscape 33-85%; Hospitalist review "
+            "16-85%); specificity ~100% (pathognomonic when heard). "
+            "Sens 0.35 = most commonly cited 'about one-third'"
         ),
         note=(
-            "Friction rub is pathognomonic but transient. AI continuous "
-            "monitoring could capture intermittent rubs missed by brief "
-            "manual auscultation."
+            "Friction rub is pathognomonic but transient and often missed. "
+            "No AI stethoscope study has evaluated rub detection. "
+            "Wide sensitivity range (0.20-0.80) reflects exam frequency."
         ),
         feasibility="moderate",
     ),
     "Pulmonary Embolism": EStethoscopePerformance(
         pathology="Pulmonary Embolism",
         sensitivity=0.25,
-        specificity=0.70,
+        specificity=0.89,
         ci_sens_lower=0.12,
         ci_sens_upper=0.42,
-        ci_spec_lower=0.60,
-        ci_spec_upper=0.80,
+        ci_spec_lower=0.85,
+        ci_spec_upper=0.92,
         acoustic_sign="Localised diminished breath sounds / pleural rub",
-        source="Expert estimate; PE auscultation findings are non-specific",
-        note="Low sensitivity — PE is primarily a vascular, not acoustic, dx.",
+        source=(
+            "No AI e-stethoscope or PE-specific auscultation accuracy data. "
+            "Lung sounds usually normal in PE (StatPearls NBK560551). "
+            "Best proxy: Verschakelen et al. meta-analysis (34 studies) of "
+            "lung auscultation for acute pulmonary pathology: sens 0.37 "
+            "(0.30-0.47), spec 0.89 (0.85-0.92). PE-specific sens likely "
+            "lower; 0.25 is a conservative estimate"
+        ),
+        note=(
+            "Low sensitivity — PE is primarily a vascular, not acoustic, dx. "
+            "Specificity 0.89 from Verschakelen meta-analysis of lung "
+            "auscultation for acute pulmonary pathology."
+        ),
         feasibility="low",
     ),
     "ACS (STEMI/NSTEMI/UA)": EStethoscopePerformance(
         pathology="ACS (STEMI/NSTEMI/UA)",
-        sensitivity=0.15,
-        specificity=0.60,
-        ci_sens_lower=0.05,
-        ci_sens_upper=0.30,
-        ci_spec_lower=0.48,
-        ci_spec_upper=0.72,
+        sensitivity=0.20,
+        specificity=0.80,
+        ci_sens_lower=0.10,
+        ci_sens_upper=0.35,
+        ci_spec_lower=0.70,
+        ci_spec_upper=0.90,
         acoustic_sign="New S3/S4 gallop, mitral regurgitation murmur",
         source=(
-            "Expert estimate; auscultatory findings in ACS are uncommon "
-            "and late (post-ischaemic ventricular dysfunction)"
+            "No AI e-stethoscope validation for ACS via gallop/MR murmur. "
+            "Closest: Zhang 2021, Clin Cardiol 10.1002/clc.23694 — acoustic "
+            "cardiography (AUDICOR): S3>=3.05 sens 70%/spec 58% for CAD in "
+            "angina (n=180); S4>=4.25 sens 48%/spec 80%; S3>=4.85 sens 80%/ "
+            "spec 92% for LVSD post-AMI (n=135). Manual: Patel 1993 WJM — "
+            "S3 for EF<50%: sens 51%/spec 90% (n=49). ACS patients often have "
+            "preserved EF, so gallop sens for ACS << for LV dysfunction. "
+            "Sens 0.20 = conservative estimate for undifferentiated ACS"
         ),
-        note="Not a primary ACS detection modality.",
+        note=(
+            "Not a primary ACS detection modality. Zhang 2021 acoustic "
+            "cardiography is the closest AI analogue but uses a dedicated "
+            "platform, not a handheld e-stethoscope."
+        ),
         feasibility="low",
     ),
     "Aortic Dissection": EStethoscopePerformance(

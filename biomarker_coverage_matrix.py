@@ -122,63 +122,63 @@ class SpecificityEntry:
 SPECIFICITY_DATA: Dict[str, Dict[str, SpecificityEntry]] = {
     "ACS (STEMI/NSTEMI/UA)": {
         "hs-cTnI": SpecificityEntry(0.54, 0.47, 0.61, "Lipinski 2015; hs-cTn pooled"),
-        "D-dimer": SpecificityEntry(0.45, 0.38, 0.52, "Non-specific; elevated in many conditions"),
-        "NT-proBNP": SpecificityEntry(0.60, 0.52, 0.68, "Cross-reactivity with HF/PE"),
-        "CRP": SpecificityEntry(0.40, 0.32, 0.48, "Non-specific inflammatory marker"),
+        "D-dimer": SpecificityEntry(0.954, 0.89, 0.99, "Orak 2010, J Int Med Res 10.1177/147323001003800523; n=241 ED chest pain; qualitative D-dimer cutoff ~0.5 ug/mL FEU"),
+        "NT-proBNP": SpecificityEntry(0.60, 0.52, 0.68, "No diagnostic specificity data for ACS vs non-ACS in undifferentiated chest pain; clinical estimate"),
+        "CRP": SpecificityEntry(0.739, 0.65, 0.82, "Cui 2008, J Clin Lab Anal 10.1002/jcla.20223; n=113 ED chest pain; CRP cutoff 3.16 mg/L"),
         "Copeptin": SpecificityEntry(0.75, 0.70, 0.80, "Keller 2011; Raskovalova 2013"),
         "H-FABP": SpecificityEntry(0.78, 0.72, 0.84, "Body 2015; pooled"),
-        "Myoglobin": SpecificityEntry(0.50, 0.42, 0.58, "Low specificity; muscle damage"),
-        "Procalcitonin": SpecificityEntry(0.85, 0.78, 0.92, "Low sensitivity, high specificity for ACS"),
+        "Myoglobin": SpecificityEntry(0.86, 0.79, 0.93, "de Winter 2000, Ann Emerg Med 10.1016/S0196-0644(00)70129-6; n=309 ED chest pain; myoglobin cutoff 50 ug/L at 5h"),
+        "Procalcitonin": SpecificityEntry(0.85, 0.78, 0.92, "No diagnostic specificity data for ACS vs non-ACS in undifferentiated chest pain; clinical estimate"),
     },
     "Pulmonary Embolism": {
-        "hs-cTnI": SpecificityEntry(0.60, 0.52, 0.68, "Moderately elevated in PE"),
+        "hs-cTnI": SpecificityEntry(0.60, 0.52, 0.68, "No diagnostic specificity data for PE vs non-PE in undifferentiated chest pain; clinical estimate"),
         "D-dimer": SpecificityEntry(0.42, 0.38, 0.46, "Geersing 2012; low specificity"),
-        "NT-proBNP": SpecificityEntry(0.55, 0.48, 0.62, "Elevated in RV strain"),
-        "CRP": SpecificityEntry(0.35, 0.28, 0.42, "Non-specific for PE"),
-        "Copeptin": SpecificityEntry(0.70, 0.62, 0.78, "Limited data for PE"),
-        "H-FABP": SpecificityEntry(0.75, 0.68, 0.82, "Some cross-reactivity"),
-        "Myoglobin": SpecificityEntry(0.60, 0.52, 0.68, "Limited data"),
-        "Procalcitonin": SpecificityEntry(0.80, 0.72, 0.88, "Limited data for PE"),
+        "NT-proBNP": SpecificityEntry(0.802, 0.73, 0.86, "Ebrahimi 2022, Arch Acad Emerg Med 10.22037/aaem.v10i1.1453; n=267 suspected PE; pro-BNP cutoff 100 pg/mL"),
+        "CRP": SpecificityEntry(0.35, 0.28, 0.42, "No diagnostic specificity data for PE vs non-PE; clinical estimate"),
+        "Copeptin": SpecificityEntry(0.837, 0.69, 0.93, "Kalkan 2016, Cardiol J 10.5603/CJ.a2015.0077; n=90 suspected PE; copeptin cutoff 4.84 ng/mL"),
+        "H-FABP": SpecificityEntry(0.75, 0.68, 0.82, "No diagnostic specificity data for PE vs non-PE; clinical estimate"),
+        "Myoglobin": SpecificityEntry(0.60, 0.52, 0.68, "No diagnostic specificity data for PE vs non-PE; clinical estimate"),
+        "Procalcitonin": SpecificityEntry(0.80, 0.72, 0.88, "No diagnostic specificity data for PE vs non-PE; clinical estimate"),
     },
     "Aortic Dissection": {
-        "hs-cTnI": SpecificityEntry(0.65, 0.56, 0.74, "May be elevated in type A"),
+        "hs-cTnI": SpecificityEntry(0.65, 0.56, 0.74, "No diagnostic specificity data for AoD vs non-AoD in undifferentiated chest pain; clinical estimate"),
         "D-dimer": SpecificityEntry(0.47, 0.40, 0.54, "Chen 2023; pooled specificity"),
-        "NT-proBNP": SpecificityEntry(0.55, 0.46, 0.64, "Non-specific for AoD"),
-        "CRP": SpecificityEntry(0.30, 0.22, 0.38, "Non-specific inflammation"),
-        "Copeptin": SpecificityEntry(0.60, 0.50, 0.70, "Limited data"),
-        "H-FABP": SpecificityEntry(0.80, 0.72, 0.88, "Limited data"),
-        "Myoglobin": SpecificityEntry(0.65, 0.55, 0.75, "Limited data"),
-        "Procalcitonin": SpecificityEntry(0.75, 0.65, 0.85, "Limited data"),
+        "NT-proBNP": SpecificityEntry(0.55, 0.46, 0.64, "No diagnostic specificity data for AoD vs non-AoD; clinical estimate"),
+        "CRP": SpecificityEntry(0.30, 0.22, 0.38, "No diagnostic specificity data for AoD vs non-AoD; clinical estimate"),
+        "Copeptin": SpecificityEntry(0.636, 0.569, 0.699, "Morello 2018, Sci Rep 10.1038/s41598-018-35016-z; n=313 suspected AAS; copeptin cutoff 10 pmol/L"),
+        "H-FABP": SpecificityEntry(0.80, 0.72, 0.88, "No diagnostic specificity data for AoD vs non-AoD; clinical estimate"),
+        "Myoglobin": SpecificityEntry(0.65, 0.55, 0.75, "No diagnostic specificity data for AoD vs non-AoD; clinical estimate"),
+        "Procalcitonin": SpecificityEntry(0.75, 0.65, 0.85, "No diagnostic specificity data for AoD vs non-AoD; clinical estimate"),
     },
     "Pericarditis / Myocarditis": {
-        "hs-cTnI": SpecificityEntry(0.50, 0.42, 0.58, "Elevated in myocarditis"),
-        "D-dimer": SpecificityEntry(0.55, 0.47, 0.63, "Mildly elevated"),
-        "NT-proBNP": SpecificityEntry(0.50, 0.42, 0.58, "Elevated with effusion"),
+        "hs-cTnI": SpecificityEntry(0.50, 0.42, 0.58, "No diagnostic specificity data for myocarditis/pericarditis vs non-myocarditis chest pain; clinical estimate"),
+        "D-dimer": SpecificityEntry(0.55, 0.47, 0.63, "No diagnostic specificity data for pericarditis/myocarditis vs non-pericarditis chest pain; clinical estimate"),
+        "NT-proBNP": SpecificityEntry(0.50, 0.42, 0.58, "No diagnostic specificity data for pericarditis/myocarditis vs non-pericarditis chest pain; clinical estimate"),
         "CRP": SpecificityEntry(0.38, 0.30, 0.46, "Imazio 2011; CRP non-specific"),
-        "Copeptin": SpecificityEntry(0.65, 0.55, 0.75, "Limited data"),
-        "H-FABP": SpecificityEntry(0.70, 0.62, 0.78, "Some elevation"),
-        "Myoglobin": SpecificityEntry(0.55, 0.45, 0.65, "Muscle damage marker"),
-        "Procalcitonin": SpecificityEntry(0.72, 0.64, 0.80, "Bacterial vs viral"),
+        "Copeptin": SpecificityEntry(0.65, 0.55, 0.75, "No diagnostic specificity data for pericarditis/myocarditis; clinical estimate"),
+        "H-FABP": SpecificityEntry(0.70, 0.62, 0.78, "No diagnostic specificity data for pericarditis/myocarditis; clinical estimate"),
+        "Myoglobin": SpecificityEntry(0.80, 0.65, 0.90, "Kottwitz 2020, J Cardiovasc Transl Res 10.1007/s12265-020-09957-8; n=66 suspected myocarditis; myoglobin cutoff 87 ug/L; spec 80%"),
+        "Procalcitonin": SpecificityEntry(0.72, 0.64, 0.80, "No diagnostic specificity data for pericarditis/myocarditis; clinical estimate"),
     },
     "Pneumothorax (tension)": {
-        "hs-cTnI": SpecificityEntry(0.90, 0.85, 0.95, "Not elevated in PTX"),
-        "D-dimer": SpecificityEntry(0.80, 0.72, 0.88, "May be mildly elevated"),
-        "NT-proBNP": SpecificityEntry(0.85, 0.78, 0.92, "Not typically elevated"),
-        "CRP": SpecificityEntry(0.70, 0.62, 0.78, "Mild inflammatory response"),
-        "Copeptin": SpecificityEntry(0.65, 0.55, 0.75, "Stress response"),
-        "H-FABP": SpecificityEntry(0.90, 0.85, 0.95, "Not elevated"),
-        "Myoglobin": SpecificityEntry(0.85, 0.78, 0.92, "Not elevated"),
-        "Procalcitonin": SpecificityEntry(0.88, 0.82, 0.94, "Not elevated"),
+        "hs-cTnI": SpecificityEntry(0.90, 0.85, 0.95, "No diagnostic specificity data for PTX; biomarker not elevated in PTX; clinical estimate"),
+        "D-dimer": SpecificityEntry(0.80, 0.72, 0.88, "No diagnostic specificity data for PTX; clinical estimate"),
+        "NT-proBNP": SpecificityEntry(0.85, 0.78, 0.92, "No diagnostic specificity data for PTX; clinical estimate"),
+        "CRP": SpecificityEntry(0.70, 0.62, 0.78, "No diagnostic specificity data for PTX; clinical estimate"),
+        "Copeptin": SpecificityEntry(0.65, 0.55, 0.75, "No diagnostic specificity data for PTX; clinical estimate"),
+        "H-FABP": SpecificityEntry(0.90, 0.85, 0.95, "No diagnostic specificity data for PTX; clinical estimate"),
+        "Myoglobin": SpecificityEntry(0.85, 0.78, 0.92, "No diagnostic specificity data for PTX; clinical estimate"),
+        "Procalcitonin": SpecificityEntry(0.88, 0.82, 0.94, "No diagnostic specificity data for PTX; clinical estimate"),
     },
     "Acute Heart Failure": {
-        "hs-cTnI": SpecificityEntry(0.55, 0.47, 0.63, "Elevated in cardiomyopathy"),
-        "D-dimer": SpecificityEntry(0.40, 0.32, 0.48, "Elevated in HF"),
+        "hs-cTnI": SpecificityEntry(0.55, 0.47, 0.63, "No diagnostic specificity data for AHF vs non-AHF dyspnea; clinical estimate"),
+        "D-dimer": SpecificityEntry(0.40, 0.32, 0.48, "No diagnostic specificity data for AHF vs non-AHF dyspnea; clinical estimate"),
         "NT-proBNP": SpecificityEntry(0.76, 0.72, 0.80, "Maisel 2002; BNP study"),
-        "CRP": SpecificityEntry(0.40, 0.32, 0.48, "Non-specific"),
-        "Copeptin": SpecificityEntry(0.55, 0.45, 0.65, "Stress-related elevation"),
-        "H-FABP": SpecificityEntry(0.70, 0.62, 0.78, "Some myocardial leakage"),
-        "Myoglobin": SpecificityEntry(0.60, 0.50, 0.70, "Non-specific"),
-        "Procalcitonin": SpecificityEntry(0.80, 0.72, 0.88, "Not elevated in HF"),
+        "CRP": SpecificityEntry(0.40, 0.32, 0.48, "No diagnostic specificity data for AHF vs non-AHF dyspnea; clinical estimate"),
+        "Copeptin": SpecificityEntry(0.55, 0.45, 0.65, "No diagnostic specificity data for AHF vs non-AHF dyspnea; clinical estimate"),
+        "H-FABP": SpecificityEntry(0.70, 0.62, 0.78, "No diagnostic specificity data for AHF vs non-AHF dyspnea; clinical estimate"),
+        "Myoglobin": SpecificityEntry(0.60, 0.50, 0.70, "No diagnostic specificity data for AHF vs non-AHF dyspnea; clinical estimate"),
+        "Procalcitonin": SpecificityEntry(0.80, 0.72, 0.88, "No diagnostic specificity data for AHF vs non-AHF dyspnea; clinical estimate"),
     },
 }
 
@@ -280,19 +280,19 @@ COVERAGE_DATA: Dict[str, Dict[str, SensitivityEntry]] = {
             setting="ED", note="*Serial measurement at 0h/3h"
         ),
         "D-dimer": SensitivityEntry(
-            sensitivity=0.38, ci_lower=0.28, ci_upper=0.49,
-            source="Expert estimate; non-specific D-dimer elevation in ACS",
-            setting="ED", note="Not a primary ACS marker"
+            sensitivity=0.84, ci_lower=0.78, ci_upper=0.89,
+            source="Orak 2010, J Int Med Res 38(4):1428; D-dimer in ACS vs non-cardiac chest pain",
+            setting="ED", note="n=241 (153 ACS); cutoff 0.5 ug/mL; CI computed from n"
         ),
         "NT-proBNP": SensitivityEntry(
-            sensitivity=0.60, ci_lower=0.52, ci_upper=0.68,
-            source="Expert estimate; NT-proBNP elevated in ACS with LV dysfunction",
-            setting="ED"
+            sensitivity=0.0, ci_lower=0.0, ci_upper=0.0,
+            source="No diagnostic accuracy data; not a viable stand-alone ACS biomarker",
+            setting="N/A", note="Available studies use NT-proBNP for ACS risk stratification, not diagnosis"
         ),
         "CRP": SensitivityEntry(
-            sensitivity=0.50, ci_lower=0.40, ci_upper=0.60,
-            source="Expert estimate; non-specific inflammatory marker in ACS",
-            setting="ED", note="Low specificity, delayed rise; no meta-analysis"
+            sensitivity=0.70, ci_lower=0.61, ci_upper=0.78,
+            source="Cui 2008, J Clin Lab Anal 22(1):45; CRP for ACS vs non-ischemic chest pain",
+            setting="ED", note="n=113; cutoff 3.16 mg/L; CI computed from n"
         ),
         "Copeptin": SensitivityEntry(
             sensitivity=0.85, ci_lower=0.79, ci_upper=0.90,
@@ -349,9 +349,9 @@ COVERAGE_DATA: Dict[str, Dict[str, SensitivityEntry]] = {
             setting="ED", note="*RV myocardial injury marker"
         ),
         "Myoglobin": SensitivityEntry(
-            sensitivity=0.30, ci_lower=0.18, ci_upper=0.44,
-            source="Expert estimate; no PE-specific myoglobin meta-analysis",
-            setting="ED"
+            sensitivity=0.0, ci_lower=0.0, ci_upper=0.0,
+            source="No diagnostic accuracy data; not a viable PE biomarker",
+            setting="N/A", note="Published studies use myoglobin for PE prognosis, not diagnosis"
         ),
         "Procalcitonin": SensitivityEntry(
             sensitivity=0.35, ci_lower=0.22, ci_upper=0.50,
@@ -373,9 +373,9 @@ COVERAGE_DATA: Dict[str, Dict[str, SensitivityEntry]] = {
             setting="ED", note="Extremely high sensitivity at standard threshold"
         ),
         "NT-proBNP": SensitivityEntry(
-            sensitivity=0.45, ci_lower=0.32, ci_upper=0.59,
-            source="Expert estimate; limited data on NT-proBNP in aortic dissection",
-            setting="ED"
+            sensitivity=0.0, ci_lower=0.0, ci_upper=0.0,
+            source="No diagnostic accuracy data; not a viable aortic dissection biomarker",
+            setting="N/A", note="Available studies use NT-proBNP for post-surgical AoD prognosis only"
         ),
         "CRP": SensitivityEntry(
             sensitivity=0.72, ci_lower=0.58, ci_upper=0.83,
@@ -388,19 +388,19 @@ COVERAGE_DATA: Dict[str, Dict[str, SensitivityEntry]] = {
             setting="ED", note="*Limited studies, stress-mediated release"
         ),
         "H-FABP": SensitivityEntry(
-            sensitivity=0.25, ci_lower=0.12, ci_upper=0.42,
-            source="Expert estimate; no dissection-specific H-FABP study",
-            setting="ED"
+            sensitivity=0.0, ci_lower=0.0, ci_upper=0.0,
+            source="No diagnostic accuracy data; not a viable aortic dissection biomarker",
+            setting="N/A", note="No dissection-specific H-FABP diagnostic study identified"
         ),
         "Myoglobin": SensitivityEntry(
-            sensitivity=0.30, ci_lower=0.16, ci_upper=0.47,
-            source="Expert estimate; no dissection-specific myoglobin study",
-            setting="ED"
+            sensitivity=0.0, ci_lower=0.0, ci_upper=0.0,
+            source="No diagnostic accuracy data; not a viable aortic dissection biomarker",
+            setting="N/A", note="Myoglobin appears only as postoperative organ-injury marker in AoD"
         ),
         "Procalcitonin": SensitivityEntry(
-            sensitivity=0.20, ci_lower=0.09, ci_upper=0.36,
-            source="Expert estimate; no dissection-specific PCT study",
-            setting="ED"
+            sensitivity=0.0, ci_lower=0.0, ci_upper=0.0,
+            source="No diagnostic accuracy data; not a viable aortic dissection biomarker",
+            setting="N/A", note="Available PCT-AoD studies assess postoperative prognosis only"
         ),
     },
 
@@ -412,9 +412,9 @@ COVERAGE_DATA: Dict[str, Dict[str, SensitivityEntry]] = {
             setting="ED", note="Higher in myocarditis than isolated pericarditis"
         ),
         "D-dimer": SensitivityEntry(
-            sensitivity=0.35, ci_lower=0.22, ci_upper=0.50,
-            source="Expert estimate; no pericarditis-specific D-dimer study",
-            setting="ED"
+            sensitivity=0.0, ci_lower=0.0, ci_upper=0.0,
+            source="No diagnostic accuracy data; not a viable pericarditis/myocarditis biomarker",
+            setting="N/A", note="68% elevation rate in one case series but no controlled diagnostic study"
         ),
         "NT-proBNP": SensitivityEntry(
             sensitivity=0.70, ci_lower=0.58, ci_upper=0.80,
@@ -427,9 +427,9 @@ COVERAGE_DATA: Dict[str, Dict[str, SensitivityEntry]] = {
             setting="ED", note="Highly sensitive for inflammatory pericarditis"
         ),
         "Copeptin": SensitivityEntry(
-            sensitivity=0.55, ci_lower=0.39, ci_upper=0.70,
-            source="Expert estimate; stress-mediated release, no pericarditis copeptin meta-analysis",
-            setting="ED"
+            sensitivity=0.0, ci_lower=0.0, ci_upper=0.0,
+            source="No diagnostic accuracy data; not a viable pericarditis/myocarditis biomarker",
+            setting="N/A", note="No copeptin-pericarditis diagnostic study identified"
         ),
         "H-FABP": SensitivityEntry(
             sensitivity=0.68, ci_lower=0.54, ci_upper=0.80,
@@ -437,9 +437,9 @@ COVERAGE_DATA: Dict[str, Dict[str, SensitivityEntry]] = {
             setting="ED"
         ),
         "Myoglobin": SensitivityEntry(
-            sensitivity=0.58, ci_lower=0.43, ci_upper=0.72,
-            source="Expert estimate; early myocardial release, no pericarditis myoglobin meta-analysis",
-            setting="ED"
+            sensitivity=0.92, ci_lower=0.84, ci_upper=0.99,
+            source="Kottwitz 2020, J Cardiovasc Transl Res 13:488; myoglobin for CMR-confirmed myocarditis",
+            setting="ED", note="n=66 (44 myocarditis, 22 MINOCA); cutoff 87 ug/L; AUC 0.88"
         ),
         "Procalcitonin": SensitivityEntry(
             sensitivity=0.40, ci_lower=0.26, ci_upper=0.55,
@@ -451,44 +451,44 @@ COVERAGE_DATA: Dict[str, Dict[str, SensitivityEntry]] = {
     # ────────────────────── Pneumothorax ──────────────────────
     "Pneumothorax (tension)": {
         "hs-cTnI": SensitivityEntry(
-            sensitivity=0.10, ci_lower=0.03, ci_upper=0.22,
-            source="Expert estimate from case reports; hemodynamic compromise may cause rise",
-            setting="ED", note="No primary diagnostic role; no meta-analysis"
+            sensitivity=0.0, ci_lower=0.0, ci_upper=0.0,
+            source="No diagnostic accuracy data; not a viable pneumothorax biomarker",
+            setting="N/A", note="Only isolated case reports of troponin rise with hemodynamic collapse"
         ),
         "D-dimer": SensitivityEntry(
-            sensitivity=0.15, ci_lower=0.05, ci_upper=0.30,
-            source="Expert estimate; no pneumothorax-specific D-dimer study",
-            setting="ED"
+            sensitivity=0.0, ci_lower=0.0, ci_upper=0.0,
+            source="No diagnostic accuracy data; not a viable pneumothorax biomarker",
+            setting="N/A"
         ),
         "NT-proBNP": SensitivityEntry(
-            sensitivity=0.20, ci_lower=0.08, ci_upper=0.38,
-            source="Expert estimate from case series; secondary RV strain possible",
-            setting="ED"
+            sensitivity=0.0, ci_lower=0.0, ci_upper=0.0,
+            source="No diagnostic accuracy data; not a viable pneumothorax biomarker",
+            setting="N/A"
         ),
         "CRP": SensitivityEntry(
-            sensitivity=0.15, ci_lower=0.05, ci_upper=0.30,
-            source="Expert estimate; CRP not elevated acutely in pneumothorax",
-            setting="ED"
+            sensitivity=0.0, ci_lower=0.0, ci_upper=0.0,
+            source="No diagnostic accuracy data; not a viable pneumothorax biomarker",
+            setting="N/A"
         ),
         "Copeptin": SensitivityEntry(
-            sensitivity=0.30, ci_lower=0.14, ci_upper=0.50,
-            source="Expert estimate; stress-response biomarker, no PTX copeptin study",
-            setting="ED"
+            sensitivity=0.0, ci_lower=0.0, ci_upper=0.0,
+            source="No diagnostic accuracy data; not a viable pneumothorax biomarker",
+            setting="N/A"
         ),
         "H-FABP": SensitivityEntry(
-            sensitivity=0.05, ci_lower=0.01, ci_upper=0.18,
-            source="Expert estimate; no myocardial injury expected in PTX",
-            setting="ED"
+            sensitivity=0.0, ci_lower=0.0, ci_upper=0.0,
+            source="No diagnostic accuracy data; not a viable pneumothorax biomarker",
+            setting="N/A"
         ),
         "Myoglobin": SensitivityEntry(
-            sensitivity=0.08, ci_lower=0.02, ci_upper=0.22,
-            source="Expert estimate; no myocardial injury expected in PTX",
-            setting="ED"
+            sensitivity=0.0, ci_lower=0.0, ci_upper=0.0,
+            source="No diagnostic accuracy data; not a viable pneumothorax biomarker",
+            setting="N/A"
         ),
         "Procalcitonin": SensitivityEntry(
-            sensitivity=0.10, ci_lower=0.03, ci_upper=0.25,
-            source="Expert estimate; PCT not relevant for pneumothorax",
-            setting="ED"
+            sensitivity=0.0, ci_lower=0.0, ci_upper=0.0,
+            source="No diagnostic accuracy data; not a viable pneumothorax biomarker",
+            setting="N/A"
         ),
     },
 
@@ -525,14 +525,14 @@ COVERAGE_DATA: Dict[str, Dict[str, SensitivityEntry]] = {
             setting="ED"
         ),
         "Myoglobin": SensitivityEntry(
-            sensitivity=0.40, ci_lower=0.28, ci_upper=0.53,
-            source="Expert estimate; no heart-failure-specific myoglobin study",
-            setting="ED"
+            sensitivity=0.0, ci_lower=0.0, ci_upper=0.0,
+            source="No diagnostic accuracy data; not a viable acute HF biomarker",
+            setting="N/A", note="Myoglobin is obsolete for ACS and unstudied for HF diagnosis"
         ),
         "Procalcitonin": SensitivityEntry(
-            sensitivity=0.30, ci_lower=0.18, ci_upper=0.44,
-            source="Expert estimate; PCT modestly elevated in HF via endotoxin translocation",
-            setting="ED"
+            sensitivity=0.0, ci_lower=0.0, ci_upper=0.0,
+            source="No diagnostic accuracy data; not a viable acute HF biomarker",
+            setting="N/A", note="PCT in HF used only to detect concomitant infection, not HF itself"
         ),
     },
 }
@@ -555,9 +555,9 @@ EXTENDED_COVERAGE_DATA: Dict[str, Dict[str, SensitivityEntry]] = {
             setting="ED", note="Mitochondrial stress marker; elevated in ACS + HF",
         ),
         "Galectin-3": SensitivityEntry(
-            sensitivity=0.55, ci_lower=0.44, ci_upper=0.66,
-            source="Expert estimate; galectin-3 primarily HF fibrosis marker, modest ACS data",
-            setting="ED",
+            sensitivity=0.889, ci_lower=0.80, ci_upper=0.94,
+            source="Abdel-Aziz 2020, Int J Clin Cardiol; 88.9% sens / 70.0% spec at ≥12.5 ng/mL; case-control (72 ACS + 20 healthy), not undifferentiated ED chest pain",
+            setting="tertiary cardiology, case-control",
         ),
         "MR-proADM": SensitivityEntry(
             sensitivity=0.65, ci_lower=0.55, ci_upper=0.74,
@@ -568,17 +568,17 @@ EXTENDED_COVERAGE_DATA: Dict[str, Dict[str, SensitivityEntry]] = {
     "Pulmonary Embolism": {
         "sST2": SensitivityEntry(
             sensitivity=0.60, ci_lower=0.48, ci_upper=0.72,
-            source="Expert estimate; RV strain may elevate sST2; limited PE-specific data",
+            source="No diagnostic sensitivity data in suspected-PE ED cohorts; clinical estimate. Available sST2/PE studies are prognostic in confirmed PE only",
             setting="ED",
         ),
         "GDF-15": SensitivityEntry(
             sensitivity=0.55, ci_lower=0.43, ci_upper=0.67,
-            source="Expert estimate; mitochondrial stress in PE; no meta-analysis",
+            source="No diagnostic sensitivity data in suspected-PE ED cohorts; clinical estimate. Hellenkamp et al. report prognostic risk stratification in confirmed PE only",
             setting="ED",
         ),
         "Galectin-3": SensitivityEntry(
             sensitivity=0.40, ci_lower=0.28, ci_upper=0.53,
-            source="Expert estimate; limited PE data",
+            source="No diagnostic sensitivity data in suspected-PE ED cohorts; clinical estimate. Literature focuses on pulmonary arterial hypertension/RV remodeling",
             setting="ED",
         ),
         "MR-proADM": SensitivityEntry(
@@ -589,67 +589,67 @@ EXTENDED_COVERAGE_DATA: Dict[str, Dict[str, SensitivityEntry]] = {
     },
     "Aortic Dissection": {
         "sST2": SensitivityEntry(
-            sensitivity=0.45, ci_lower=0.32, ci_upper=0.59,
-            source="Expert estimate; aortic wall stress may trigger sST2; no direct study",
-            setting="ED",
+            sensitivity=0.991, ci_lower=0.96, ci_upper=1.00,
+            source="Wang 2018, Circulation 10.1161/CIRCULATIONAHA.117.030469; 99.1% sens / 84.9% spec at ≥34.6 ng/mL within 24h; prospective ED validation (n=333 suspected AAD) + discovery sets (n=1360 total)",
+            setting="ED, prospective validation",
         ),
         "GDF-15": SensitivityEntry(
             sensitivity=0.50, ci_lower=0.36, ci_upper=0.64,
-            source="Expert estimate; vascular stress response; limited data",
+            source="No diagnostic sensitivity data for AAD vs other ED chest pain; clinical estimate. GDF-15 studied in aortic aneurysm populations only",
             setting="ED",
         ),
         "Galectin-3": SensitivityEntry(
             sensitivity=0.35, ci_lower=0.22, ci_upper=0.50,
-            source="Expert estimate; no dissection-specific data",
+            source="No diagnostic sensitivity data for AAD vs other ED chest pain; clinical estimate. Not listed in AAD biomarker reviews",
             setting="ED",
         ),
         "MR-proADM": SensitivityEntry(
             sensitivity=0.70, ci_lower=0.56, ci_upper=0.82,
-            source="Expert estimate from sepsis/critical illness data; endothelial activation in AoD",
+            source="No diagnostic sensitivity data for AAD vs other ED chest pain; clinical estimate. MR-proADM evaluated in sepsis/pneumonia, not AAD",
             setting="ED",
         ),
     },
     "Pericarditis / Myocarditis": {
         "sST2": SensitivityEntry(
             sensitivity=0.65, ci_lower=0.52, ci_upper=0.77,
-            source="Expert estimate; IL-33/ST2 axis in myocardial inflammation; Pascual-Figal 2016",
+            source="No diagnostic sensitivity data in acute pericarditis/myocarditis ED cohorts; clinical estimate. IIM data (85.7% for fibrosis, Pascual-Figal) not applicable to acute chest-pain triage",
             setting="ED",
         ),
         "GDF-15": SensitivityEntry(
             sensitivity=0.60, ci_lower=0.47, ci_upper=0.72,
-            source="Expert estimate; mitochondrial stress in myocarditis",
+            source="No diagnostic sensitivity data in acute pericarditis/myocarditis ED cohorts; clinical estimate. IIM cohort data (75% for myocardial injury) not applicable",
             setting="ED",
         ),
         "Galectin-3": SensitivityEntry(
             sensitivity=0.55, ci_lower=0.42, ci_upper=0.68,
-            source="Expert estimate; fibrosis marker may be elevated in myocarditis",
+            source="No diagnostic sensitivity data in acute pericarditis/myocarditis ED cohorts; clinical estimate. Only mouse viral myocarditis model data available",
             setting="ED",
         ),
         "MR-proADM": SensitivityEntry(
             sensitivity=0.50, ci_lower=0.37, ci_upper=0.63,
-            source="Expert estimate; limited pericarditis data",
+            source="No diagnostic sensitivity data in acute pericarditis/myocarditis ED cohorts; clinical estimate. MR-proADM not listed in myocarditis/pericarditis biomarker reviews",
             setting="ED",
         ),
     },
     "Pneumothorax (tension)": {
         "sST2": SensitivityEntry(
             sensitivity=0.12, ci_lower=0.04, ci_upper=0.25,
-            source="Expert estimate; no mechanical lung injury marker role for sST2",
+            source="No diagnostic sensitivity data for pneumothorax; clinical estimate. No ROC-based diagnostic study identified",
             setting="ED",
         ),
         "GDF-15": SensitivityEntry(
             sensitivity=0.15, ci_lower=0.05, ci_upper=0.30,
-            source="Expert estimate; non-specific stress in severe cases",
+            source="No diagnostic sensitivity data for pneumothorax; clinical estimate",
             setting="ED",
         ),
         "Galectin-3": SensitivityEntry(
             sensitivity=0.08, ci_lower=0.02, ci_upper=0.20,
-            source="Expert estimate; no PTX role",
+            source="No diagnostic sensitivity data for pneumothorax; clinical estimate",
             setting="ED",
         ),
         "MR-proADM": SensitivityEntry(
             sensitivity=0.20, ci_lower=0.08, ci_upper=0.38,
-            source="Expert estimate; haemodynamic stress in tension PTX",
+            source="No diagnostic sensitivity data for pneumothorax; clinical estimate",
             setting="ED",
         ),
     },
@@ -681,32 +681,59 @@ EXTENDED_SPECIFICITY_DATA: Dict[str, Dict[str, SpecificityEntry]] = {
     "ACS (STEMI/NSTEMI/UA)": {
         "sST2": SpecificityEntry(0.62, 0.54, 0.70, "Dieplinger 2015; moderate specificity"),
         "GDF-15": SpecificityEntry(0.58, 0.50, 0.66, "Kempf 2007; non-specific elevation"),
-        "Galectin-3": SpecificityEntry(0.55, 0.47, 0.63, "Expert estimate; fibrosis marker"),
+        "Galectin-3": SpecificityEntry(0.70, 0.58, 0.80,
+            "Abdel-Aziz 2020, Int J Clin Cardiol; 70.0% spec at ≥12.5 ng/mL; "
+            "case-control (72 ACS + 20 healthy), not undifferentiated ED chest pain"),
         "MR-proADM": SpecificityEntry(0.60, 0.52, 0.68, "Nishida 2008; vascular stress"),
     },
     "Pulmonary Embolism": {
-        "sST2": SpecificityEntry(0.58, 0.50, 0.66, "Expert estimate"),
-        "GDF-15": SpecificityEntry(0.55, 0.47, 0.63, "Expert estimate"),
-        "Galectin-3": SpecificityEntry(0.60, 0.52, 0.68, "Expert estimate"),
+        "sST2": SpecificityEntry(0.58, 0.50, 0.66,
+            "No diagnostic specificity data in suspected-PE ED cohorts; clinical estimate"),
+        "GDF-15": SpecificityEntry(0.55, 0.47, 0.63,
+            "No diagnostic specificity data in suspected-PE ED cohorts; clinical estimate. "
+            "Hellenkamp et al. report prognostic risk stratification in confirmed PE only"),
+        "Galectin-3": SpecificityEntry(0.60, 0.52, 0.68,
+            "No diagnostic specificity data in suspected-PE ED cohorts; clinical estimate. "
+            "Literature focuses on pulmonary arterial hypertension/RV remodeling"),
         "MR-proADM": SpecificityEntry(0.55, 0.47, 0.63, "Schuetz 2013; moderate specificity"),
     },
     "Aortic Dissection": {
-        "sST2": SpecificityEntry(0.65, 0.55, 0.75, "Expert estimate"),
-        "GDF-15": SpecificityEntry(0.60, 0.50, 0.70, "Expert estimate"),
-        "Galectin-3": SpecificityEntry(0.70, 0.60, 0.80, "Expert estimate"),
-        "MR-proADM": SpecificityEntry(0.55, 0.45, 0.65, "Expert estimate"),
+        "sST2": SpecificityEntry(0.849, 0.80, 0.89,
+            "Wang 2018, Circulation 10.1161/CIRCULATIONAHA.117.030469; 84.9% spec at ≥34.6 ng/mL; "
+            "prospective ED validation (n=333 suspected AAD) + discovery sets (n=1360 total)"),
+        "GDF-15": SpecificityEntry(0.60, 0.50, 0.70,
+            "No diagnostic specificity data for AAD vs other ED chest pain; clinical estimate. "
+            "GDF-15 studied in aortic aneurysm populations only"),
+        "Galectin-3": SpecificityEntry(0.70, 0.60, 0.80,
+            "No diagnostic specificity data for AAD vs other ED chest pain; clinical estimate. "
+            "Not listed in AAD biomarker reviews"),
+        "MR-proADM": SpecificityEntry(0.55, 0.45, 0.65,
+            "No diagnostic specificity data for AAD vs other ED chest pain; clinical estimate. "
+            "MR-proADM evaluated in sepsis/pneumonia, not AAD"),
     },
     "Pericarditis / Myocarditis": {
-        "sST2": SpecificityEntry(0.60, 0.50, 0.70, "Expert estimate"),
-        "GDF-15": SpecificityEntry(0.55, 0.45, 0.65, "Expert estimate"),
-        "Galectin-3": SpecificityEntry(0.55, 0.45, 0.65, "Expert estimate"),
-        "MR-proADM": SpecificityEntry(0.60, 0.50, 0.70, "Expert estimate"),
+        "sST2": SpecificityEntry(0.60, 0.50, 0.70,
+            "No diagnostic specificity data in acute pericarditis/myocarditis ED cohorts; clinical estimate. "
+            "IIM data (98.9% for fibrosis, Pascual-Figal) not applicable to acute chest-pain triage"),
+        "GDF-15": SpecificityEntry(0.55, 0.45, 0.65,
+            "No diagnostic specificity data in acute pericarditis/myocarditis ED cohorts; clinical estimate. "
+            "IIM cohort data (90% for myocardial injury) not applicable"),
+        "Galectin-3": SpecificityEntry(0.55, 0.45, 0.65,
+            "No diagnostic specificity data in acute pericarditis/myocarditis ED cohorts; clinical estimate. "
+            "Only mouse viral myocarditis model data available"),
+        "MR-proADM": SpecificityEntry(0.60, 0.50, 0.70,
+            "No diagnostic specificity data in acute pericarditis/myocarditis ED cohorts; clinical estimate. "
+            "MR-proADM not listed in myocarditis/pericarditis biomarker reviews"),
     },
     "Pneumothorax (tension)": {
-        "sST2": SpecificityEntry(0.88, 0.82, 0.94, "Expert estimate; not elevated"),
-        "GDF-15": SpecificityEntry(0.85, 0.78, 0.92, "Expert estimate"),
-        "Galectin-3": SpecificityEntry(0.90, 0.85, 0.95, "Expert estimate; not elevated"),
-        "MR-proADM": SpecificityEntry(0.82, 0.75, 0.89, "Expert estimate"),
+        "sST2": SpecificityEntry(0.88, 0.82, 0.94,
+            "No diagnostic specificity data for pneumothorax; clinical estimate. No ROC-based study identified"),
+        "GDF-15": SpecificityEntry(0.85, 0.78, 0.92,
+            "No diagnostic specificity data for pneumothorax; clinical estimate"),
+        "Galectin-3": SpecificityEntry(0.90, 0.85, 0.95,
+            "No diagnostic specificity data for pneumothorax; clinical estimate"),
+        "MR-proADM": SpecificityEntry(0.82, 0.75, 0.89,
+            "No diagnostic specificity data for pneumothorax; clinical estimate"),
     },
     "Acute Heart Failure": {
         "sST2": SpecificityEntry(0.65, 0.57, 0.73, "Januzzi 2016; moderate specificity"),

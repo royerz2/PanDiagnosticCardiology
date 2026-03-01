@@ -1,6 +1,6 @@
 biomarkers,n_tests,coverage,worst_case_sensitivity,cost_eur,time_min,sample_ul,pathologies_covered,pathologies_uncovered,pareto_optimal
-CRP,1,0.16666666666666666,0.15,5.0,4.0,5.0,1,"ACS (STEMI/NSTEMI/UA), Acute Heart Failure, Aortic Dissection, Pneumothorax (tension), Pulmonary Embolism",True
-D-dimer,1,0.3333333333333333,0.15,7.0,10.0,15.0,2,"ACS (STEMI/NSTEMI/UA), Acute Heart Failure, Pericarditis / Myocarditis, Pneumothorax (tension)",True
-"CRP, D-dimer",2,0.5,0.15,12.0,10.0,20.0,3,"ACS (STEMI/NSTEMI/UA), Acute Heart Failure, Pneumothorax (tension)",True
-"CRP, D-dimer, hs-cTnI",3,0.6666666666666666,0.15,22.0,15.0,40.0,4,"Acute Heart Failure, Pneumothorax (tension)",True
-"CRP, D-dimer, NT-proBNP, hs-cTnI",4,0.8333333333333334,0.2,36.0,15.0,55.0,5,Pneumothorax (tension),True
+CRP,1,0.16666666666666666,0.0,5.0,4.0,5.0,1,"ACS (STEMI/NSTEMI/UA), Acute Heart Failure, Aortic Dissection, Pneumothorax (tension), Pulmonary Embolism",True
+D-dimer,1,0.3333333333333333,0.0,7.0,10.0,15.0,2,"ACS (STEMI/NSTEMI/UA), Acute Heart Failure, Pericarditis / Myocarditis, Pneumothorax (tension)",True
+"CRP, D-dimer",2,0.5,0.0,12.0,10.0,20.0,3,"ACS (STEMI/NSTEMI/UA), Acute Heart Failure, Pneumothorax (tension)",True
+"CRP, D-dimer, hs-cTnI",3,0.6666666666666666,0.0,22.0,15.0,40.0,4,"Acute Heart Failure, Pneumothorax (tension)",True
+"CRP, D-dimer, NT-proBNP, hs-cTnI",4,0.8333333333333334,0.0,36.0,15.0,55.0,5,Pneumothorax (tension),True

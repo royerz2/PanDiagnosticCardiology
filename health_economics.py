@@ -31,10 +31,10 @@ Cost data sources (Netherlands, 2024):
 
 QALY losses (per missed diagnosis):
   - Missed ACS: 2.5 QALYs (MI complications, late revascularisation)
-  - Missed PE: 2.0 QALYs (chronic thromboembolic pulmonary hypertension)
-  - Missed AoD: 15.0 QALYs (death at mean age 60)
+  - Missed PE: 2.0 QALYs (Boon 2021 — CTEPH diagnostic-delay model: 2.04 QALYs)
+  - Missed AoD: 2.0 QALYs (Thokala 2024 lifetime model: ~1.9 QALYs/missed AAS)
   - Missed pericarditis: 0.3 QALYs (constrictive pericarditis risk)
-  - Missed PTX: 1.0 QALYs (tension → cardiac arrest risk)
+  - Missed PTX: 1.0 QALYs (no CUA data; life-table + 30% case fatality)
   - Missed AHF: 1.5 QALYs (decompensation, readmission)
 """
 
@@ -122,15 +122,26 @@ OUTCOME_COSTS: Dict[str, OutcomeCosts] = {
         missed_dx_cost_eur=35_000.0,
         qaly_loss=2.0,
         daly_loss=2.2,
-        source="NZa DBC; CTEPH lifetime management; Konstantinides 2020",
+        source=(
+            "Boon 2021 ERJ Open Res — CTEPH diagnostic-delay Markov model: "
+            "2.04 QALYs lost per case for 1.2-year delay (from 8.42→10.45 "
+            "lifetime QALYs at age 63, discounted 1.5%/yr). Duriseti 2010 "
+            "Ann Emerg Med: untreated-PE utility 0.651 vs treated 0.855, "
+            "implying 4-5 QALYs over 25 yr. We use 2.0 (CTEPH-delay model)"
+        ),
     ),
     "Aortic Dissection": OutcomeCosts(
         pathology="AoD",
         missed_dx_cost_eur=65_000.0,
-        qaly_loss=15.0,
-        daly_loss=18.0,
-        source="Emergency aortic surgery + ICU; 50% mortality assumption; "
-               "GBD 2019 life-table (age 60, ~22 years lost)",
+        qaly_loss=2.0,
+        daly_loss=2.4,
+        source=(
+            "Thokala 2024 Emerg Med J (NIHR HTA decision model): "
+            "'no testing' vs 'CTA all' → 0.00490 QALY/patient; at 0.26% "
+            "prevalence → ~1.9 QALYs per missed AAS (type A+B, age 63, "
+            "discounted 3.5%/yr, EQ-5D-mapped utilities 0.78-0.86). "
+            "Goodacre 2025 HTA monograph confirms same model structure"
+        ),
     ),
     "Pericarditis / Myocarditis": OutcomeCosts(
         pathology="Peri/Myo",
@@ -145,8 +156,14 @@ OUTCOME_COSTS: Dict[str, OutcomeCosts] = {
         missed_dx_cost_eur=25_000.0,
         qaly_loss=1.0,
         daly_loss=1.2,
-        source="Tension PTX → cardiac arrest risk (30% mortality); "
-               "emergency decompression + drain; BTS guidelines",
+        source=(
+            "No QALY-based CUA or burden-of-disease study identified for "
+            "tension PTX (NICE NG39 flags this as open research question). "
+            "PSP CUAs (Luengo-Fernandez 2022 Thorax; Brown cost-utility) "
+            "show negligible QALY loss for non-tension cases (utility 0.77-"
+            "0.82 over 2 months). Life-table approach retained: 30% case "
+            "fatality × age-specific remaining life-years; BTS guidelines"
+        ),
     ),
     "Acute Heart Failure": OutcomeCosts(
         pathology="AHF",

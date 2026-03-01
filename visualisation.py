@@ -13,6 +13,8 @@ Generates all figures for the manuscript:
   Fig 9: Sensitivity–FP trade-off (quantitative LR)
   Fig 10: Cost-effectiveness plane & CEAC
   Fig 11: Copula correlation & FP decomposition
+  Fig 12: Tornado plot — parametric sensitivity analysis
+  Fig 13: What-if envelope — FP cascade credible intervals
 """
 
 import os
@@ -328,6 +330,10 @@ def fig6_threshold_sensitivity():
     """Figure 6: Minimum panel size vs sensitivity threshold τ."""
     thresh = threshold_sensitivity()
 
+    # Cap at τ=0.92: the τ=0.95 drop is counterintuitive (fewer tests because
+    # pathologies become uncoverable) and confuses more than it informs.
+    thresh = thresh[thresh['threshold'] <= 0.92].copy()
+
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 5))
 
     # Left: panel size vs threshold
@@ -337,18 +343,25 @@ def fig6_threshold_sensitivity():
     )
     ax1.set_xlabel('Sensitivity Threshold (τ)', fontsize=11)
     ax1.set_ylabel('Minimum Panel Size', fontsize=11)
-    ax1.set_title('(A) Panel Size vs Threshold', fontsize=12, fontweight='bold')
+    ax1.set_title('(A) Panel Size vs Threshold', fontsize=12, fontweight='bold',
+                  pad=12)
     ax1.set_xticks(thresh['threshold'])
+    ax1.set_ylim(2.7, 4.5)
 
     # Annotate panel compositions — only at key thresholds to avoid overlap
-    annotated_thresholds = {0.80, 0.90, 0.95}  # subset to prevent text collision
+    annotated_thresholds = {0.80, 0.90}  # subset to prevent text collision
     for _, row in thresh.iterrows():
         if not pd.isna(row['min_panel_size']) and row['threshold'] in annotated_thresholds:
+            # Place multi-line labels below point when at top of y-range
+            if row['min_panel_size'] >= 4:
+                va, y_off = 'top', -12
+            else:
+                va, y_off = 'bottom', 10
             ax1.annotate(
                 row['optimal_panel'].replace(', ', '\n'),
                 (row['threshold'], row['min_panel_size']),
-                fontsize=6, ha='center', va='bottom',
-                xytext=(0, 10), textcoords='offset points',
+                fontsize=6, ha='center', va=va,
+                xytext=(0, y_off), textcoords='offset points',
             )
 
     # Right: cost vs threshold
@@ -682,6 +695,237 @@ def fig11_copula_correlation():
     print(f"  Saved fig11_copula_fp_decomposition.pdf/png")
 
 
+def fig12_tornado_sensitivity():
+    """Tornado plot: which uncertain parameter has the largest impact on ED FP rate."""
+    results_path = os.path.join(os.path.dirname(__file__), "results", "sensitivity_analysis.json")
+    if not os.path.exists(results_path):
+        print("  [SKIP] sensitivity_analysis.json not found — run sensitivity analysis first")
+        return
+
+    with open(results_path) as f:
+        sa = json.load(f)
+
+    tornado_data = sa.get("tornado", [])
+    if not tornado_data:
+        print("  [SKIP] No tornado data in sensitivity_analysis.json")
+        return
+
+    # Filter out near-zero-swing parameters and take top 12 by swing
+    df = pd.DataFrame(tornado_data)
+    df = df[df["swing"] > 0.001]  # remove effectively-zero bars (MC noise)
+    df = df.sort_values("swing", ascending=True).tail(12)
+
+    if len(df) == 0:
+        print("  [SKIP] No non-zero tornado swings")
+        return
+
+    fig, ax = plt.subplots(figsize=(10, 6))
+
+    baseline = df.iloc[0]["baseline_value"] if len(df) > 0 else 0.16
+    y_pos = np.arange(len(df))
+
+    # Bars from baseline to low/high
+    # Colour by which CI bound: blue = at CI lower bound, orange = at CI upper bound
+    for i, (_, row) in enumerate(df.iterrows()):
+        lo = row["value_at_ci_lower"]
+        hi = row["value_at_ci_upper"]
+        base = row["baseline_value"]
+
+        # CI lower bound (lower specificity)
+        width_lo = lo - base
+        ax.barh(i, width_lo, left=base, height=0.6,
+                color='#2563EB', alpha=0.7, edgecolor='white')
+
+        # CI upper bound (higher specificity)
+        width_hi = hi - base
+        ax.barh(i, width_hi, left=base, height=0.6,
+                color='#F97316', alpha=0.7, edgecolor='white')
+
+    # Labels
+    param_labels = [f"{row['biomarker']}/{row['pathology']}" for _, row in df.iterrows()]
+    ax.set_yticks(y_pos)
+    ax.set_yticklabels(param_labels, fontsize=10)
+
+    ax.axvline(x=baseline, color='black', linewidth=1.5, linestyle='--', alpha=0.7)
+    ax.annotate(f'Baseline: {baseline:.1%}', xy=(baseline, len(df) - 0.5),
+                xytext=(10, 8), textcoords='offset points',
+                fontsize=9, fontstyle='italic', ha='left',
+                arrowprops=dict(arrowstyle='->', color='black', lw=0.8))
+
+    ax.set_xlabel('ED false-positive rate (pathology-directed)', fontsize=11)
+    ax.set_title('Tornado Analysis: Impact of Uncertain Specificity on ED FP Rate',
+                 fontsize=12, fontweight='bold', pad=12)
+
+    # Legend
+    from matplotlib.patches import Patch
+    legend_elements = [
+        Patch(facecolor='#2563EB', alpha=0.7, label='At CI lower bound (lower specificity)'),
+        Patch(facecolor='#F97316', alpha=0.7, label='At CI upper bound (higher specificity)'),
+    ]
+    ax.legend(handles=legend_elements, loc='lower right', fontsize=9)
+
+    ax.grid(True, axis='x', alpha=0.3)
+    plt.tight_layout()
+
+    for ext in ['pdf', 'png']:
+        fig.savefig(os.path.join(FIGURE_DIR, f"fig12_tornado_sensitivity.{ext}"), dpi=300)
+    plt.close(fig)
+    print(f"  Saved fig12_tornado_sensitivity.pdf/png")
+
+
+def fig13_whatif_envelope():
+    """What-if envelope: FP cascade credible intervals from joint sensitivity analysis."""
+    results_path = os.path.join(os.path.dirname(__file__), "results", "sensitivity_analysis.json")
+    if not os.path.exists(results_path):
+        print("  [SKIP] sensitivity_analysis.json not found — run sensitivity analysis first")
+        return
+
+    with open(results_path) as f:
+        sa = json.load(f)
+
+    joint = sa.get("joint_sensitivity", {})
+    if not joint:
+        print("  [SKIP] No joint sensitivity data")
+        return
+
+    scenarios = joint.get("scenarios", [])
+    raw_draws = joint.get("raw_draws", {}).get("fp_ed_only", [])
+    baseline_ed = joint.get("baseline_point_estimates", {}).get("fp_ed_only", 0.16)
+    ci_lo = joint["fp_ed_only"]["ci_2.5"]
+    ci_hi = joint["fp_ed_only"]["ci_97.5"]
+
+    if not scenarios or not raw_draws:
+        print("  [SKIP] No scenario or raw draw data — re-run SA")
+        return
+
+    fig, (ax_left, ax_right) = plt.subplots(1, 2, figsize=(14, 7),
+                                             gridspec_kw={'width_ratios': [3, 2]})
+
+    # ── LEFT PANEL: What-if scenario lollipop chart ──
+    # Group colours
+    group_colours = {
+        "baseline": "#DC2626",
+        "uniform":  "#2563EB",
+        "targeted": "#D97706",
+        "extreme":  "#7C3AED",
+        "stress":   "#B91C1C",
+    }
+    group_markers = {
+        "baseline": "s",   # square
+        "uniform":  "o",   # circle
+        "targeted": "D",   # diamond
+        "extreme":  "^",   # triangle
+        "stress":   "X",   # X
+    }
+
+    # Plot from bottom to top (baseline at top)
+    n = len(scenarios)
+    y_positions = np.arange(n)
+
+    for i, sc in enumerate(scenarios):
+        y = n - 1 - i  # first scenario at top
+        grp = sc.get("group", "baseline")
+        colour = group_colours.get(grp, "#555555")
+        marker = group_markers.get(grp, "o")
+        fp_val = sc["fp_ed_only"] * 100
+        base_val = baseline_ed * 100
+
+        # Lollipop: horizontal line from baseline to scenario value
+        ax_left.plot([base_val, fp_val], [y, y], '-', color=colour,
+                     linewidth=2, alpha=0.6, zorder=2)
+        # Marker at point
+        ax_left.plot(fp_val, y, marker, color=colour, markersize=9,
+                     zorder=5, markeredgecolor='white', markeredgewidth=0.8)
+        # Value annotation
+        offset = 0.25 if fp_val >= base_val else -0.25
+        ha = 'left' if fp_val >= base_val else 'right'
+        ax_left.annotate(f'{fp_val:.1f}%', xy=(fp_val + offset, y),
+                         va='center', ha=ha, fontsize=8, color=colour,
+                         fontweight='bold')
+
+    # Vertical baseline reference
+    ax_left.axvline(baseline_ed * 100, color='#DC2626', linestyle='--',
+                    linewidth=1.2, alpha=0.5, zorder=1)
+
+    # Joint SA 95% CI shaded band
+    ax_left.axvspan(ci_lo * 100, ci_hi * 100, alpha=0.08, color='#7C3AED',
+                    zorder=0, label=f'Joint SA 95% CI ({ci_lo*100:.1f}–{ci_hi*100:.1f}%)')
+
+    # Y-axis labels (clean up newlines for display)
+    labels = [sc["label"].replace("\n", "  ") for sc in scenarios]
+    ax_left.set_yticks(y_positions)
+    ax_left.set_yticklabels([labels[n - 1 - i] for i in range(n)], fontsize=8.5)
+    ax_left.set_xlabel('ED false-positive rate (%)', fontsize=10)
+    ax_left.set_title('A.  "What if these unknown specificities\n'
+                      '      turn out to be…?"',
+                      fontsize=11, fontweight='bold', loc='left')
+    ax_left.grid(True, axis='x', alpha=0.2)
+
+    # Add group legend
+    from matplotlib.lines import Line2D
+    legend_handles = []
+    seen_groups = []
+    group_labels = {
+        "baseline": "Current estimates",
+        "uniform":  "All 16 specs set uniformly",
+        "targeted": "Pathology-specific override",
+        "extreme":  "Plausible CI bounds",
+        "stress":   "Stress test",
+    }
+    for sc in scenarios:
+        grp = sc.get("group", "baseline")
+        if grp not in seen_groups:
+            seen_groups.append(grp)
+            legend_handles.append(Line2D(
+                [0], [0], marker=group_markers.get(grp, 'o'),
+                color=group_colours.get(grp, '#555'),
+                linestyle='None', markersize=7,
+                label=group_labels.get(grp, grp)))
+    ax_left.legend(handles=legend_handles, fontsize=7.5, loc='upper left',
+                   bbox_to_anchor=(0.0, -0.10), ncol=3,
+                   framealpha=0.9, title='Scenario type', title_fontsize=8)
+
+    # ── RIGHT PANEL: Distribution histogram ──
+    draws = np.array(raw_draws) * 100
+
+    ax_right.hist(draws, bins=40, color='#2563EB', alpha=0.4, edgecolor='#2563EB',
+                  linewidth=0.5, density=True)
+
+    # KDE overlay
+    from scipy.stats import gaussian_kde
+    kde = gaussian_kde(draws, bw_method=0.3)
+    x_kde = np.linspace(draws.min() - 0.5, draws.max() + 0.5, 200)
+    ax_right.plot(x_kde, kde(x_kde), color='#2563EB', linewidth=2)
+
+    # Markers
+    ax_right.axvline(baseline_ed * 100, color='#DC2626', linestyle='--',
+                     linewidth=2, label=f'Baseline ({baseline_ed*100:.1f}%)')
+    ax_right.axvline(ci_lo * 100, color='#7C3AED', linestyle=':',
+                     linewidth=1.5, label=f'2.5th ({ci_lo*100:.1f}%)')
+    ax_right.axvline(ci_hi * 100, color='#7C3AED', linestyle=':',
+                     linewidth=1.5, label=f'97.5th ({ci_hi*100:.1f}%)')
+
+    # Shade 95% CI
+    mask = (x_kde >= ci_lo * 100) & (x_kde <= ci_hi * 100)
+    ax_right.fill_between(x_kde[mask], kde(x_kde[mask]), alpha=0.15, color='#7C3AED')
+
+    ax_right.set_xlabel('ED false-positive rate (%)', fontsize=10)
+    ax_right.set_ylabel('Density', fontsize=10)
+    ax_right.set_title('B. Joint SA distribution\n(2,000 draws)', fontsize=12,
+                       fontweight='bold', loc='left')
+    ax_right.legend(fontsize=8, loc='upper right')
+    ax_right.grid(True, axis='y', alpha=0.2)
+
+    fig.suptitle('What-If Analysis: 16 Unknown Specificity Values That SISTER ACT Will Measure',
+                 fontsize=12, fontweight='bold', y=1.02)
+    plt.tight_layout()
+
+    for ext in ['pdf', 'png']:
+        fig.savefig(os.path.join(FIGURE_DIR, f"fig13_whatif_envelope.{ext}"), dpi=300)
+    plt.close(fig)
+    print(f"  Saved fig13_whatif_envelope.pdf/png")
+
+
 def generate_all_figures():
     """Generate all publication figures."""
     print("=" * 70)
@@ -709,17 +953,23 @@ def generate_all_figures():
     print("\n[7/8] Biomarker kinetics (serial testing)...")
     fig7_biomarker_kinetics()
 
-    print("\n[8/11] Serial protocol comparison...")
+    print("\n[8/13] Serial protocol comparison...")
     fig8_serial_protocol_comparison()
 
-    print("\n[9/11] Sensitivity–FP trade-off (quantitative LR)...")
+    print("\n[9/13] Sensitivity–FP trade-off (quantitative LR)...")
     fig9_sensitivity_fp_tradeoff()
 
-    print("\n[10/11] Cost-effectiveness plane & CEAC...")
+    print("\n[10/13] Cost-effectiveness plane & CEAC...")
     fig10_cost_effectiveness_plane()
 
-    print("\n[11/11] Copula correlation & FP decomposition...")
+    print("\n[11/13] Copula correlation & FP decomposition...")
     fig11_copula_correlation()
+
+    print("\n[12/13] Tornado plot (parametric sensitivity)...")
+    fig12_tornado_sensitivity()
+
+    print("\n[13/13] What-if envelope (FP cascade CIs)...")
+    fig13_whatif_envelope()
 
     print(f"\nAll figures saved to {FIGURE_DIR}/")
 

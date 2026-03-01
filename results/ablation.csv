@@ -2,7 +2,7 @@ removed,full_panel_size,full_coverage,reduced_panel_size,reduced_coverage,covera
 hs-cTnI,4,0.8333333333333334,3,0.6666666666666666,-0.16666666666666674,-1,ACS (STEMI/NSTEMI/UA),"CRP, D-dimer, NT-proBNP",True
 D-dimer,4,0.8333333333333334,3,0.5,-0.33333333333333337,-1,"Aortic Dissection, Pulmonary Embolism","CRP, NT-proBNP, hs-cTnI",True
 NT-proBNP,4,0.8333333333333334,3,0.6666666666666666,-0.16666666666666674,-1,Acute Heart Failure,"CRP, D-dimer, hs-cTnI",True
-CRP,4,0.8333333333333334,3,0.6666666666666666,-0.16666666666666674,-1,Pericarditis / Myocarditis,"D-dimer, NT-proBNP, hs-cTnI",True
+CRP,4,0.8333333333333334,4,0.8333333333333334,0.0,0,None,"D-dimer, Myoglobin, NT-proBNP, hs-cTnI",True
 Copeptin,4,0.8333333333333334,4,0.8333333333333334,0.0,0,None,"CRP, D-dimer, NT-proBNP, hs-cTnI",False
 H-FABP,4,0.8333333333333334,4,0.8333333333333334,0.0,0,None,"CRP, D-dimer, NT-proBNP, hs-cTnI",False
 Myoglobin,4,0.8333333333333334,4,0.8333333333333334,0.0,0,None,"CRP, D-dimer, NT-proBNP, hs-cTnI",False

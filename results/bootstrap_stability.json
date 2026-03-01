@@ -1,49 +1,112 @@
 {
   "n_bootstrap": 1000,
   "tau": 0.9,
+  "reference_panel": [
+    "CRP",
+    "D-dimer",
+    "NT-proBNP",
+    "hs-cTnI"
+  ],
+  "reference_coverage": 0.8333333333333334,
+  "reference_panel_valid_rate": 0.784,
+  "reference_panel_selected_rate": 0.756,
   "panel_frequency": [
     {
       "panel": [
         "CRP",
-        "D-dimer"
-      ],
-      "count": 781,
-      "frequency": 0.781
-    },
-    {
-      "panel": [
         "D-dimer",
+        "NT-proBNP",
         "hs-cTnI"
       ],
-      "count": 216,
-      "frequency": 0.216
+      "count": 756,
+      "frequency": 0.756
     },
     {
       "panel": [
         "D-dimer",
-        "H-FABP"
+        "Myoglobin",
+        "NT-proBNP",
+        "hs-cTnI"
       ],
-      "count": 3,
-      "frequency": 0.003
+      "count": 156,
+      "frequency": 0.156
+    },
+    {
+      "panel": [
+        "D-dimer",
+        "NT-proBNP",
+        "hs-cTnI"
+      ],
+      "count": 68,
+      "frequency": 0.068
+    },
+    {
+      "panel": [
+        "CRP",
+        "D-dimer",
+        "NT-proBNP"
+      ],
+      "count": 8,
+      "frequency": 0.008
+    },
+    {
+      "panel": [
+        "CRP",
+        "D-dimer",
+        "H-FABP",
+        "NT-proBNP"
+      ],
+      "count": 7,
+      "frequency": 0.007
+    },
+    {
+      "panel": [
+        "D-dimer",
+        "H-FABP",
+        "Myoglobin",
+        "NT-proBNP"
+      ],
+      "count": 2,
+      "frequency": 0.002
+    },
+    {
+      "panel": [
+        "D-dimer",
+        "H-FABP",
+        "NT-proBNP"
+      ],
+      "count": 2,
+      "frequency": 0.002
+    },
+    {
+      "panel": [
+        "D-dimer",
+        "Myoglobin",
+        "NT-proBNP"
+      ],
+      "count": 1,
+      "frequency": 0.001
     }
   ],
   "biomarker_inclusion_rate": {
-    "hs-cTnI": 0.216,
+    "hs-cTnI": 0.98,
     "D-dimer": 1.0,
-    "NT-proBNP": 0.0,
-    "CRP": 0.781,
+    "NT-proBNP": 1.0,
+    "CRP": 0.771,
     "Copeptin": 0.0,
-    "H-FABP": 0.003,
-    "Myoglobin": 0.0,
+    "H-FABP": 0.011,
+    "Myoglobin": 0.159,
     "Procalcitonin": 0.0
   },
-  "panel_size_mean": 2.0,
-  "panel_size_std": 0.0,
-  "coverage_mean": 0.5,
-  "coverage_std": 0.0,
+  "panel_size_mean": 3.921,
+  "panel_size_std": 0.26973876250921003,
+  "coverage_mean": 0.8238333333333335,
+  "coverage_std": 0.038640436505470985,
   "most_stable_panel": [
     "CRP",
-    "D-dimer"
+    "D-dimer",
+    "NT-proBNP",
+    "hs-cTnI"
   ],
-  "stability_score": 0.781
+  "stability_score": 0.756
 }

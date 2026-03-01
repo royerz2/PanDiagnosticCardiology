@@ -8,9 +8,9 @@
       "hs-cTnI"
     ],
     "coverage": 0.8333333333333334,
-    "prevalence_weighted_coverage": 0.11800000000000001,
+    "prevalence_weighted_coverage": 0.11800000000000002,
     "severity_weighted_coverage": 1.02,
-    "expected_detections_per_1000": 111.96,
+    "expected_detections_per_1000": 110.96,
     "expected_detections_covered_per_1000": 110.96,
     "mean_specificity": 0.514,
     "net_benefit": 0.086992,
@@ -20,7 +20,7 @@
       "0.05": -0.013925,
       "0.1": -0.152686
     },
-    "clinical_utility_score": 0.0069580300000000005,
+    "clinical_utility_score": 0.00695803,
     "net_benefit_note": "Net benefit computed at clinical decision thresholds (t=0.01 to 0.10), NOT at tau=0.90 which is the sensitivity selection threshold. For rule-out of life-threatening conditions, t=0.01 is appropriate (willing to accept ~99 FPs per missed case). Only covered pathologies contribute."
   },
   "per_pathology_details": [
@@ -74,13 +74,13 @@
     },
     {
       "pathology": "PTX",
-      "best_biomarker": "NT-proBNP",
-      "sensitivity": 0.2,
-      "specificity": 0.85,
+      "best_biomarker": "D-dimer",
+      "sensitivity": 0.0,
+      "specificity": 0.8,
       "prevalence": 0.005,
       "case_fatality": 0.3,
-      "ppv": 0.0067,
-      "npv": 0.9953,
+      "ppv": 0.0,
+      "npv": 0.9938,
       "rule_out_suitable": 0.0,
       "diagnosis_suitable": 0.0
     },
@@ -110,15 +110,15 @@
     "note": "P(>=1 false positive | no disease) assuming independent tests. D-dimer covers PE+AoD but counted once (min spec). True panel-level FP rate requires patient-level correlation data."
   },
   "joint_npv": {
-    "value": 0.977083,
-    "p_any_disease_given_all_neg": 0.022917,
+    "value": 0.969906,
+    "p_any_disease_given_all_neg": 0.030094,
     "note": "P(no disease at all | all panel tests negative). Assumes independent biomarker responses across pathologies. True joint NPV requires patient-level paired data."
   },
   "source_audit": {
     "total_sensitivity_entries": 48,
     "bib_verified": 9,
-    "unverified_citation": 18,
-    "expert_estimate": 21,
+    "unverified_citation": 39,
+    "expert_estimate": 0,
     "fraction_bib_verified": 0.188,
     "note": "bib_verified = bracketed ref cross-referenced in refs.bib; unverified_citation = author-year cited but not in refs.bib (ghost citation); expert_estimate = no literature source."
   },

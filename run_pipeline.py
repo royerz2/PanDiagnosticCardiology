@@ -55,6 +55,7 @@ from visualisation import generate_all_figures
 from correlation_dependence_model import run_dependence_analysis
 from health_economics import run_health_economics_analysis
 from quantitative_panel_interpretation import run_full_analysis as run_quantitative_analysis
+from sensitivity_analysis import run_sensitivity_analysis
 
 logging.basicConfig(
     level=logging.INFO,
@@ -304,6 +305,32 @@ def main():
     with open(os.path.join(output_dir, 'quantitative_interpretation.json'), 'w') as f:
         json.dump(quant_results, f, indent=2,
                   default=lambda o: float(o) if hasattr(o, 'item') else str(o))
+
+    # ── Step 23: Parametric Sensitivity Analysis ──
+    print(f"\n[STEP 23] Parametric sensitivity analysis (what-if envelope)...")
+    sa_results = run_sensitivity_analysis(
+        output_dir=output_dir,
+        n_joint_samples=2_000,
+        n_copula_samples=20_000,
+        seed=42,
+    )
+    tornado_top = sa_results.get('tornado', [{}])
+    if tornado_top:
+        top = tornado_top[0]
+        print(f"  Top sensitivity driver: {top.get('parameter', 'N/A')} "
+              f"(swing: {top.get('swing', 0):.4f})")
+    joint = sa_results.get('joint_sensitivity', {})
+    if joint:
+        fp_ed = joint.get('fp_ed_only', {})
+        print(f"  ED FP rate 95% CI: {fp_ed.get('ci_2.5', 0):.1%} – {fp_ed.get('ci_97.5', 0):.1%}")
+        print(f"  Panel selection invariant: {joint.get('panel_selection_unchanged', True)}")
+        print(f"  ICER dominant in {joint.get('icer_dominant_fraction', 0):.0%} of draws")
+
+    # Generate sensitivity figures (need SA results to exist)
+    from visualisation import fig12_tornado_sensitivity, fig13_whatif_envelope
+    print(f"\n  Generating sensitivity figures...")
+    fig12_tornado_sensitivity()
+    fig13_whatif_envelope()
 
     # ── Summary ──
     print(f"\n{'=' * 90}")

@@ -7,30 +7,30 @@
       "total_cost_eur": 382890.0
     },
     "with_poc_panel": {
-      "referred": 331.4,
+      "referred": 331.1,
       "unnecessary_referrals": 143.2,
-      "missed_serious_pathology": 20.5,
-      "total_cost_eur": 225156.0,
+      "missed_serious_pathology": 21.0,
+      "total_cost_eur": 224948.0,
       "poc_tests_performed": 350.0
     }
   },
   "impact": {
-    "referrals_avoided_per_1000": 168.6,
+    "referrals_avoided_per_1000": 168.9,
     "unnecessary_referrals_avoided_per_1000": 206.8,
-    "additional_missed_cases_per_1000": 2.5,
-    "cost_saving_per_1000_eur": 157734.0,
+    "additional_missed_cases_per_1000": 3.0,
+    "cost_saving_per_1000_eur": 157942.0,
     "cost_per_referral_avoided_eur": 75.0
   },
   "per_gp_practice_per_year": {
     "chest_pain_patients": 35.0,
-    "referrals_avoided": 5.9,
-    "cost_saving_eur": 5560.0
+    "referrals_avoided": 6.0,
+    "cost_saving_eur": 5567.0
   },
   "dutch_context": {
     "source": "Schols 2019; Harskamp 2018; Van Den Bulk 2023; NZa 2024",
     "gp_practices_netherlands": 5000,
-    "national_referrals_avoided_per_year": 29712.0,
-    "national_cost_saving_eur_per_year": 27800642.0
+    "national_referrals_avoided_per_year": 29773.0,
+    "national_cost_saving_eur_per_year": 27837354.0
   },
   "clinical_interpretation": "POC multi-biomarker testing in Dutch primary care, stratified by HEAR score (without Troponin), could substantially reduce unnecessary ED referrals. The greatest impact is in HEAR 3-5 (moderate-risk) patients, who currently face precautionary referral. Cost savings accrue from avoided ED visits, ambulance transports, and overnight observations. HEAR-low patients are safely discharged without testing (honest trade-off: slightly higher miss rate vs large referral reduction). Safety maintained through high panel sensitivity for covered pathologies.",
   "limitations": [
